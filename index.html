@@ -812,13 +812,13 @@ function showResult(type, content, label){
         <span class="result-title">📄 ${label}</span>
         <div class="result-actions">
           <button class="small-btn" onclick="copyResult('${copyId}')">Copy</button>
+          <button class="small-btn" style="background: var(--primary); color: white;" onclick="goHome()">🏠 Home</button>
         </div>
       </div>
       <div class="result-body" id="${copyId}">${escHtml(content)}</div>
     </div>`;
   container.scrollIntoView({behavior:'smooth'});
 }
-
 function copyResult(id){
   const el = document.getElementById(id);
   navigator.clipboard.writeText(el.innerText).then(()=>{
