@@ -890,6 +890,28 @@ function addRecentActivity(icon, text){
 // ══ LOADER ════════════════════════════════════════════════════════════
 function showLoader(msg='Loading…'){ document.getElementById('loader').classList.add('show'); document.getElementById('loader-text').textContent=msg; }
 function hideLoader(){ document.getElementById('loader').classList.remove('show'); }
+// ══ FLOATING HOME BUTTON ════════════════════════════════════════════════
+const floatingHome = document.createElement('button');
+floatingHome.innerHTML = '🏠 Home';
+floatingHome.style.cssText = 'position: fixed; bottom: 25px; right: 20px; padding: 12px 20px; background: #008069; color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
+
+// Check every half-second: if we are not on the home screen, show the button
+setInterval(() => {
+  const home = document.getElementById('screen-home');
+  const dash = document.getElementById('screen-dashboard');
+  if ((home && home.classList.contains('active')) || (dash && dash.classList.contains('active'))) {
+    floatingHome.style.display = 'none'; // Hide on main menus
+  } else {
+    floatingHome.style.display = 'block'; // Show everywhere else
+  }
+}, 500);
+
+floatingHome.onclick = () => {
+  goHome(); // Takes you back to the grade selection
+  // Optional: if you want it to go to subject selection instead, use:
+  // showScreen('screen-dashboard');
+};
+document.body.appendChild(floatingHome);
 </script>
 </body>
 </html>
