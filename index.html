@@ -7,7 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+  /* Beautiful Native Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border, #888); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary, #008069); }
+* { scrollbar-width: thin; }
+  <style>
 /* ── TOKENS ─────────────────────────────────── */
 :root,[data-theme="light"]{
   --bg:#f5f4f0;--surface:#fff;--surface-2:#f8f7f4;--surface-off:#eeece8;
@@ -45,6 +51,9 @@ button,a{cursor:pointer;background:none;border:none;font:inherit;color:inherit;t
 /* ── SCREENS ─────────────────────────────────── */
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden;height:100dvh;}
 .screen.active{display:flex;}
+  <div style="margin-bottom: 20px; padding: 0 15px;">
+  <input type="text" id="student-name" placeholder="Enter your Name..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
+</div>  
 
 /* ── TOPBAR ──────────────────────────────────── */
 .topbar{
@@ -800,8 +809,205 @@ async function generateNotes(){
   }
   document.getElementById('gen-notes-btn').disabled = false;
 }
+<script>
+// ══ CONFIG ═════════════════════════════════════════════════════════════════
+const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev'; 
 
-// ══ RESULT PANEL ═════════════════════════════════════════════════════════
+// ══ STATE ═════════════════════════════════════════════════════════════════
+let state = {
+  name: '', // Added name state
+  grade: '',
+  fee: '',
+  subject: '',
+  chatHistory: [],
+  chatMode: 'tutor',
+  testDiff: 'Medium',
+  testDur: '30',
+};
+
+const SUBJECTS = {
+  'Grade 1–3':  ['Maths','English','EVS','Hindi'],
+  'Grade 4–8':  ['Maths','Science','Social Science','English','Hindi','Sanskrit'],
+  'Grade 9–10': ['Maths','Science','Social Science','English','Hindi','IT'],
+  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics'],
+};
+
+const QUICK_CHIPS = {
+  tutor:    ['Explain a concept','Solve a problem','Board exam tip','Give an example'],
+  evaluate: ['Check my answers','Score my test','Mark my paper'],
+};
+
+// ══ NAVIGATION & SELECTION ════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function selectGrade(grade, fee){
+  // Check for name before proceeding
+  const nameInput = document.getElementById('student-name');
+  if (nameInput) {
+    if (!nameInput.value.trim()) {
+      alert("Please enter your Name first! 🙏");
+      nameInput.focus();
+      return;
+    }
+    state.name = nameInput.value.trim();
+  }
+
+  state.grade = grade;
+  state.fee = fee;
+  
+  // Show name and grade on dashboard
+  document.getElementById('dash-grade-label').textContent = `${state.name} — ${grade}`;
+  document.getElementById('chat-sub').textContent = grade;
+  document.getElementById('test-grade-sub').textContent = grade;
+  document.getElementById('notes-grade-sub').textContent = grade;
+  
+  const subs = SUBJECTS[grade] || [];
+  ['test-subject','notes-subject'].forEach(id => {
+    const sel = document.getElementById(id);
+    if(sel) {
+      sel.innerHTML = '<option value="">Select subject</option>';
+      subs.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
+    }
+  });
+  
+  const chips = document.getElementById('subject-chips');
+  if(chips) {
+    chips.innerHTML = '';
+    subs.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'subject-chip';
+      btn.textContent = s;
+      btn.onclick = ()=>{ state.subject=s; goToChat('tutor'); };
+      chips.appendChild(btn);
+    });
+  }
+  
+  state.chatHistory = [];
+  showScreen('screen-dashboard');
+}
+
+// ══ CHAT LOGIC ════════════════════════════════════════════════════════════
+function goToChat(mode){
+  state.chatMode = mode;
+  state.chatHistory = [];
+  document.getElementById('chat-body').innerHTML = '';
+  renderQuickChips();
+  showScreen('screen-chat');
+  
+  // Personalized Greetings!
+  const greetings = {
+    tutor:    `Namaste ${state.name}! 🙏 I'm Vidya, your personal NCERT Tutor.
+
+You're in **${state.grade}**. Which subject shall we work on today?`,
+    evaluate: `Hi ${state.name}! Let's evaluate your answers. 📋
+
+Paste your test question paper first, then share your answers below it.`,
+  };
+  appendBot(greetings[mode] || greetings.tutor);
+}
+
+function renderQuickChips(){
+  const row = document.getElementById('quick-row');
+  if(!row) return;
+  row.innerHTML = '';
+  const chips = QUICK_CHIPS[state.chatMode] || QUICK_CHIPS.tutor;
+  chips.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'qchip';
+    btn.textContent = c;
+    btn.onclick = ()=>sendWith(c);
+    row.appendChild(btn);
+  });
+}
+
+function sendWith(text){ 
+  const msgInput = document.getElementById('msg-input');
+  msgInput.value=text; 
+  sendMessage(); 
+}
+
+async function sendMessage(){
+  const msgInput = document.getElementById('msg-input');
+  const text = msgInput.value.trim();
+  if(!text) return;
+  
+  msgInput.value=''; 
+  msgInput.style.height='auto';
+  document.getElementById('send-btn').disabled = true;
+  
+  appendUser(text);
+  state.chatHistory.push({role:'user', text});
+  showLoader('Vidya is thinking...');
+  
+  try {
+    const res = await fetch(`${API_BASE}/chat`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        grade: state.grade,
+        subject: state.subject || 'General',
+        message: text,
+        // Limit history to past 3 questions (3 user + 3 bot = 6)
+        history: state.chatHistory.slice(-6),
+      }),
+    });
+    const data = await res.json();
+    hideLoader();
+    
+    const reply = data.reply || data.error || 'Sorry, no response.';
+    state.chatHistory.push({role:'model', text: reply});
+    appendBot(reply);
+  } catch(e){
+    hideLoader();
+    appendBot(`Network error: ${e.message}. Please check connection.`);
+  }
+}
+
+// ══ RESULT PANEL (TESTS/NOTES) ══════════════════════════════════════════
+function selectSeg(btn, type){
+  const group = btn.closest('.seg-control');
+  group.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='diff') state.testDiff = btn.dataset.diff;
+  if(type==='dur')  state.testDur  = btn.dataset.dur;
+}
+
+async function generateTest(){
+  const subject = document.getElementById('test-subject').value;
+  const chapter = document.getElementById('test-chapter').value;
+  if(!subject){ alert('Please select a subject first.'); return; }
+  showLoader('Generating your question paper…');
+  try {
+    const res = await fetch(`${API_BASE}/test`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ grade:state.grade, subject, chapter, difficulty:state.testDiff, duration:parseInt(state.testDur) }),
+    });
+    const data = await res.json();
+    hideLoader();
+    showResult('test', data.paper || data.error || 'Failed to generate.', `${subject} — ${state.testDiff}`);
+  } catch(e){ hideLoader(); alert(`Error: ${e.message}`); }
+}
+
+async function generateNotes(){
+  const subject = document.getElementById('notes-subject').value;
+  const chapter = document.getElementById('notes-chapter').value;
+  const topic   = document.getElementById('notes-topic').value;
+  if(!subject || !chapter){ alert('Please select subject and chapter.'); return; }
+  showLoader('Preparing chapter notes…');
+  try {
+    const res = await fetch(`${API_BASE}/notes`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ grade:state.grade, subject, chapter, topic }),
+    });
+    const data = await res.json();
+    hideLoader();
+    showResult('notes', data.notes || data.error || 'Failed to generate.', `${subject} — ${chapter}`);
+  } catch(e){ hideLoader(); alert(`Error: ${e.message}`); }
+}
+
 function showResult(type, content, label){
   const container = document.getElementById(`${type}-result`);
   const copyId = `rc_${Date.now()}`;
@@ -812,13 +1018,14 @@ function showResult(type, content, label){
         <span class="result-title">📄 ${label}</span>
         <div class="result-actions">
           <button class="small-btn" onclick="copyResult('${copyId}')">Copy</button>
-          <button class="small-btn" style="background: var(--primary); color: white;" onclick="goHome()">🏠 Home</button>
+          <button class="small-btn" style="background: var(--primary); color: white;" onclick="showScreen('screen-dashboard')">🔙 Menu</button>
         </div>
       </div>
-      <div class="result-body" id="${copyId}">${escHtml(content)}</div>
+      <div class="result-body" id="${copyId}" style="overflow-y:auto; max-height: 50vh;">${escHtml(content)}</div>
     </div>`;
   container.scrollIntoView({behavior:'smooth'});
 }
+
 function copyResult(id){
   const el = document.getElementById(id);
   navigator.clipboard.writeText(el.innerText).then(()=>{
@@ -830,86 +1037,54 @@ function copyResult(id){
 // ══ DOM HELPERS ══════════════════════════════════════════════════════════
 function appendUser(text){
   const cb = document.getElementById('chat-body');
-  const d = document.createElement('div');
-  d.className='msg user';
-  d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;
-  cb.appendChild(d); scrollChat();
+  cb.innerHTML += `<div class="msg user"><div class="msg-bub">${escHtml(text)}</div></div>`; 
+  scrollChat();
 }
-
 function appendBot(text){
   const cb = document.getElementById('chat-body');
-  const d = document.createElement('div');
-  d.className='msg bot';
-  const isBlock = text.includes('═══')||text.includes('╔')||text.includes('SECTION A')||text.includes('SLIDE 1')||text.includes('━━━');
-  const cid = 'c'+Date.now();
-  if(isBlock){
-    d.innerHTML=`<div class="msg-bub">
-      <div class="content-block">
-        <div class="content-block-hdr">
-          <span class="cb-label">📄 Generated Content</span>
-          <button class="cb-copy" onclick="copyResult('${cid}')">Copy</button>
-        </div>
-        <div class="content-block-body" id="${cid}">${escHtml(text)}</div>
-      </div>
-    </div><div class="msg-time">${getTime()}</div>`;
-  } else {
-    d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;
-  }
-  cb.appendChild(d); scrollChat();
+  cb.innerHTML += `<div class="msg bot"><div class="msg-bub">${fmtMsg(text)}</div></div>`; 
+  scrollChat();
 }
-
 function fmtMsg(t){
-  return t
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^- (.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>[\s\S]*?<\/li>(\n|$))+/g,'<ul>$&</ul>')
-    .replace(/\n\n/g,'</p><p>')
-    .replace(/\n/g,'<br>')
-    .replace(/^/,'<p>').replace(/$/,'</p>');
+  return String(t).replace(/**(.+?)**/g,'<strong>$1</strong>').replace(/*(.+?)*/g,'<em>$1</em>').replace(/
+/g,'<br>');
 }
-function escHtml(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function scrollChat(){ const cb=document.getElementById('chat-body'); requestAnimationFrame(()=>cb.scrollTop=cb.scrollHeight); }
-function getTime(){ return new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+function showLoader(txt){ document.getElementById('loader-text').textContent=txt; document.getElementById('loader').classList.add('show'); }
+function hideLoader(){ document.getElementById('loader').classList.remove('show'); }
 
-function addRecentActivity(icon, text){
-  state.recentActivity.unshift({icon, text, time: getTime()});
-  const list = document.getElementById('recent-list');
-  const empty = document.getElementById('recent-empty');
-  empty.style.display='none';
-  list.innerHTML = state.recentActivity.slice(0,5).map(a=>`
-    <div style="display:flex;align-items:center;gap:.6rem;padding:.65rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:.5rem;">
-      <span style="font-size:1.1rem;">${a.icon}</span>
-      <span style="font-size:.8rem;flex:1;color:var(--text);">${a.text}</span>
-      <span style="font-size:.65rem;color:var(--faint);">${a.time}</span>
-    </div>`).join('');
+// ══ EVENT LISTENERS ═════════════════════════════════════════════════════
+const msgInput = document.getElementById('msg-input');
+if (msgInput) {
+    msgInput.addEventListener('input', function(){
+      this.style.height='auto';
+      this.style.height = Math.min(this.scrollHeight,110)+'px';
+      document.getElementById('send-btn').disabled = !this.value.trim();
+    });
+    msgInput.addEventListener('keydown', e=>{
+      if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); }
+    });
 }
 
-// ══ LOADER ════════════════════════════════════════════════════════════
-function showLoader(msg='Loading…'){ document.getElementById('loader').classList.add('show'); document.getElementById('loader-text').textContent=msg; }
-function hideLoader(){ document.getElementById('loader').classList.remove('show'); }
-// ══ FLOATING HOME BUTTON ════════════════════════════════════════════════
+// ══ FLOATING TIERED NAVIGATION BUTTON ═══════════════════════════════════
 const floatingHome = document.createElement('button');
-floatingHome.innerHTML = '🏠 Home';
-floatingHome.style.cssText = 'position: fixed; bottom: 25px; right: 20px; padding: 12px 20px; background: #008069; color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
+floatingHome.innerHTML = '🔙 Menu';
+floatingHome.style.cssText = 'position: fixed; bottom: 25px; right: 20px; padding: 12px 20px; background: var(--primary, #008069); color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
 
-// Check every half-second: if we are not on the home screen, show the button
 setInterval(() => {
   const home = document.getElementById('screen-home');
   const dash = document.getElementById('screen-dashboard');
   if ((home && home.classList.contains('active')) || (dash && dash.classList.contains('active'))) {
-    floatingHome.style.display = 'none'; // Hide on main menus
+    floatingHome.style.display = 'none'; // Hide on Login and Dashboard layers
   } else {
-    floatingHome.style.display = 'block'; // Show everywhere else
+    floatingHome.style.display = 'block'; // Show everywhere else (Chat, Notes, Test)
   }
 }, 500);
 
 floatingHome.onclick = () => {
-  goHome(); // Takes you back to the grade selection
-  // Optional: if you want it to go to subject selection instead, use:
-  // showScreen('screen-dashboard');
+  // Acts as a BACK button to the Dashboard tier
+  showScreen('screen-dashboard'); 
 };
 document.body.appendChild(floatingHome);
 </script>
