@@ -9,17 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root,[data-theme="light"]{
-      --bg:#f5f4f0;--surface:#ffffff;--surface-2:#f8f7f4;--surface-off:#eeece8;
+      --bg:#f5f4f0;--surface:#fff;--surface-2:#f8f7f4;--surface-off:#eeece8;
       --border:rgba(0,0,0,0.08);--divider:rgba(0,0,0,0.06);
       --text:#1e1c17;--muted:#6c6a65;--faint:#b3b1ac;
       --primary:#01696f;--primary-h:#0c4e54;--primary-hl:rgba(1,105,111,0.10);
       --accent:#d19900;--accent-hl:rgba(209,153,0,0.10);
       --green:#437a22;--green-hl:rgba(67,122,34,0.10);
       --red:#c0392b;--red-hl:rgba(192,57,43,0.10);
-      --user-bg:#01696f;--bot-bg:#ffffff;
-      --shadow-sm:0 1px 4px rgba(0,0,0,0.07);
-      --shadow-md:0 6px 18px rgba(0,0,0,0.10);
-      --shadow-lg:0 14px 40px rgba(0,0,0,0.14);
+      --user-bg:#01696f;--bot-bg:#fff;
+      --shadow-sm:0 1px 4px rgba(0,0,0,0.07);--shadow-md:0 6px 18px rgba(0,0,0,0.10);--shadow-lg:0 14px 40px rgba(0,0,0,0.14);
       --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
       --font:'Plus Jakarta Sans',sans-serif;--ease:180ms cubic-bezier(.16,1,.3,1);
     }
@@ -32,9 +30,7 @@
       --green:#6daa45;--green-hl:rgba(109,170,69,0.14);
       --red:#e05c4a;--red-hl:rgba(224,92,74,0.14);
       --user-bg:#1e6b73;--bot-bg:#232220;
-      --shadow-sm:0 1px 4px rgba(0,0,0,0.28);
-      --shadow-md:0 6px 18px rgba(0,0,0,0.34);
-      --shadow-lg:0 14px 40px rgba(0,0,0,0.45);
+      --shadow-sm:0 1px 4px rgba(0,0,0,0.28);--shadow-md:0 6px 18px rgba(0,0,0,0.34);--shadow-lg:0 14px 40px rgba(0,0,0,0.45);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
@@ -45,7 +41,6 @@
     *::-webkit-scrollbar{width:8px;height:8px}
     *::-webkit-scrollbar-track{background:transparent}
     *::-webkit-scrollbar-thumb{background:var(--primary);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
-    *::-webkit-scrollbar-thumb:hover{background:var(--primary-h);background-clip:padding-box}
     .screen{display:none;flex-direction:column;height:100dvh;overflow:hidden}
     .screen.active{display:flex}
     .topbar{display:flex;align-items:center;gap:.75rem;padding:0 1rem;height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--divider);box-shadow:var(--shadow-sm);position:relative;z-index:10}
@@ -56,28 +51,33 @@
     .topbar-sub{font-size:.72rem;color:var(--muted)}
     .topbar-actions{display:flex;align-items:center;gap:.375rem;margin-left:auto}
     .logo-mark{width:32px;height:32px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;box-shadow:var(--shadow-sm)}
-    #screen-home{overflow-y:auto}
-    .home-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-h) 100%);padding:2.5rem 1.25rem 2rem;text-align:center;position:relative;overflow:hidden}
-    .home-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
-    .hero-logo-wrap{display:flex;justify-content:center;margin-bottom:1rem}
-    .hero-logo{width:68px;height:68px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border-radius:20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,.25)}
-    .hero-title{font-size:1.8rem;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:.35rem}
-    .hero-sub{font-size:.86rem;color:rgba(255,255,255,.85);line-height:1.5;max-width:280px;margin:0 auto}
-    .hero-badge{display:inline-flex;align-items:center;gap:.35rem;margin-top:.875rem;background:rgba(255,255,255,.15);color:#fff;font-size:.72rem;font-weight:700;padding:.35rem .8rem;border-radius:var(--r-full);letter-spacing:.04em;border:1px solid rgba(255,255,255,.2)}
-    .home-section{padding:1.25rem 1rem 1rem}
-    .name-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:.9rem;box-shadow:var(--shadow-sm);margin-bottom:1rem}
-    .name-input{width:100%;padding:.9rem 1rem;border-radius:.85rem;border:1.5px solid var(--border);background:var(--surface-2);color:var(--text);outline:none}
-    .name-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-hl)}
-    .section-label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
-    .grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
-    .grade-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1rem;display:flex;flex-direction:column;gap:.28rem;box-shadow:var(--shadow-sm);transition:all var(--ease);position:relative;overflow:hidden;min-height:120px}
-    .grade-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-    .grade-card.g1::after{background:var(--green)} .grade-card.g2::after{background:var(--primary)} .grade-card.g3::after{background:var(--accent)} .grade-card.g4::after{background:var(--red)}
-    .grade-card:hover,.grade-card:active{border-color:var(--primary);transform:translateY(-1px)}
-    .grade-emoji{font-size:1.45rem;margin-bottom:.15rem}
-    .grade-tier{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-    .grade-name{font-size:.97rem;font-weight:800;letter-spacing:-.02em}
-    .grade-fee{font-size:.73rem;font-weight:700;color:var(--primary);background:var(--primary-hl);padding:.18rem .55rem;border-radius:var(--r-full);display:inline-flex;width:fit-content;margin-top:.2rem}
+
+    /* ── AUTH SCREEN ── */
+    #screen-auth{overflow-y:auto;justify-content:center;align-items:center;background:var(--bg)}
+    .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:2rem 1.5rem;width:90%;max-width:400px;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;gap:1.2rem}
+    .auth-logo{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+    .auth-logo-icon{width:60px;height:60px;background:var(--primary);border-radius:18px;display:flex;align-items:center;justify-content:center}
+    .auth-logo-title{font-size:1.4rem;font-weight:800;letter-spacing:-.03em}
+    .auth-logo-sub{font-size:.78rem;color:var(--muted);text-align:center}
+    .auth-tabs{display:flex;gap:.5rem;background:var(--surface-2);border-radius:var(--r-lg);padding:.3rem}
+    .auth-tab{flex:1;padding:.55rem;text-align:center;font-size:.82rem;font-weight:700;border-radius:var(--r-md);color:var(--muted);transition:all var(--ease)}
+    .auth-tab.active{background:var(--primary);color:#fff}
+    .auth-form{display:flex;flex-direction:column;gap:.75rem}
+    .auth-input{width:100%;padding:.75rem 1rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.9rem;outline:none;color:var(--text);transition:border-color var(--ease)}
+    .auth-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-hl)}
+    .auth-select{width:100%;padding:.75rem 1rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.9rem;outline:none;color:var(--text);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c6a65' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.25rem}
+    .auth-btn{width:100%;padding:.9rem;background:var(--primary);color:#fff;font-weight:700;font-size:.93rem;border-radius:var(--r-lg);transition:background var(--ease);box-shadow:var(--shadow-sm)}
+    .auth-btn:hover{background:var(--primary-h)}
+    .auth-btn:disabled{opacity:.5;pointer-events:none}
+    .auth-error{font-size:.78rem;color:var(--red);background:var(--red-hl);padding:.6rem .8rem;border-radius:var(--r-md);display:none}
+    .auth-error.show{display:block}
+    .tier-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:var(--r-full)}
+    .tier-free{background:var(--green-hl);color:var(--green)}
+    .tier-basic{background:var(--primary-hl);color:var(--primary)}
+    .tier-standard{background:var(--accent-hl);color:var(--accent)}
+    .tier-premium{background:var(--red-hl);color:var(--red)}
+
+    /* ── DASHBOARD ── */
     #screen-dashboard{overflow:hidden}
     .dash-grade-bar{background:var(--primary);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;flex-shrink:0}
     .dash-grade-pill{background:rgba(255,255,255,.2);padding:.18rem .6rem;border-radius:var(--r-full);font-weight:700;font-size:.75rem}
@@ -85,10 +85,11 @@
     .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
     .action-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1rem;display:flex;flex-direction:column;gap:.35rem;box-shadow:var(--shadow-sm);transition:all var(--ease)}
     .action-card:hover,.action-card:active{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-1px)}
-    .action-icon{width:42px;height:42px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.1rem}
-    .action-icon.teal{background:var(--primary-hl)} .action-icon.gold{background:var(--accent-hl)} .action-icon.green{background:var(--green-hl)} .action-icon.red{background:var(--red-hl)}
+    .action-icon{width:42px;height:42px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+    .action-icon.teal{background:var(--primary-hl)}.action-icon.gold{background:var(--accent-hl)}.action-icon.green{background:var(--green-hl)}.action-icon.red{background:var(--red-hl)}
     .action-name{font-size:.9rem;font-weight:700}.action-desc{font-size:.73rem;color:var(--muted);line-height:1.45}
     .subject-section,.recent-section{margin-bottom:1.5rem}
+    .section-label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
     .subject-chips{display:flex;flex-wrap:wrap;gap:.5rem}
     .subject-chip{font-size:.78rem;font-weight:600;padding:.42rem .9rem;border-radius:var(--r-full);background:var(--surface);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease)}
     .subject-chip:hover,.subject-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
@@ -96,42 +97,49 @@
     .bottom-nav{display:flex;gap:.35rem;background:color-mix(in srgb,var(--surface) 92%,transparent);border-top:1px solid var(--divider);padding:.45rem .6rem calc(.45rem + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.08);position:fixed;bottom:0;left:0;right:0;z-index:60;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.5rem .25rem;border-radius:14px;gap:.18rem;font-size:.66rem;font-weight:700;letter-spacing:.02em;color:var(--muted);transition:all var(--ease)}
     .nav-item.active{color:var(--primary);background:var(--primary-hl)}
-    .nav-item svg{transition:transform var(--ease)} .nav-item.active svg{transform:scale(1.05)}
+    .nav-item svg{transition:transform var(--ease)}.nav-item.active svg{transform:scale(1.05)}
+
+    /* ── CHAT ── */
     #screen-chat{background:var(--bg);position:relative;height:100dvh;overflow:hidden}
-    .chat-body{position:absolute;top:56px;left:0;right:0;bottom:148px;overflow-y:auto;overflow-x:hidden;padding:.9rem 1rem 1.2rem;display:flex;flex-direction:column;gap:.75rem;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+    .chat-body{position:absolute;top:56px;left:0;right:0;bottom:148px;overflow-y:auto;overflow-x:hidden;padding:.9rem 1rem 1.2rem;display:flex;flex-direction:column;gap:.75rem;scroll-behavior:smooth}
     .msg{display:flex;flex-direction:column;max-width:88%;animation:fadeUp .2s ease-out}
     @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-    .msg.user{align-self:flex-end;align-items:flex-end}
-    .msg.bot{align-self:flex-start;align-items:flex-start}
+    .msg.user{align-self:flex-end;align-items:flex-end}.msg.bot{align-self:flex-start;align-items:flex-start}
     .msg-bub{padding:.72rem .95rem;border-radius:var(--r-2xl);font-size:.89rem;line-height:1.65;word-break:break-word}
     .msg.user .msg-bub{background:var(--user-bg);color:#fff;border-bottom-right-radius:var(--r-sm);box-shadow:var(--shadow-sm)}
     .msg.bot .msg-bub{background:var(--bot-bg);border:1px solid var(--border);border-bottom-left-radius:var(--r-sm);box-shadow:var(--shadow-sm)}
     .msg-time{font-size:.62rem;color:var(--faint);margin-top:.2rem;padding:0 .2rem}
     .msg-bub strong{font-weight:700}.msg-bub em{font-style:italic}.msg-bub code{background:var(--surface-off);border-radius:4px;padding:.1rem .3rem;font-family:monospace;font-size:.82rem}
     .chat-dock{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:.5rem;padding:.45rem .75rem calc(.75rem + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 72%,rgba(0,0,0,0));z-index:20;pointer-events:none}
-    .quick-row{pointer-events:auto;display:flex;gap:.45rem;overflow-x:auto;padding:.55rem .65rem;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    .quick-row{pointer-events:auto;display:flex;gap:.45rem;overflow-x:auto;padding:.55rem .65rem;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);backdrop-filter:blur(10px)}
     .quick-row::-webkit-scrollbar{height:6px}
     .qchip{white-space:nowrap;font-size:.74rem;font-weight:600;padding:.42rem .9rem;border-radius:var(--r-full);background:var(--surface-2);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);flex-shrink:0}
     .qchip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-hl)}
-    .input-bar{pointer-events:auto;display:flex;align-items:flex-end;gap:.625rem;padding:.7rem;background:color-mix(in srgb,var(--surface) 93%,transparent);border:1px solid var(--border);border-radius:calc(var(--r-2xl) + 2px);box-shadow:var(--shadow-lg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-    .input-wrap{flex:1;display:flex;align-items:flex-end;gap:.5rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-2xl);padding:.55rem .875rem;transition:border-color var(--ease),box-shadow var(--ease)}
+    .input-bar{pointer-events:auto;display:flex;align-items:flex-end;gap:.625rem;padding:.7rem;background:color-mix(in srgb,var(--surface) 93%,transparent);border:1px solid var(--border);border-radius:calc(var(--r-2xl) + 2px);box-shadow:var(--shadow-lg);backdrop-filter:blur(10px)}
+    .input-wrap{flex:1;display:flex;flex-direction:column;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-2xl);padding:.55rem .875rem;transition:border-color var(--ease)}
     .input-wrap:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-hl)}
+    .input-preview{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+    .preview-chip{display:flex;align-items:center;gap:.45rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.35rem .55rem;font-size:.72rem;color:var(--muted)}
+    .preview-thumb{width:28px;height:28px;border-radius:8px;object-fit:cover}
     #msg-input{flex:1;background:none;border:none;outline:none;resize:none;font-size:.92rem;line-height:1.5;max-height:120px;min-height:24px;color:var(--text)}
     #msg-input::placeholder{color:var(--faint)}
-    .send-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--ease),transform var(--ease),box-shadow var(--ease);box-shadow:var(--shadow-sm)}
-    .send-btn:hover{background:var(--primary-h)} .send-btn:active{transform:scale(.93)} .send-btn:disabled{opacity:.35;pointer-events:none}
+    .send-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--ease),transform var(--ease);box-shadow:var(--shadow-sm)}
+    .send-btn:hover{background:var(--primary-h)}.send-btn:active{transform:scale(.93)}.send-btn:disabled{opacity:.35;pointer-events:none}
+    .attach-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
+
+    /* ── TEST / NOTES ── */
     #screen-test,#screen-notes{overflow:hidden}
     .test-form-body,.notes-form-body{flex:1;overflow-y:auto;padding:1.25rem 1rem 6rem}
     .form-group{margin-bottom:1.1rem}
     .form-label{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.42rem;display:block;letter-spacing:.02em}
-    .form-input,.form-select{width:100%;padding:.75rem .9rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.9rem;outline:none;transition:border-color var(--ease),box-shadow var(--ease);color:var(--text)}
+    .form-input,.form-select{width:100%;padding:.75rem .9rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.9rem;outline:none;transition:border-color var(--ease);color:var(--text)}
     .form-input:focus,.form-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-hl)}
     .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c6a65' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.25rem}
     .seg-control{display:flex;gap:.45rem}
     .seg-btn{flex:1;padding:.58rem;text-align:center;font-size:.79rem;font-weight:700;border-radius:var(--r-lg);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);background:var(--surface)}
     .seg-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
     .generate-btn{width:100%;padding:.9rem;background:var(--primary);color:#fff;font-weight:700;font-size:.93rem;border-radius:var(--r-lg);transition:background var(--ease);margin-top:.5rem;box-shadow:var(--shadow-sm)}
-    .generate-btn:hover{background:var(--primary-h)} .generate-btn:disabled{opacity:.5;pointer-events:none}
+    .generate-btn:hover{background:var(--primary-h)}.generate-btn:disabled{opacity:.5;pointer-events:none}
     .result-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-md);margin-top:1.25rem}
     .result-hdr{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;border-bottom:1px solid var(--divider);background:var(--primary-hl)}
     .result-title{font-size:.85rem;font-weight:700;color:var(--primary)}
@@ -139,139 +147,340 @@
     .result-body{padding:1rem;font-size:.82rem;font-family:monospace;white-space:pre-wrap;line-height:1.8;word-break:break-word;max-height:50vh;overflow:auto}
     .small-btn{font-size:.72rem;padding:.28rem .68rem;border:1px solid var(--border);border-radius:var(--r-full);color:var(--muted);transition:all var(--ease)}
     .small-btn:hover{background:var(--primary-hl);color:var(--primary)}
-    .attach-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
-    .input-preview{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
-    .preview-chip{display:flex;align-items:center;gap:.45rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.35rem .55rem;font-size:.72rem;color:var(--muted)}
-    .preview-thumb{width:28px;height:28px;border-radius:8px;object-fit:cover}
+
+    /* ── LOADER ── */
     .loader-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
     .loader-overlay.show{display:flex}
     .loader-box{background:var(--surface);border-radius:var(--r-xl);padding:1.5rem 2rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;box-shadow:var(--shadow-lg);min-width:200px}
     .loader-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loader-text{font-size:.82rem;color:var(--muted);font-weight:600}
-    @media (max-width:480px){.chat-body{bottom:154px}.grade-grid,.action-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.chat-body{bottom:154px}}
   </style>
 </head>
 <body>
-  <div class="loader-overlay" id="loader">
-    <div class="loader-box">
-      <div class="loader-spinner"></div>
-      <div class="loader-text" id="loader-text">Thinking...</div>
+
+<!-- LOADER -->
+<div class="loader-overlay" id="loader">
+  <div class="loader-box">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loader-text">Loading...</div>
+  </div>
+</div>
+
+<!-- ══ SCREEN: AUTH (Login / Register) ══════════════════════════════════ -->
+<div class="screen active" id="screen-auth">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon"><svg width="36" height="36" viewBox="0 0 40 40" fill="none"><text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text></svg></div>
+      <div class="auth-logo-title">Vidya Tutor</div>
+      <div class="auth-logo-sub">Your personal NCERT tutor · Grades 1–12</div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div class="auth-form" id="form-login">
+      <input type="email" class="auth-input" id="login-email" placeholder="Email address">
+      <input type="password" class="auth-input" id="login-password" placeholder="Password">
+      <div class="auth-error" id="login-error"></div>
+      <button class="auth-btn" id="login-btn" onclick="doLogin()">Login →</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div class="auth-form" id="form-register" style="display:none">
+      <input type="text" class="auth-input" id="reg-name" placeholder="Your full name">
+      <input type="email" class="auth-input" id="reg-email" placeholder="Email address">
+      <input type="password" class="auth-input" id="reg-password" placeholder="Create password">
+      <select class="auth-select" id="reg-grade">
+        <option value="">Select your grade</option>
+        <option value="Grade 1–3">Grade 1–3 (₹150/month)</option>
+        <option value="Grade 4–8">Grade 4–8 (₹400/month)</option>
+        <option value="Grade 9–10">Grade 9–10 (₹600/month)</option>
+        <option value="Grade 11–12">Grade 11–12 (₹900/month)</option>
+      </select>
+      <div class="auth-error" id="reg-error"></div>
+      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account →</button>
     </div>
   </div>
-  <div class="screen active" id="screen-home">
-    <div class="home-hero">
-      <div class="hero-logo-wrap"><div class="hero-logo"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text></svg></div></div>
-      <div class="hero-title">Vidya Tutor</div>
-      <div class="hero-sub">Your personal NCERT tutor for Grades 1–12</div>
-      <div class="hero-badge">📚 CBSE · NCERT Curriculum</div>
+</div>
+
+<!-- ══ SCREEN: DASHBOARD ════════════════════════════════════════════════ -->
+<div class="screen" id="screen-dashboard">
+  <div class="topbar">
+    <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div>
+    <div><div class="topbar-title">Vidya Tutor</div></div>
+    <div class="topbar-actions">
+      <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <button class="icon-btn" onclick="doLogout()" title="Logout"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
     </div>
-    <div class="home-section">
-      <div class="name-card"><input type="text" id="student-name" class="name-input" placeholder="Enter your name..."></div>
-      <div class="section-label">Select your class to begin</div>
-      <div class="grade-grid">
-        <div class="grade-card g1" onclick="selectGrade('Grade 1–3','₹150')"><div class="grade-emoji">🌱</div><div class="grade-tier">Primary</div><div class="grade-name">Grade 1–3</div><div class="grade-fee">₹150/month</div></div>
-        <div class="grade-card g2" onclick="selectGrade('Grade 4–8','₹400')"><div class="grade-emoji">📖</div><div class="grade-tier">Middle</div><div class="grade-name">Grade 4–8</div><div class="grade-fee">₹400/month</div></div>
-        <div class="grade-card g3" onclick="selectGrade('Grade 9–10','₹600')"><div class="grade-emoji">🔬</div><div class="grade-tier">Secondary</div><div class="grade-name">Grade 9–10</div><div class="grade-fee">₹600/month</div></div>
-        <div class="grade-card g4" onclick="selectGrade('Grade 11–12','₹900')"><div class="grade-emoji">🎓</div><div class="grade-tier">Senior</div><div class="grade-name">Grade 11–12</div><div class="grade-fee">₹900/month</div></div>
+  </div>
+  <div class="dash-grade-bar">
+    <span>Welcome,</span>
+    <span class="dash-grade-pill" id="dash-name-label">Student</span>
+    <span id="dash-tier-badge" class="tier-badge tier-free" style="margin-left:.5rem"></span>
+  </div>
+  <div class="dash-scroll">
+    <div class="section-label" style="padding-top:.25rem">What would you like to do?</div>
+    <div class="action-grid">
+      <div class="action-card" onclick="goToChat('tutor')"><div class="action-icon teal">💬</div><div class="action-name">Ask a Doubt</div><div class="action-desc">Get instant NCERT answers</div></div>
+      <div class="action-card" onclick="goToScreen('screen-test')"><div class="action-icon gold">📝</div><div class="action-name">Cycle Test</div><div class="action-desc">Generate a question paper</div></div>
+      <div class="action-card" onclick="goToScreen('screen-notes')"><div class="action-icon green">🖼️</div><div class="action-name">Chapter Notes</div><div class="action-desc">Visual slides & summaries</div></div>
+      <div class="action-card" onclick="goToChat('evaluate')"><div class="action-icon red">✅</div><div class="action-name">Check Answers</div><div class="action-desc">Evaluate your test answers</div></div>
+    </div>
+    <div class="subject-section"><div class="section-label">Quick subject access</div><div class="subject-chips" id="subject-chips"></div></div>
+    <div class="recent-section"><div class="section-label">Recent activity</div><div class="recent-empty" id="recent-empty">No activity yet. Start by asking a doubt! 📚</div><div id="recent-list"></div></div>
+  </div>
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="navTo('screen-dashboard',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Home</button>
+    <button class="nav-item" onclick="goToChat('tutor');navTo('screen-chat',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Tutor</button>
+    <button class="nav-item" onclick="goToScreen('screen-test');navTo('screen-test',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Test</button>
+    <button class="nav-item" onclick="goToScreen('screen-notes');navTo('screen-notes',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Notes</button>
+  </nav>
+</div>
+
+<!-- ══ SCREEN: CHAT ══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-chat">
+  <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div><div><div class="topbar-title" id="chat-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div><div class="topbar-actions"><button class="icon-btn" onclick="clearChat()" title="Clear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></div>
+  <div class="chat-body" id="chat-body"></div>
+  <div class="chat-dock">
+    <div class="quick-row" id="quick-row"></div>
+    <div class="input-bar">
+      <input type="file" id="image-upload" accept="image/*" hidden>
+      <button class="attach-btn" onclick="document.getElementById('image-upload').click()">📸</button>
+      <div class="input-wrap">
+        <div class="input-preview" id="input-preview" style="display:none"></div>
+        <textarea id="msg-input" rows="1" placeholder="Type question or 📸 screenshot homework" aria-label="Message"></textarea>
       </div>
+      <button class="send-btn" id="send-btn" disabled onclick="sendMessage()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
     </div>
   </div>
-  <div class="screen" id="screen-dashboard">
-    <div class="topbar"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div><div><div class="topbar-title">Vidya Tutor</div></div><div class="topbar-actions"><button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div></div>
-    <div class="dash-grade-bar"><span>Logged in as</span><span class="dash-grade-pill" id="dash-grade-label">Grade 9–10</span><button onclick="goHome()" style="margin-left:auto;font-size:.72rem;opacity:.82;font-weight:600;color:#fff;">Change</button></div>
-    <div class="dash-scroll">
-      <div class="section-label" style="padding-top:.25rem">What would you like to do?</div>
-      <div class="action-grid">
-        <div class="action-card" onclick="goToChat('tutor')"><div class="action-icon teal">💬</div><div class="action-name">Ask a Doubt</div><div class="action-desc">Get instant NCERT answers</div></div>
-        <div class="action-card" onclick="goToScreen('screen-test')"><div class="action-icon gold">📝</div><div class="action-name">Cycle Test</div><div class="action-desc">Generate a question paper</div></div>
-        <div class="action-card" onclick="goToScreen('screen-notes')"><div class="action-icon green">🖼️</div><div class="action-name">Chapter Notes</div><div class="action-desc">Visual slides & summaries</div></div>
-        <div class="action-card" onclick="goToChat('evaluate')"><div class="action-icon red">✅</div><div class="action-name">Check Answers</div><div class="action-desc">Evaluate your test answers</div></div>
-      </div>
-      <div class="subject-section"><div class="section-label">Quick subject access</div><div class="subject-chips" id="subject-chips"></div></div>
-      <div class="recent-section"><div class="section-label">Recent activity</div><div class="recent-empty" id="recent-empty">No activity yet. Start by asking a doubt! 📚</div><div id="recent-list"></div></div>
-    </div>
-    <nav class="bottom-nav">
-      <button class="nav-item active" onclick="navTo('screen-dashboard',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Home</button>
-      <button class="nav-item" onclick="goToChat('tutor');navTo('screen-chat',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Tutor</button>
-      <button class="nav-item" onclick="goToScreen('screen-test');navTo('screen-test',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Test</button>
-      <button class="nav-item" onclick="goToScreen('screen-notes');navTo('screen-notes',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Notes</button>
-    </nav>
+</div>
+
+<!-- ══ SCREEN: TEST ══════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-test">
+  <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div></div>
+  <div class="test-form-body">
+    <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="test-subject"><option value="">Select subject</option></select></div>
+    <div class="form-group"><label class="form-label">Chapter / Topic</label><input type="text" class="form-input" id="test-chapter" placeholder="e.g. Chapter 1 — Crop Production"></div>
+    <div class="form-group"><label class="form-label">Difficulty</label><div class="seg-control"><button class="seg-btn active" data-diff="Easy" onclick="selectSeg(this,'diff')">Easy</button><button class="seg-btn" data-diff="Medium" onclick="selectSeg(this,'diff')">Medium</button><button class="seg-btn" data-diff="Hard" onclick="selectSeg(this,'diff')">Hard</button></div></div>
+    <div class="form-group"><label class="form-label">Duration</label><div class="seg-control"><button class="seg-btn" data-dur="20" onclick="selectSeg(this,'dur')">20 min</button><button class="seg-btn active" data-dur="30" onclick="selectSeg(this,'dur')">30 min</button><button class="seg-btn" data-dur="60" onclick="selectSeg(this,'dur')">1 hour</button></div></div>
+    <button class="generate-btn" id="gen-test-btn" onclick="generateTest()">✨ Generate Question Paper</button>
+    <div id="test-result" style="display:none"></div>
   </div>
-  <div class="screen" id="screen-chat">
-    <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div><div><div class="topbar-title" id="chat-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div><div class="topbar-actions"><button class="icon-btn" onclick="clearChat()" title="Clear chat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></div>
-    <div class="chat-body" id="chat-body"></div>
-    <div class="chat-dock">
-      <div class="quick-row" id="quick-row"></div>
-      <div class="input-bar">
-        <input type="file" id="image-upload" accept="image/*" hidden>
-        <button class="attach-btn" id="attach-btn" onclick="document.getElementById('image-upload').click()">📸</button>
-        <div class="input-wrap">
-          <div class="input-preview" id="input-preview" style="display:none"></div>
-          <textarea id="msg-input" rows="1" placeholder="Type question or 📸 screenshot homework" aria-label="Message"></textarea>
-        </div>
-        <button class="send-btn" id="send-btn" disabled onclick="sendMessage()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-      </div>
-    </div>
+</div>
+
+<!-- ══ SCREEN: NOTES ═════════════════════════════════════════════════════ -->
+<div class="screen" id="screen-notes">
+  <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div></div>
+  <div class="notes-form-body">
+    <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="notes-subject"><option value="">Select subject</option></select></div>
+    <div class="form-group"><label class="form-label">Chapter</label><input type="text" class="form-input" id="notes-chapter" placeholder="e.g. Chapter 4 — Carbon and its Compounds"></div>
+    <div class="form-group"><label class="form-label">Specific topic (optional)</label><input type="text" class="form-input" id="notes-topic" placeholder="e.g. Photosynthesis only"></div>
+    <button class="generate-btn" id="gen-notes-btn" onclick="generateNotes()">✨ Generate Chapter Notes</button>
+    <div id="notes-result" style="display:none"></div>
   </div>
-  <div class="screen" id="screen-test">
-    <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div></div>
-    <div class="test-form-body">
-      <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="test-subject"><option value="">Select subject</option></select></div>
-      <div class="form-group"><label class="form-label">Chapter / Topic</label><input type="text" class="form-input" id="test-chapter" placeholder="e.g. Chapter 1 — Crop Production"></div>
-      <div class="form-group"><label class="form-label">Difficulty</label><div class="seg-control"><button class="seg-btn active" data-diff="Easy" onclick="selectSeg(this,'diff')">Easy</button><button class="seg-btn" data-diff="Medium" onclick="selectSeg(this,'diff')">Medium</button><button class="seg-btn" data-diff="Hard" onclick="selectSeg(this,'diff')">Hard</button></div></div>
-      <div class="form-group"><label class="form-label">Duration</label><div class="seg-control"><button class="seg-btn" data-dur="20" onclick="selectSeg(this,'dur')">20 min</button><button class="seg-btn active" data-dur="30" onclick="selectSeg(this,'dur')">30 min</button><button class="seg-btn" data-dur="60" onclick="selectSeg(this,'dur')">1 hour</button></div></div>
-      <button class="generate-btn" id="gen-test-btn" onclick="generateTest()">✨ Generate Question Paper</button>
-      <div id="test-result" style="display:none"></div>
-    </div>
-  </div>
-  <div class="screen" id="screen-notes">
-    <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div></div>
-    <div class="notes-form-body">
-      <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="notes-subject"><option value="">Select subject</option></select></div>
-      <div class="form-group"><label class="form-label">Chapter</label><input type="text" class="form-input" id="notes-chapter" placeholder="e.g. Chapter 4 — Carbon and its Compounds"></div>
-      <div class="form-group"><label class="form-label">Specific topic (optional)</label><input type="text" class="form-input" id="notes-topic" placeholder="e.g. Photosynthesis only"></div>
-      <button class="generate-btn" id="gen-notes-btn" onclick="generateNotes()">✨ Generate Chapter Notes</button>
-      <div id="notes-result" style="display:none"></div>
-    </div>
-  </div>
-  <script>
+</div>
+
+<script>
 const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
-let state = {name:'', grade:'', fee:'', subject:'', chatHistory:[], chatMode:'tutor', testDiff:'Easy', testDur:'30', lastPaper:'', recentActivity:[], imageData:null, imageName:''};
-const SUBJECTS = {'Grade 1–3':['Maths','English','EVS','Hindi'],'Grade 4–8':['Maths','Science','Social Science','English','Hindi','Sanskrit'],'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics']};
+
+const SUBJECTS = {
+  'Grade 1–3':['Maths','English','EVS','Hindi'],
+  'Grade 4–8':['Maths','Science','Social Science','English','Hindi','Sanskrit'],
+  'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],
+  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics']
+};
 const QUICK_CHIPS = {tutor:['Explain a concept','Solve a problem','Board exam tip','Give an example'],evaluate:['Check my answers','Score my test','Mark my paper']};
-(function(){const btn=document.querySelector('[data-theme-toggle]');const root=document.documentElement;let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);if(btn) btn.addEventListener('click',()=>{dm=dm==='dark'?'light':'dark';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);});})();
-function updateThemeIcon(btn,dm){if(!btn) return;btn.innerHTML = dm==='dark' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';}
+
+let state = {name:'',grade:'',tier:'free',token:'',subject:'',chatHistory:[],chatMode:'tutor',testDiff:'Easy',testDur:'30',imageData:null,imageName:''};
+
+// ── THEME ──────────────────────────────────────────────────────────────────
+(function(){
+  const btn=document.querySelector('[data-theme-toggle]');
+  const root=document.documentElement;
+  let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);
+  if(btn) btn.addEventListener('click',()=>{dm=dm==='dark'?'light':'dark';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);});
+})();
+function updateThemeIcon(btn,dm){if(!btn)return;btn.innerHTML=dm==='dark'?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';}
+
+// ── SESSION ────────────────────────────────────────────────────────────────
+function saveSession(){localStorage.setItem('vidya_session',JSON.stringify({name:state.name,grade:state.grade,tier:state.tier,token:state.token}));}
+function loadSession(){
+  const s=localStorage.getItem('vidya_session');
+  if(!s) return false;
+  try{const d=JSON.parse(s);Object.assign(state,d);return !!d.token;}catch{return false;}
+}
+
+// ── AUTH ───────────────────────────────────────────────────────────────────
+function switchTab(tab){
+  document.getElementById('form-login').style.display=tab==='login'?'flex':'none';
+  document.getElementById('form-register').style.display=tab==='register'?'flex':'none';
+  document.getElementById('tab-login').classList.toggle('active',tab==='login');
+  document.getElementById('tab-register').classList.toggle('active',tab==='register');
+}
+
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const password=document.getElementById('login-password').value;
+  const errEl=document.getElementById('login-error');
+  errEl.classList.remove('show');
+  if(!email||!password){errEl.textContent='Please fill in all fields';errEl.classList.add('show');return;}
+  document.getElementById('login-btn').disabled=true;
+  showLoader('Logging in...');
+  try{
+    const res=await fetch(`${API_BASE}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const data=await res.json();hideLoader();
+    if(data.error){errEl.textContent=data.error;errEl.classList.add('show');document.getElementById('login-btn').disabled=false;return;}
+    state.name=data.name;state.grade=data.grade;state.tier=data.tier;state.token=data.token;
+    saveSession();bootDashboard();
+  }catch(e){hideLoader();errEl.textContent='Network error. Try again.';errEl.classList.add('show');}
+  document.getElementById('login-btn').disabled=false;
+}
+
+async function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const password=document.getElementById('reg-password').value;
+  const grade=document.getElementById('reg-grade').value;
+  const errEl=document.getElementById('reg-error');
+  errEl.classList.remove('show');
+  if(!name||!email||!password||!grade){errEl.textContent='Please fill in all fields';errEl.classList.add('show');return;}
+  document.getElementById('reg-btn').disabled=true;
+  showLoader('Creating your account...');
+  try{
+    const res=await fetch(`${API_BASE}/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password,grade})});
+    const data=await res.json();hideLoader();
+    if(data.error){errEl.textContent=data.error;errEl.classList.add('show');document.getElementById('reg-btn').disabled=false;return;}
+    state.name=data.name;state.grade=data.grade;state.tier=data.tier;state.token=data.token;
+    saveSession();bootDashboard();
+  }catch(e){hideLoader();errEl.textContent='Network error. Try again.';errEl.classList.add('show');}
+  document.getElementById('reg-btn').disabled=false;
+}
+
+function doLogout(){
+  localStorage.removeItem('vidya_session');
+  Object.assign(state,{name:'',grade:'',tier:'free',token:'',subject:'',chatHistory:[]});
+  showScreen('screen-auth');
+}
+
+function authHeaders(){return{'Content-Type':'application/json','Authorization':`Bearer ${state.token}`};}
+
+// ── BOOT ───────────────────────────────────────────────────────────────────
+function bootDashboard(){
+  const subs=SUBJECTS[state.grade]||[];
+  ['test-subject','notes-subject'].forEach(id=>{
+    const sel=document.getElementById(id);
+    sel.innerHTML='<option value="">Select subject</option>';
+    subs.forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
+  });
+  document.getElementById('dash-name-label').textContent=`${state.name} — ${state.grade}`;
+  document.getElementById('chat-sub').textContent=state.grade;
+  document.getElementById('test-grade-sub').textContent=state.grade;
+  document.getElementById('notes-grade-sub').textContent=state.grade;
+  const badge=document.getElementById('dash-tier-badge');
+  const tierLabels={free:'Free',basic:'Basic',standard:'Standard',premium:'Premium ⭐',admin:'Admin'};
+  badge.textContent=tierLabels[state.tier]||state.tier;
+  badge.className=`tier-badge tier-${state.tier}`;
+  const chips=document.getElementById('subject-chips');chips.innerHTML='';
+  subs.forEach(s=>{const btn=document.createElement('button');btn.className='subject-chip';btn.textContent=s;btn.onclick=()=>{state.subject=s;goToChat('tutor');};chips.appendChild(btn);});
+  showScreen('screen-dashboard');
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goToScreen(id){showScreen(id);} function goHome(){showScreen('screen-home');}
-function navTo(screenId,btn){showScreen(screenId);document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));if(btn) btn.classList.add('active');}
-function selectGrade(grade,fee){const nameInput=document.getElementById('student-name');if(nameInput && !nameInput.value.trim()){alert('Please enter your name first 🙏');nameInput.focus();return;}state.name=nameInput?nameInput.value.trim():'';state.grade=grade;state.fee=fee;document.getElementById('dash-grade-label').textContent=`${state.name} — ${grade}`;document.getElementById('chat-sub').textContent=grade;document.getElementById('test-grade-sub').textContent=grade;document.getElementById('notes-grade-sub').textContent=grade;const subs=SUBJECTS[grade]||[];['test-subject','notes-subject'].forEach(id=>{const sel=document.getElementById(id);sel.innerHTML='<option value="">Select subject</option>';subs.forEach(s=>sel.innerHTML += `<option value="${s}">${s}</option>`);});const chips=document.getElementById('subject-chips');chips.innerHTML='';subs.forEach(s=>{const btn=document.createElement('button');btn.className='subject-chip';btn.textContent=s;btn.onclick=()=>{state.subject=s;goToChat('tutor');};chips.appendChild(btn);});state.chatHistory=[];showScreen('screen-dashboard');}
-function goToChat(mode){state.chatMode=mode;state.chatHistory=[];state.imageData=null;state.imageName='';document.getElementById('chat-body').innerHTML='';document.getElementById('chat-title').textContent = mode==='evaluate' ? 'Check Answers' : 'Ask a Doubt';renderQuickChips();clearPreview();showScreen('screen-chat');const greetings={tutor:`Namaste ${state.name}! 🙏\n\nI'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,evaluate:`Hi ${state.name}! 📋\n\nPaste your test question paper first, then share your answers below it. I'll help evaluate them.`};appendBot(greetings[mode]||greetings.tutor);}
+function goToScreen(id){showScreen(id);}
+function navTo(screenId,btn){showScreen(screenId);document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
+
+// ── CHAT ───────────────────────────────────────────────────────────────────
+function goToChat(mode){
+  state.chatMode=mode;state.chatHistory=[];state.imageData=null;state.imageName='';
+  document.getElementById('chat-body').innerHTML='';
+  document.getElementById('chat-title').textContent=mode==='evaluate'?'Check Answers':'Ask a Doubt';
+  renderQuickChips();clearPreview();showScreen('screen-chat');
+  const greetings={
+    tutor:`Namaste ${state.name}! 🙏\n\nI'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,
+    evaluate:`Hi ${state.name}! 📋\n\nPaste your test question paper first, then share your answers below it. I'll help evaluate them.`
+  };
+  appendBot(greetings[mode]||greetings.tutor);
+}
 function renderQuickChips(){const row=document.getElementById('quick-row');row.innerHTML='';(QUICK_CHIPS[state.chatMode]||QUICK_CHIPS.tutor).forEach(c=>{const btn=document.createElement('button');btn.className='qchip';btn.textContent=c;btn.onclick=()=>sendWith(c);row.appendChild(btn);});}
-const msgInput=document.getElementById('msg-input');const imageUpload=document.getElementById('image-upload');
+
+const msgInput=document.getElementById('msg-input');
+const imageUpload=document.getElementById('image-upload');
 msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';document.getElementById('send-btn').disabled=!(this.value.trim()||state.imageData);});
 msgInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
-imageUpload.addEventListener('change',e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{state.imageData=ev.target.result;state.imageName=file.name;showPreview(file.name,ev.target.result);document.getElementById('send-btn').disabled=false;};reader.readAsDataURL(file);});
-function showPreview(name,src){const p=document.getElementById('input-preview');p.style.display='flex';p.innerHTML=`<div class="preview-chip"><img class="preview-thumb" src="${src}" alt="preview"><span>${escHtml(name)}</span><button class="small-btn" type="button" onclick="clearPreview()">✕</button></div>`;}
+imageUpload.addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{state.imageData=ev.target.result;state.imageName=file.name;showPreview(file.name,ev.target.result);document.getElementById('send-btn').disabled=false;};reader.readAsDataURL(file);});
+
+function showPreview(name,src){const p=document.getElementById('input-preview');p.style.display='flex';p.innerHTML=`<div class="preview-chip"><img class="preview-thumb" src="${src}" alt="preview"><span>${escHtml(name)}</span><button class="small-btn" onclick="clearPreview()">✕</button></div>`;}
 function clearPreview(){state.imageData=null;state.imageName='';const p=document.getElementById('input-preview');p.innerHTML='';p.style.display='none';imageUpload.value='';document.getElementById('send-btn').disabled=!msgInput.value.trim();}
 function sendWith(text){msgInput.value=text;msgInput.dispatchEvent(new Event('input'));sendMessage();}
-async function sendMessage(){const text=msgInput.value.trim();if(!text && !state.imageData) return;msgInput.value='';msgInput.style.height='auto';document.getElementById('send-btn').disabled=true;const payloadText = state.imageData ? `${text ? text + '\n\n' : ''}[Student uploaded screenshot: ${state.imageName}]` : text;appendUser(payloadText || '[Image]');state.chatHistory.push({role:'user',text:payloadText,image:!!state.imageData});showLoader('Vidya is thinking...');try{const res=await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject:state.subject||'General',message:payloadText,history:state.chatHistory.slice(-6),image:state.imageData})});const data=await res.json();hideLoader();const reply=data.reply || data.error || 'Sorry, I could not get a response. Please try again!';state.chatHistory.push({role:'model',text:reply});appendBot(reply);addRecentActivity('💬',`Asked about: ${text.slice(0,40)}${text.length>40?'…':''}`);clearPreview();}catch(e){hideLoader();appendBot(`Network error: ${e.message}. Please check your connection and try again! 🙏`);}}
+
+async function sendMessage(){
+  const text=msgInput.value.trim();
+  if(!text&&!state.imageData)return;
+  msgInput.value='';msgInput.style.height='auto';document.getElementById('send-btn').disabled=true;
+  const displayText=state.imageData?`${text?text+'\n\n':''}[📸 Screenshot: ${state.imageName}]`:text;
+  appendUser(displayText);
+  state.chatHistory.push({role:'user',text:displayText});
+  showLoader('Vidya is thinking...');
+  try{
+    const res=await fetch(`${API_BASE}/chat`,{method:'POST',headers:authHeaders(),body:JSON.stringify({grade:state.grade,subject:state.subject||'General',message:text||'',history:state.chatHistory.slice(-6),image:state.imageData||null})});
+    const data=await res.json();hideLoader();
+    const reply=data.reply||data.error||'Sorry, could not get a response.';
+    state.chatHistory.push({role:'model',text:reply});
+    appendBot(reply);
+    addRecentActivity('💬',`Asked: ${(text||state.imageName).slice(0,40)}`);
+    clearPreview();
+  }catch(e){hideLoader();appendBot(`Network error: ${e.message}`);}
+}
+
 function clearChat(){state.chatHistory=[];document.getElementById('chat-body').innerHTML='';clearPreview();goToChat(state.chatMode);}
-function selectSeg(btn,type){const group=btn.closest('.seg-control');group.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(type==='diff') state.testDiff=btn.dataset.diff;if(type==='dur') state.testDur=btn.dataset.dur;}
-async function generateTest(){const subject=document.getElementById('test-subject').value;const chapter=document.getElementById('test-chapter').value;if(!subject){alert('Please select a subject first.');return;}showLoader('Generating your question paper...');document.getElementById('gen-test-btn').disabled=true;try{const res=await fetch(`${API_BASE}/test`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)})});const data=await res.json();hideLoader();state.lastPaper=data.paper||'';showResult('test',data.paper||data.error||'Could not generate paper. Please try again.',`${subject} — ${state.testDiff} — ${state.testDur} min`);addRecentActivity('📝',`Cycle test: ${subject} ${state.grade}`);}catch(e){hideLoader();alert(`Network error: ${e.message}`);}document.getElementById('gen-test-btn').disabled=false;}
-async function generateNotes(){const subject=document.getElementById('notes-subject').value;const chapter=document.getElementById('notes-chapter').value;const topic=document.getElementById('notes-topic').value;if(!subject||!chapter){alert('Please select subject and chapter.');return;}showLoader('Preparing chapter notes...');document.getElementById('gen-notes-btn').disabled=true;try{const res=await fetch(`${API_BASE}/notes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,topic})});const data=await res.json();hideLoader();showResult('notes',data.notes||data.error||'Could not generate notes. Please try again.',`${subject} — ${chapter}`);addRecentActivity('🖼️',`Notes: ${subject} ${chapter}`);}catch(e){hideLoader();alert(`Network error: ${e.message}`);}document.getElementById('gen-notes-btn').disabled=false;}
+function selectSeg(btn,type){const g=btn.closest('.seg-control');g.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(type==='diff')state.testDiff=btn.dataset.diff;if(type==='dur')state.testDur=btn.dataset.dur;}
+
+async function generateTest(){
+  const subject=document.getElementById('test-subject').value;const chapter=document.getElementById('test-chapter').value;
+  if(!subject){alert('Please select a subject first.');return;}
+  showLoader('Generating your question paper...');document.getElementById('gen-test-btn').disabled=true;
+  try{
+    const res=await fetch(`${API_BASE}/test`,{method:'POST',headers:authHeaders(),body:JSON.stringify({grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)})});
+    const data=await res.json();hideLoader();
+    showResult('test',data.paper||data.error||'Could not generate paper.',`${subject} — ${state.testDiff} — ${state.testDur} min`);
+    addRecentActivity('📝',`Cycle test: ${subject}`);
+  }catch(e){hideLoader();alert(`Network error: ${e.message}`);}
+  document.getElementById('gen-test-btn').disabled=false;
+}
+
+async function generateNotes(){
+  const subject=document.getElementById('notes-subject').value;const chapter=document.getElementById('notes-chapter').value;const topic=document.getElementById('notes-topic').value;
+  if(!subject||!chapter){alert('Please select subject and chapter.');return;}
+  showLoader('Preparing chapter notes...');document.getElementById('gen-notes-btn').disabled=true;
+  try{
+    const res=await fetch(`${API_BASE}/notes`,{method:'POST',headers:authHeaders(),body:JSON.stringify({grade:state.grade,subject,chapter,topic})});
+    const data=await res.json();hideLoader();
+    showResult('notes',data.notes||data.error||'Could not generate notes.',`${subject} — ${chapter}`);
+    addRecentActivity('🖼️',`Notes: ${subject} ${chapter}`);
+  }catch(e){hideLoader();alert(`Network error: ${e.message}`);}
+  document.getElementById('gen-notes-btn').disabled=false;
+}
+
 function showResult(type,content,label){const container=document.getElementById(`${type}-result`);const copyId=`rc_${Date.now()}`;container.style.display='block';container.innerHTML=`<div class="result-panel"><div class="result-hdr"><span class="result-title">📄 ${label}</span><div class="result-actions"><button class="small-btn" onclick="copyResult('${copyId}')">Copy</button><button class="small-btn" onclick="showScreen('screen-dashboard')">Menu</button></div></div><div class="result-body" id="${copyId}">${escHtml(content)}</div></div>`;container.scrollIntoView({behavior:'smooth'});}
 function copyResult(id){const el=document.getElementById(id);navigator.clipboard.writeText(el.innerText).then(()=>{});}
-function addRecentActivity(icon,text){const empty=document.getElementById('recent-empty'); if(empty) empty.style.display='none'; const list=document.getElementById('recent-list'); if(!list) return; const item=document.createElement('div'); item.style.cssText='display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;font-size:.8rem;box-shadow:var(--shadow-sm)'; item.innerHTML=`<span style="font-size:1.2rem">${icon}</span><span>${escHtml(text)}</span>`; list.prepend(item);}
+function addRecentActivity(icon,text){const empty=document.getElementById('recent-empty');if(empty)empty.style.display='none';const list=document.getElementById('recent-list');if(!list)return;const item=document.createElement('div');item.style.cssText='display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;font-size:.8rem;box-shadow:var(--shadow-sm)';item.innerHTML=`<span style="font-size:1.2rem">${icon}</span><span>${escHtml(text)}</span>`;list.prepend(item);}
 function appendUser(text){const cb=document.getElementById('chat-body');const d=document.createElement('div');d.className='msg user';d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;cb.appendChild(d);scrollChat();}
 function appendBot(text){const cb=document.getElementById('chat-body');const d=document.createElement('div');d.className='msg bot';d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;cb.appendChild(d);scrollChat();}
 function fmtMsg(t){return String(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');}
 function escHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function scrollChat(){const cb=document.getElementById('chat-body'); if(!cb) return; requestAnimationFrame(()=>{cb.scrollTop=cb.scrollHeight;});}
+function scrollChat(){const cb=document.getElementById('chat-body');if(!cb)return;requestAnimationFrame(()=>{cb.scrollTop=cb.scrollHeight;});}
 function showLoader(txt){document.getElementById('loader-text').textContent=txt;document.getElementById('loader').classList.add('show');}
 function hideLoader(){document.getElementById('loader').classList.remove('show');}
-function getTime(){const d=new Date(); return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase();}
-function escAttr(s){return String(s).replace(/"/g,'&quot;');}
+function getTime(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase();}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+if(loadSession()){bootDashboard();}
 </script>
 </body>
 </html>
