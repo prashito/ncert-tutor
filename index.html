@@ -442,6 +442,16 @@ function scrollChat(){const cb=document.getElementById('chat-body'); if(!cb) ret
 function showLoader(txt){document.getElementById('loader-text').textContent=txt;document.getElementById('loader').classList.add('show');}
 function hideLoader(){document.getElementById('loader').classList.remove('show');}
 function getTime(){const d=new Date(); return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase();}
+  document.getElementById('image-upload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('input-preview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:8px">`;
+    document.getElementById('input-preview').style.display = 'block';
+    msgInput.value = `[Screenshot: ${file.name}]`; // placeholder
+  };
+  reader
 </script>
 </body>
 </html>
