@@ -1,748 +1,397 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Vidya — NCERT Tutor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>Vidya NCERT Tutor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-      /* Beautiful Native Scrollbars */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border, #888); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: var(--primary, #008069); }
-* { scrollbar-width: thin;
-/* ── TOKENS ─────────────────────────────────── */
-:root,[data-theme="light"]{
-  --bg:#f5f4f0;--surface:#fff;--surface-2:#f8f7f4;--surface-off:#eeece8;
-  --border:rgba(0,0,0,0.08);--divider:rgba(0,0,0,0.06);
-  --text:#1e1c17;--muted:#6c6a65;--faint:#b3b1ac;
-  --primary:#01696f;--primary-h:#0c4e54;--primary-hl:rgba(1,105,111,0.1);
-  --accent:#d19900;--accent-hl:rgba(209,153,0,0.1);
-  --green:#437a22;--green-hl:rgba(67,122,34,0.1);
-  --red:#c0392b;--red-hl:rgba(192,57,43,0.1);
-  --user-bg:#01696f;--bot-bg:#fff;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.07);
-  --shadow-md:0 4px 16px rgba(0,0,0,0.09);
-  --shadow-lg:0 12px 40px rgba(0,0,0,0.12);
-  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
-  --font:'Plus Jakarta Sans',sans-serif;--ease:180ms cubic-bezier(.16,1,.3,1);
-}
-[data-theme="dark"]{
-  --bg:#121110;--surface:#1c1b18;--surface-2:#201f1c;--surface-off:#191817;
-  --border:rgba(255,255,255,0.07);--divider:rgba(255,255,255,0.05);
-  --text:#cecdca;--muted:#747270;--faint:#484644;
-  --primary:#4f98a3;--primary-h:#227f8b;--primary-hl:rgba(79,152,163,0.12);
-  --accent:#e8af34;--accent-hl:rgba(232,175,52,0.12);
-  --green:#6daa45;--green-hl:rgba(109,170,69,0.12);
-  --red:#e05c4a;--red-hl:rgba(224,92,74,0.12);
-  --user-bg:#1e6b73;--bot-bg:#232220;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.3);
-  --shadow-md:0 4px 16px rgba(0,0,0,0.4);
-  --shadow-lg:0 12px 40px rgba(0,0,0,0.5);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
-body{font-family:var(--font);font-size:1rem;color:var(--text);background:var(--bg);min-height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
-button,a{cursor:pointer;background:none;border:none;font:inherit;color:inherit;text-decoration:none;}
+    /* Native Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border, #888); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary, #008069); }
+    * { scrollbar-width: thin; }
 
-/* ── SCREENS ─────────────────────────────────── */
-.screen{display:none;flex-direction:column;flex:1;overflow:hidden;height:100dvh;}
-.screen.active{display:flex;}
-  
-
-/* ── TOPBAR ──────────────────────────────────── */
-.topbar{
-  display:flex;align-items:center;gap:.75rem;
-  padding:0 1rem;height:56px;flex-shrink:0;
-  background:var(--surface);border-bottom:1px solid var(--divider);
-  box-shadow:var(--shadow-sm);position:relative;z-index:10;
-}
-.topbar-back{
-  width:34px;height:34px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;
-  color:var(--muted);transition:all var(--ease);
-}
-.topbar-back:hover{background:var(--surface-off);color:var(--text);}
-.topbar-title{font-size:.95rem;font-weight:800;letter-spacing:-.02em;flex:1;}
-.topbar-sub{font-size:.72rem;color:var(--muted);}
-.topbar-actions{display:flex;align-items:center;gap:.375rem;margin-left:auto;}
-.icon-btn{
-  width:34px;height:34px;border-radius:var(--r-full);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--muted);border:1px solid var(--border);transition:all var(--ease);
-}
-.icon-btn:hover{background:var(--surface-off);color:var(--text);}
-
-/* ── LOGO ────────────────────────────────────── */
-.logo-mark{
-  width:32px;height:32px;background:var(--primary);border-radius:9px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.logo-mark svg{display:block;}
-
-/* ─── SCREEN 1: SPLASH / GRADE SELECT ────────── */
-#screen-home{background:var(--bg);overflow-y:auto;}
-.home-hero{
-  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-h) 100%);
-  padding:2.5rem 1.25rem 2rem;text-align:center;position:relative;overflow:hidden;
-}
-.home-hero::before{
-  content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-.hero-logo-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
-.hero-logo{
-  width:68px;height:68px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);
-  border-radius:20px;display:flex;align-items:center;justify-content:center;
-  border:2px solid rgba(255,255,255,0.25);
-}
-.hero-title{font-size:1.7rem;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:.35rem;}
-.hero-sub{font-size:.85rem;color:rgba(255,255,255,0.8);line-height:1.5;max-width:260px;margin:0 auto;}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:.35rem;margin-top:.875rem;
-  background:rgba(255,255,255,0.15);color:#fff;font-size:.72rem;font-weight:700;
-  padding:.3rem .75rem;border-radius:var(--r-full);letter-spacing:.04em;
-  border:1px solid rgba(255,255,255,0.2);
-}
-
-.home-section{padding:1.25rem 1rem 0;}
-.section-label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;}
-
-.grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.5rem;}
-.grade-card{
-  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);
-  padding:1rem;display:flex;flex-direction:column;gap:.25rem;
-  box-shadow:var(--shadow-sm);transition:all var(--ease);position:relative;overflow:hidden;
-}
-.grade-card::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  border-radius:var(--r-xl) var(--r-xl) 0 0;
-}
-.grade-card.g1::after{background:var(--green);}
-.grade-card.g2::after{background:var(--primary);}
-.grade-card.g3::after{background:var(--accent);}
-.grade-card.g4::after{background:var(--red);}
-.grade-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.grade-card:active{transform:translateY(0);}
-.grade-emoji{font-size:1.5rem;margin-bottom:.15rem;}
-.grade-tier{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
-.grade-name{font-size:.95rem;font-weight:800;letter-spacing:-.02em;}
-.grade-fee{
-  font-size:.72rem;font-weight:700;color:var(--primary);
-  background:var(--primary-hl);padding:.15rem .5rem;border-radius:var(--r-full);
-  display:inline-flex;width:fit-content;margin-top:.2rem;
-}
-
-/* ─── SCREEN 2: DASHBOARD ─────────────────────── */
-#screen-dashboard{overflow-y:auto;}
-.dash-grade-bar{
-  background:var(--primary);color:#fff;
-  padding:.625rem 1rem;display:flex;align-items:center;gap:.5rem;
-  font-size:.8rem;font-weight:600;flex-shrink:0;
-}
-.dash-grade-pill{
-  background:rgba(255,255,255,0.2);padding:.15rem .6rem;
-  border-radius:var(--r-full);font-weight:700;font-size:.75rem;
-}
-.dash-scroll{flex:1;overflow-y:auto;padding:1.25rem 1rem 5rem;}
-
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.5rem;}
-.action-card{
-  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);
-  padding:1.1rem;display:flex;flex-direction:column;gap:.35rem;
-  box-shadow:var(--shadow-sm);transition:all var(--ease);
-}
-.action-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.action-card:active{transform:translateY(0);}
-.action-icon{
-  width:40px;height:40px;border-radius:var(--r-lg);
-  display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.1rem;
-}
-.action-icon.teal{background:var(--primary-hl);}
-.action-icon.gold{background:var(--accent-hl);}
-.action-icon.green{background:var(--green-hl);}
-.action-icon.red{background:var(--red-hl);}
-.action-name{font-size:.88rem;font-weight:700;}
-.action-desc{font-size:.72rem;color:var(--muted);line-height:1.4;}
-
-.subject-section{margin-bottom:1.5rem;}
-.subject-chips{display:flex;flex-wrap:wrap;gap:.5rem;}
-.subject-chip{
-  font-size:.78rem;font-weight:600;padding:.375rem .875rem;
-  border-radius:var(--r-full);background:var(--surface);
-  border:1.5px solid var(--border);color:var(--muted);
-  transition:all var(--ease);
-}
-.subject-chip:hover,.subject-chip.active{
-  background:var(--primary);color:#fff;border-color:var(--primary);
-}
-
-.recent-section{margin-bottom:1.5rem;}
-.recent-empty{
-  background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r-xl);
-  padding:1.5rem;text-align:center;color:var(--muted);font-size:.82rem;
-}
-
-/* ─── SCREEN 3: CHAT ──────────────────────────── */
-#screen-chat{background:var(--bg);}
-.chat-body{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.75rem;}
-.chat-body::-webkit-scrollbar{width:3px;}
-.chat-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-
-.msg{display:flex;flex-direction:column;max-width:88%;animation:fadeUp .2s ease-out;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
-.msg.user{align-self:flex-end;align-items:flex-end;}
-.msg.bot{align-self:flex-start;align-items:flex-start;}
-.msg-bub{
-  padding:.65rem .9rem;border-radius:var(--r-2xl);
-  font-size:.875rem;line-height:1.65;word-break:break-word;
-}
-.msg.user .msg-bub{background:var(--user-bg);color:#fff;border-bottom-right-radius:var(--r-sm);}
-.msg.bot .msg-bub{background:var(--bot-bg);border:1px solid var(--border);border-bottom-left-radius:var(--r-sm);box-shadow:var(--shadow-sm);}
-.msg-bub strong{font-weight:700;}
-.msg-bub em{font-style:italic;}
-.msg-bub ul{padding-left:1.2rem;margin:.3rem 0;}
-.msg-bub li{margin-bottom:.15rem;}
-.msg-bub h3{font-size:.875rem;font-weight:700;margin:.5rem 0 .2rem;}
-.msg-bub h3:first-child{margin-top:0;}
-.msg-bub p{margin-bottom:.4rem;}
-.msg-bub p:last-child{margin-bottom:0;}
-.msg-bub code{background:var(--surface-off);border-radius:3px;padding:.1rem .3rem;font-family:monospace;font-size:.82rem;}
-.msg-time{font-size:.62rem;color:var(--faint);margin-top:.2rem;padding:0 .2rem;}
-
-.content-block{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);
-  font-size:.78rem;line-height:1.75;overflow-x:auto;font-family:monospace;
-  white-space:pre-wrap;word-break:break-word;
-}
-.content-block-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.6rem .875rem;border-bottom:1px solid var(--divider);
-  font-family:var(--font);
-}
-.cb-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);}
-.cb-copy{
-  font-size:.68rem;padding:.2rem .55rem;border:1px solid var(--border);
-  border-radius:var(--r-full);color:var(--muted);transition:all var(--ease);font-family:var(--font);
-}
-.cb-copy:hover{background:var(--primary-hl);color:var(--primary);}
-.content-block-body{padding:.75rem .875rem;}
-
-.typing-ind{display:flex;align-items:center;gap:4px;padding:.65rem .875rem;background:var(--bot-bg);border:1px solid var(--border);border-radius:var(--r-2xl);border-bottom-left-radius:var(--r-sm);width:fit-content;box-shadow:var(--shadow-sm);}
-.td{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce 1.2s infinite ease-in-out;}
-.td:nth-child(2){animation-delay:.2s;}
-.td:nth-child(3){animation-delay:.4s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-
-.quick-row{display:flex;gap:.45rem;padding:.6rem 1rem;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--divider);flex-shrink:0;background:var(--surface);}
-.quick-row::-webkit-scrollbar{display:none;}
-.qchip{
-  white-space:nowrap;font-size:.73rem;font-weight:600;
-  padding:.3rem .8rem;border-radius:var(--r-full);
-  background:var(--surface-2);border:1.5px solid var(--border);color:var(--muted);
-  transition:all var(--ease);flex-shrink:0;
-}
-.qchip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-hl);}
-
-.input-bar{
-  display:flex;align-items:flex-end;gap:.625rem;
-  padding:.75rem 1rem;background:var(--surface);border-top:1px solid var(--divider);flex-shrink:0;
-}
-.input-wrap{
-  flex:1;display:flex;align-items:flex-end;gap:.5rem;
-  background:var(--surface-2);border:1.5px solid var(--border);
-  border-radius:var(--r-2xl);padding:.55rem .875rem;transition:border-color var(--ease);
-}
-.input-wrap:focus-within{border-color:var(--primary);}
-#msg-input{
-  flex:1;background:none;border:none;outline:none;resize:none;
-  font-size:.875rem;line-height:1.5;max-height:110px;min-height:22px;color:var(--text);
-}
-#msg-input::placeholder{color:var(--faint);}
-.send-btn{
-  width:38px;height:38px;border-radius:var(--r-full);flex-shrink:0;
-  background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
-  transition:background var(--ease),transform var(--ease);
-}
-.send-btn:hover{background:var(--primary-h);}
-.send-btn:active{transform:scale(.93);}
-.send-btn:disabled{opacity:.35;pointer-events:none;}
-
-/* ─── SCREEN 4: TEST GENERATOR ────────────────── */
-#screen-test{overflow-y:auto;}
-.test-form-body{flex:1;overflow-y:auto;padding:1.25rem 1rem 5rem;}
-.form-group{margin-bottom:1.1rem;}
-.form-label{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;display:block;letter-spacing:.02em;}
-.form-input,.form-select{
-  width:100%;padding:.65rem .875rem;background:var(--surface);
-  border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.88rem;
-  outline:none;transition:border-color var(--ease);color:var(--text);
-}
-.form-input:focus,.form-select:focus{border-color:var(--primary);}
-.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c6a65' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.25rem;}
-.seg-control{display:flex;gap:.375rem;}
-.seg-btn{
-  flex:1;padding:.5rem;text-align:center;font-size:.78rem;font-weight:700;
-  border-radius:var(--r-lg);border:1.5px solid var(--border);color:var(--muted);
-  transition:all var(--ease);background:var(--surface);
-}
-.seg-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-.generate-btn{
-  width:100%;padding:.8rem;background:var(--primary);color:#fff;
-  font-weight:700;font-size:.92rem;border-radius:var(--r-lg);
-  transition:background var(--ease);margin-top:.5rem;
-}
-.generate-btn:hover{background:var(--primary-h);}
-.generate-btn:disabled{opacity:.5;pointer-events:none;}
-
-/* result panel */
-.result-panel{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);
-  overflow:hidden;box-shadow:var(--shadow-md);margin-top:1.25rem;
-}
-.result-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.875rem 1rem;border-bottom:1px solid var(--divider);
-  background:var(--primary-hl);
-}
-.result-title{font-size:.85rem;font-weight:700;color:var(--primary);}
-.result-actions{display:flex;gap:.5rem;}
-.result-body{padding:1rem;font-size:.8rem;font-family:monospace;white-space:pre-wrap;line-height:1.8;word-break:break-word;}
-.small-btn{
-  font-size:.72rem;padding:.25rem .65rem;border:1px solid var(--border);
-  border-radius:var(--r-full);color:var(--muted);transition:all var(--ease);
-}
-.small-btn:hover{background:var(--primary-hl);color:var(--primary);}
-
-/* ─── SCREEN 5: NOTES ─────────────────────────── */
-#screen-notes{overflow-y:auto;}
-.notes-form-body{flex:1;overflow-y:auto;padding:1.25rem 1rem 5rem;}
-
-/* ─── BOTTOM NAV ─────────────────────────────── */
-.bottom-nav{
-  display:flex;background:var(--surface);border-top:1px solid var(--divider);
-  padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;
-  box-shadow:0 -4px 16px rgba(0,0,0,.06);position:fixed;bottom:0;left:0;right:0;z-index:50;
-}
-.nav-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:.5rem .25rem .45rem;gap:.2rem;font-size:.62rem;font-weight:700;letter-spacing:.02em;
-  color:var(--muted);transition:color var(--ease);
-}
-.nav-item.active{color:var(--primary);}
-.nav-item svg{transition:transform var(--ease);}
-.nav-item.active svg{transform:scale(1.1);}
-
-/* ─── LOADER OVERLAY ─────────────────────────── */
-.loader-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;
-  display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);
-}
-.loader-overlay.show{display:flex;}
-.loader-box{
-  background:var(--surface);border-radius:var(--r-xl);padding:1.5rem 2rem;
-  display:flex;flex-direction:column;align-items:center;gap:.75rem;
-  box-shadow:var(--shadow-lg);min-width:200px;
-}
-.loader-spinner{
-  width:36px;height:36px;border:3px solid var(--border);
-  border-top-color:var(--primary);border-radius:50%;
-  animation:spin .7s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
-.loader-text{font-size:.82rem;color:var(--muted);font-weight:600;}
-
-@media(max-width:380px){
-  .grade-grid,.action-grid{grid-template-columns:1fr 1fr;}
-}
-</style>
+    :root, [data-theme="light"] {
+      --bg: #f5f4f0; --surface: #fff; --surface-2: #f8f7f4; --surface-off: #eeece8;
+      --border: rgba(0,0,0,0.08); --divider: rgba(0,0,0,0.06);
+      --text: #1e1c17; --muted: #6c6a65; --faint: #b3b1ac;
+      --primary: #01696f; --primary-h: #0c4e54; --primary-hl: rgba(1, 105, 111, 0.1);
+      --accent: #d19900; --accent-hl: rgba(209, 153, 0, 0.1);
+      --green: #437a22; --green-hl: rgba(67, 122, 34, 0.1);
+      --red: #c0392b; --red-hl: rgba(192, 57, 43, 0.1);
+      --user-bg: #01696f; --bot-bg: #fff;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.07); --shadow-md: 0 4px 16px rgba(0,0,0,0.09); --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+      --r-sm: .375rem; --r-md: .5rem; --r-lg: .75rem; --r-xl: 1rem; --r-2xl: 1.25rem; --r-full: 9999px;
+      --font: 'Plus Jakarta Sans', sans-serif; --ease: 180ms cubic-bezier(.16, 1, .3, 1);
+    }
+    [data-theme="dark"] {
+      --bg: #121110; --surface: #1c1b18; --surface-2: #201f1c; --surface-off: #191817;
+      --border: rgba(255,255,255,0.07); --divider: rgba(255,255,255,0.05);
+      --text: #cecdca; --muted: #747270; --faint: #484644;
+      --primary: #4f98a3; --primary-h: #227f8b; --primary-hl: rgba(79, 152, 163, 0.12);
+      --accent: #e8af34; --accent-hl: rgba(232, 175, 52, 0.12);
+      --green: #6daa45; --green-hl: rgba(109, 170, 69, 0.12);
+      --red: #e05c4a; --red-hl: rgba(224, 92, 74, 0.12);
+      --user-bg: #1e6b73; --bot-bg: #232220;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.3); --shadow-md: 0 4px 16px rgba(0,0,0,0.4); --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    *, ::before, ::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { font-family: var(--font); font-size: 1rem; color: var(--text); background: var(--bg); min-height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+    button, a { cursor: pointer; background: none; border: none; font: inherit; color: inherit; text-decoration: none; }
+    
+    .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; height: 100dvh; }
+    .screen.active { display: flex; }
+    
+    .topbar { display: flex; align-items: center; gap: .75rem; padding: 0 1rem; height: 56px; flex-shrink: 0; background: var(--surface); border-bottom: 1px solid var(--divider); box-shadow: var(--shadow-sm); position: relative; z-index: 10; }
+    .topbar-back { width: 34px; height: 34px; border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all var(--ease); }
+    .topbar-back:hover { background: var(--surface-off); color: var(--text); }
+    .topbar-title { font-size: .95rem; font-weight: 800; letter-spacing: -.02em; flex: 1; }
+    .topbar-sub { font-size: .72rem; color: var(--muted); }
+    .topbar-actions { display: flex; align-items: center; gap: .375rem; margin-left: auto; }
+    .icon-btn { width: 34px; height: 34px; border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; color: var(--muted); border: 1px solid var(--border); transition: all var(--ease); }
+    .icon-btn:hover { background: var(--surface-off); color: var(--text); }
+    
+    .logo-mark { width: 32px; height: 32px; background: var(--primary); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-mark svg { display: block; }
+    
+    #screen-home { background: var(--bg); overflow-y: auto; }
+    .home-hero { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-h) 100%); padding: 2.5rem 1.25rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    .home-hero::before { content: ''; position: absolute; inset: 0; background: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23fff" fill-opacity="0.04"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); }
+    .hero-logo-wrap { display: flex; justify-content: center; margin-bottom: 1rem; }
+    .hero-logo { width: 68px; height: 68px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.25); }
+    .hero-title { font-size: 1.7rem; font-weight: 800; color: #fff; letter-spacing: -.03em; margin-bottom: .35rem; }
+    .hero-sub { font-size: .85rem; color: rgba(255,255,255,0.8); line-height: 1.5; max-width: 260px; margin: 0 auto; }
+    .hero-badge { display: inline-flex; align-items: center; gap: .35rem; margin-top: .875rem; background: rgba(255,255,255,0.15); color: #fff; font-size: .72rem; font-weight: 700; padding: .3rem .75rem; border-radius: var(--r-full); letter-spacing: .04em; border: 1px solid rgba(255,255,255,0.2); }
+    
+    .home-section { padding: 1.25rem 1rem 0; }
+    .section-label { font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .75rem; }
+    .grade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .625rem; margin-bottom: 1.5rem; }
+    .grade-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-xl); padding: 1rem; display: flex; flex-direction: column; gap: .25rem; box-shadow: var(--shadow-sm); transition: all var(--ease); position: relative; overflow: hidden; }
+    .grade-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+    .grade-card.g1::after { background: var(--green); }
+    .grade-card.g2::after { background: var(--primary); }
+    .grade-card.g3::after { background: var(--accent); }
+    .grade-card.g4::after { background: var(--red); }
+    .grade-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .grade-card:active { transform: translateY(0); }
+    .grade-emoji { font-size: 1.5rem; margin-bottom: .15rem; }
+    .grade-tier { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .grade-name { font-size: .95rem; font-weight: 800; letter-spacing: -.02em; }
+    .grade-fee { font-size: .72rem; font-weight: 700; color: var(--primary); background: var(--primary-hl); padding: .15rem .5rem; border-radius: var(--r-full); display: inline-flex; width: fit-content; margin-top: .2rem; }
+    
+    #screen-dashboard { overflow-y: auto; }
+    .dash-grade-bar { background: var(--primary); color: #fff; padding: .625rem 1rem; display: flex; align-items: center; gap: .5rem; font-size: .8rem; font-weight: 600; flex-shrink: 0; }
+    .dash-grade-pill { background: rgba(255,255,255,0.2); padding: .15rem .6rem; border-radius: var(--r-full); font-weight: 700; font-size: .75rem; }
+    .dash-scroll { flex: 1; overflow-y: auto; padding: 1.25rem 1rem 5rem; }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .625rem; margin-bottom: 1.5rem; }
+    .action-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-xl); padding: 1.1rem; display: flex; flex-direction: column; gap: .35rem; box-shadow: var(--shadow-sm); transition: all var(--ease); }
+    .action-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .action-card:active { transform: translateY(0); }
+    .action-icon { width: 40px; height: 40px; border-radius: var(--r-lg); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: .1rem; }
+    .action-icon.teal { background: var(--primary-hl); }
+    .action-icon.gold { background: var(--accent-hl); }
+    .action-icon.green { background: var(--green-hl); }
+    .action-icon.red { background: var(--red-hl); }
+    .action-name { font-size: .88rem; font-weight: 700; }
+    .action-desc { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+    .subject-section { margin-bottom: 1.5rem; }
+    .subject-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .subject-chip { font-size: .78rem; font-weight: 600; padding: .375rem .875rem; border-radius: var(--r-full); background: var(--surface); border: 1.5px solid var(--border); color: var(--muted); transition: all var(--ease); }
+    .subject-chip:hover, .subject-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .recent-section { margin-bottom: 1.5rem; }
+    .recent-empty { background: var(--surface); border: 1.5px dashed var(--border); border-radius: var(--r-xl); padding: 1.5rem; text-align: center; color: var(--muted); font-size: .82rem; }
+    
+    #screen-chat { background: var(--bg); }
+    .chat-body { flex: 1; overflow-y: auto; padding: .875rem 1rem; display: flex; flex-direction: column; gap: .75rem; }
+    .msg { display: flex; flex-direction: column; max-width: 88%; animation: fadeUp .2s ease-out; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg.bot { align-self: flex-start; align-items: flex-start; }
+    .msg-bub { padding: .65rem .9rem; border-radius: var(--r-2xl); font-size: .875rem; line-height: 1.65; word-break: break-word; }
+    .msg.user .msg-bub { background: var(--user-bg); color: #fff; border-bottom-right-radius: var(--r-sm); }
+    .msg.bot .msg-bub { background: var(--bot-bg); border: 1px solid var(--border); border-bottom-left-radius: var(--r-sm); box-shadow: var(--shadow-sm); }
+    .msg-bub strong { font-weight: 700; }
+    .msg-bub em { font-style: italic; }
+    .msg-bub ul { padding-left: 1.2rem; margin: .3rem 0; }
+    .msg-bub li { margin-bottom: .15rem; }
+    .msg-bub h3 { font-size: .875rem; font-weight: 700; margin: .5rem 0 .2rem; }
+    .msg-bub h3:first-child { margin-top: 0; }
+    .msg-bub p { margin-bottom: .4rem; }
+    .msg-bub p:last-child { margin-bottom: 0; }
+    .msg-bub code { background: var(--surface-off); border-radius: 3px; padding: .1rem .3rem; font-family: monospace; font-size: .82rem; }
+    .msg-time { font-size: .62rem; color: var(--faint); margin-top: .2rem; padding: 0 .2rem; }
+    
+    .quick-row { display: flex; gap: .45rem; padding: .6rem 1rem; overflow-x: auto; scrollbar-width: none; border-top: 1px solid var(--divider); flex-shrink: 0; background: var(--surface); }
+    .quick-row::-webkit-scrollbar { display: none; }
+    .qchip { white-space: nowrap; font-size: .73rem; font-weight: 600; padding: .3rem .8rem; border-radius: var(--r-full); background: var(--surface-2); border: 1.5px solid var(--border); color: var(--muted); transition: all var(--ease); flex-shrink: 0; }
+    .qchip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-hl); }
+    
+    .input-bar { display: flex; align-items: flex-end; gap: .625rem; padding: .75rem 1rem; background: var(--surface); border-top: 1px solid var(--divider); flex-shrink: 0; }
+    .input-wrap { flex: 1; display: flex; align-items: flex-end; gap: .5rem; background: var(--surface-2); border: 1.5px solid var(--border); border-radius: var(--r-2xl); padding: .55rem .875rem; transition: border-color var(--ease); }
+    .input-wrap:focus-within { border-color: var(--primary); }
+    #msg-input { flex: 1; background: none; border: none; outline: none; resize: none; font-size: .875rem; line-height: 1.5; max-height: 110px; min-height: 22px; color: var(--text); }
+    #msg-input::placeholder { color: var(--faint); }
+    .send-btn { width: 38px; height: 38px; border-radius: var(--r-full); flex-shrink: 0; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; transition: background var(--ease), transform var(--ease); }
+    .send-btn:hover { background: var(--primary-h); }
+    .send-btn:active { transform: scale(.93); }
+    .send-btn:disabled { opacity: .35; pointer-events: none; }
+    
+    #screen-test { overflow-y: auto; }
+    .test-form-body { flex: 1; overflow-y: auto; padding: 1.25rem 1rem 5rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { font-size: .78rem; font-weight: 700; color: var(--muted); margin-bottom: .4rem; display: block; letter-spacing: .02em; }
+    .form-input, .form-select { width: 100%; padding: .65rem .875rem; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r-lg); font-size: .88rem; outline: none; transition: border-color var(--ease); color: var(--text); }
+    .form-input:focus, .form-select:focus { border-color: var(--primary); }
+    .form-select { appearance: none; background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%236c6a65" stroke-width="2"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right .75rem center; padding-right: 2.25rem; }
+    .seg-control { display: flex; gap: .375rem; }
+    .seg-btn { flex: 1; padding: .5rem; text-align: center; font-size: .78rem; font-weight: 700; border-radius: var(--r-lg); border: 1.5px solid var(--border); color: var(--muted); transition: all var(--ease); background: var(--surface); }
+    .seg-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .generate-btn { width: 100%; padding: .8rem; background: var(--primary); color: #fff; font-weight: 700; font-size: .92rem; border-radius: var(--r-lg); transition: background var(--ease); margin-top: .5rem; }
+    .generate-btn:hover { background: var(--primary-h); }
+    .generate-btn:disabled { opacity: .5; pointer-events: none; }
+    
+    .result-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow-md); margin-top: 1.25rem; }
+    .result-hdr { display: flex; align-items: center; justify-content: space-between; padding: .875rem 1rem; border-bottom: 1px solid var(--divider); background: var(--primary-hl); }
+    .result-title { font-size: .85rem; font-weight: 700; color: var(--primary); }
+    .result-actions { display: flex; gap: .5rem; }
+    .result-body { padding: 1rem; font-size: .8rem; font-family: monospace; white-space: pre-wrap; line-height: 1.8; word-break: break-word; }
+    .small-btn { font-size: .72rem; padding: .25rem .65rem; border: 1px solid var(--border); border-radius: var(--r-full); color: var(--muted); transition: all var(--ease); }
+    .small-btn:hover { background: var(--primary-hl); color: var(--primary); }
+    
+    #screen-notes { overflow-y: auto; }
+    .notes-form-body { flex: 1; overflow-y: auto; padding: 1.25rem 1rem 5rem; }
+    
+    .bottom-nav { display: flex; background: var(--surface); border-top: 1px solid var(--divider); padding-bottom: env(safe-area-inset-bottom); flex-shrink: 0; box-shadow: 0 -4px 16px rgba(0,0,0,.06); position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: .5rem .25rem .45rem; gap: .2rem; font-size: .62rem; font-weight: 700; letter-spacing: .02em; color: var(--muted); transition: color var(--ease); }
+    .nav-item.active { color: var(--primary); }
+    .nav-item svg { transition: transform var(--ease); }
+    .nav-item.active svg { transform: scale(1.1); }
+    
+    .loader-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .loader-overlay.show { display: flex; }
+    .loader-box { background: var(--surface); border-radius: var(--r-xl); padding: 1.5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; box-shadow: var(--shadow-lg); min-width: 200px; }
+    .loader-spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text { font-size: .82rem; color: var(--muted); font-weight: 600; }
+    
+    @media (max-width: 380px) {
+      .grade-grid, .action-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ── LOADER ──────────────────────────────────────── -->
-<div class="loader-overlay" id="loader">
-  <div class="loader-box">
-    <div class="loader-spinner"></div>
-    <div class="loader-text" id="loader-text">Thinking...</div>
+  <!-- LOADER -->
+  <div class="loader-overlay" id="loader">
+    <div class="loader-box">
+      <div class="loader-spinner"></div>
+      <div class="loader-text" id="loader-text">Thinking...</div>
+    </div>
   </div>
-</div>
 
-<!-- ════ SCREEN 1: HOME / GRADE SELECT ════════════════ -->
-<div class="screen active" id="screen-home">
-  <div class="home-hero">
-    <div class="hero-logo-wrap">
-      <div class="hero-logo">
-        <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
-          <text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text>
+  <!-- SCREEN 1: HOME (GRADE SELECT) -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <div class="hero-logo-wrap">
+        <div class="hero-logo">
+          <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
+            <text x="20" y="29" text-anchor="middle" fill="white" font-family="'Plus Jakarta Sans',sans-serif" font-size="24" font-weight="800">V</text>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-title">Vidya Tutor</div>
+      <div class="hero-sub">Your personal NCERT tutor for Grades 1–12</div>
+      <div class="hero-badge">📚 CBSE · NCERT Curriculum</div>
+    </div>
+    
+    <div class="home-section">
+      <div style="margin-bottom: 20px; padding: 0 15px;">
+        <input type="text" id="student-name" placeholder="Enter your Name..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
+      </div>
+      <div class="section-label">Select your class to begin</div>
+      <div class="grade-grid">
+        <div class="grade-card g1" onclick="selectGrade('Grade 1–3','₹150')">
+          <div class="grade-emoji">🌱</div>
+          <div class="grade-tier">Primary</div>
+          <div class="grade-name">Grade 1–3</div>
+          <div class="grade-fee">₹150/month</div>
+        </div>
+        <div class="grade-card g2" onclick="selectGrade('Grade 4–8','₹400')">
+          <div class="grade-emoji">📖</div>
+          <div class="grade-tier">Middle</div>
+          <div class="grade-name">Grade 4–8</div>
+          <div class="grade-fee">₹400/month</div>
+        </div>
+        <div class="grade-card g3" onclick="selectGrade('Grade 9–10','₹600')">
+          <div class="grade-emoji">🔬</div>
+          <div class="grade-tier">Secondary</div>
+          <div class="grade-name">Grade 9–10</div>
+          <div class="grade-fee">₹600/month</div>
+        </div>
+        <div class="grade-card g4" onclick="selectGrade('Grade 11–12','₹900')">
+          <div class="grade-emoji">🎓</div>
+          <div class="grade-tier">Senior</div>
+          <div class="grade-name">Grade 11–12</div>
+          <div class="grade-fee">₹900/month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: DASHBOARD -->
+  <div class="screen" id="screen-dashboard">
+    <div class="topbar">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
+          <text x="14" y="21" text-anchor="middle" fill="white" font-family="'Plus Jakarta Sans',sans-serif" font-size="18" font-weight="800">V</text>
         </svg>
       </div>
-    </div>
-    <div class="hero-title">Vidya Tutor</div>
-    <div class="hero-sub">Your personal NCERT tutor for Grades 1–12</div>
-    <div class="hero-badge">📚 CBSE · NCERT Curriculum</div>
-  </div>
-
-  <div class="home-section">
-    <div class="home-section">
-  <!-- START OF NAME INPUT -->
-  <div style="margin-bottom: 20px; padding: 0 15px;">
-    <input type="text" id="student-name" placeholder="Enter your Name..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px;">
-  </div>
-  <!-- END OF NAME INPUT -->
-    <div class="section-label">Select your class to begin</div>
-    <div class="grade-grid">
-      <div class="grade-card g1" onclick="selectGrade('Grade 1–3','₹150')">
-        <div class="grade-emoji">🌱</div>
-        <div class="grade-tier">Primary</div>
-        <div class="grade-name">Grade 1–3</div>
-        <div class="grade-fee">₹150/month</div>
-      </div>
-      <div class="grade-card g2" onclick="selectGrade('Grade 4–8','₹400')">
-        <div class="grade-emoji">📖</div>
-        <div class="grade-tier">Middle</div>
-        <div class="grade-name">Grade 4–8</div>
-        <div class="grade-fee">₹400/month</div>
-      </div>
-      <div class="grade-card g3" onclick="selectGrade('Grade 9–10','₹600')">
-        <div class="grade-emoji">🔬</div>
-        <div class="grade-tier">Secondary</div>
-        <div class="grade-name">Grade 9–10</div>
-        <div class="grade-fee">₹600/month</div>
-      </div>
-      <div class="grade-card g4" onclick="selectGrade('Grade 11–12','₹900')">
-        <div class="grade-emoji">🎓</div>
-        <div class="grade-tier">Senior</div>
-        <div class="grade-name">Grade 11–12</div>
-        <div class="grade-fee">₹900/month</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════ SCREEN 2: DASHBOARD ══════════════════════════ -->
-<div class="screen" id="screen-dashboard">
-  <div class="topbar">
-    <div class="logo-mark">
-      <svg width="18" height="18" viewBox="0 0 28 28" fill="none">
-        <text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text>
-      </svg>
-    </div>
-    <div>
       <div class="topbar-title">Vidya Tutor</div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="theme-btn" data-theme-toggle aria-label="Toggle theme">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
     </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="theme-btn" data-theme-toggle aria-label="Toggle theme">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    
+    <div class="dash-grade-bar">
+      <span>Logged in as:</span>
+      <span class="dash-grade-pill" id="dash-grade-label">Grade 9–10</span>
+      <button onclick="goHome()" style="margin-left:auto;font-size:.72rem;opacity:.75;font-weight:600;color:#fff;">Change</button>
+    </div>
+    
+    <div class="dash-scroll">
+      <div class="section-label" style="padding-top:.25rem;">What would you like to do?</div>
+      <div class="action-grid">
+        <div class="action-card" onclick="goToChat('tutor')">
+          <div class="action-icon teal">💬</div>
+          <div class="action-name">Ask a Doubt</div>
+          <div class="action-desc">Get instant NCERT answers</div>
+        </div>
+        <div class="action-card" onclick="goToScreen('screen-test')">
+          <div class="action-icon gold">📝</div>
+          <div class="action-name">Cycle Test</div>
+          <div class="action-desc">Generate a question paper</div>
+        </div>
+        <div class="action-card" onclick="goToScreen('screen-notes')">
+          <div class="action-icon green">🖼️</div>
+          <div class="action-name">Chapter Notes</div>
+          <div class="action-desc">Visual slides summaries</div>
+        </div>
+        <div class="action-card" onclick="goToChat('evaluate')">
+          <div class="action-icon red">✅</div>
+          <div class="action-name">Check Answers</div>
+          <div class="action-desc">Evaluate your test answers</div>
+        </div>
+      </div>
+      
+      <div class="subject-section">
+        <div class="section-label">Quick subject access</div>
+        <div class="subject-chips" id="subject-chips"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: CHAT -->
+  <div class="screen" id="screen-chat">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="'Plus Jakarta Sans',sans-serif" font-size="18" font-weight="800">V</text></svg></div>
+      <div><div class="topbar-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="clearChat()" title="Clear">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path></svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="chat-body" id="chat-body"></div>
+    <div class="quick-row" id="quick-row"></div>
+    <div class="input-bar">
+      <div class="input-wrap">
+        <textarea id="msg-input" rows="1" placeholder="Type your NCERT question..." aria-label="Message"></textarea>
+      </div>
+      <button class="send-btn" id="send-btn" disabled onclick="sendMessage()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
       </button>
     </div>
   </div>
 
-  <div class="dash-grade-bar">
-    <span>Logged in as</span>
-    <span class="dash-grade-pill" id="dash-grade-label">Grade 9–10</span>
-    <button onclick="goHome()" style="margin-left:auto;font-size:.72rem;opacity:.75;font-weight:600;color:#fff;">Change →</button>
-  </div>
-
-  <div class="dash-scroll">
-    <div class="section-label" style="padding-top:.25rem;">What would you like to do?</div>
-    <div class="action-grid">
-      <div class="action-card" onclick="goToChat('tutor')">
-        <div class="action-icon teal">💬</div>
-        <div class="action-name">Ask a Doubt</div>
-        <div class="action-desc">Get instant NCERT answers</div>
-      </div>
-      <div class="action-card" onclick="goToScreen('screen-test')">
-        <div class="action-icon gold">📝</div>
-        <div class="action-name">Cycle Test</div>
-        <div class="action-desc">Generate a question paper</div>
-      </div>
-      <div class="action-card" onclick="goToScreen('screen-notes')">
-        <div class="action-icon green">🖼️</div>
-        <div class="action-name">Chapter Notes</div>
-        <div class="action-desc">Visual slides & summaries</div>
-      </div>
-      <div class="action-card" onclick="goToChat('evaluate')">
-        <div class="action-icon red">✅</div>
-        <div class="action-name">Check Answers</div>
-        <div class="action-desc">Evaluate your test answers</div>
-      </div>
-    </div>
-
-    <div class="subject-section">
-      <div class="section-label">Quick subject access</div>
-      <div class="subject-chips" id="subject-chips"></div>
-    </div>
-
-    <div class="recent-section">
-      <div class="section-label">Recent activity</div>
-      <div class="recent-empty" id="recent-empty">No activity yet. Start by asking a doubt! 📚</div>
-      <div id="recent-list"></div>
-    </div>
-  </div>
-
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="navTo('screen-dashboard',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Home
-    </button>
-    <button class="nav-item" onclick="goToChat('tutor');navTo('screen-chat',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Tutor
-    </button>
-    <button class="nav-item" onclick="goToScreen('screen-test');navTo('screen-test',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Test
-    </button>
-    <button class="nav-item" onclick="goToScreen('screen-notes');navTo('screen-notes',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      Notes
-    </button>
-  </nav>
-</div>
-
-<!-- ════ SCREEN 3: CHAT ════════════════════════════════ -->
-<div class="screen" id="screen-chat">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div>
-    <div>
-      <div class="topbar-title">Ask a Doubt</div>
-      <div class="topbar-sub" id="chat-sub">NCERT Tutor</div>
-    </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" onclick="clearChat()" title="Clear">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+  <!-- SCREEN 4: TEST GENERATOR -->
+  <div class="screen" id="screen-test">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
+      <div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div>
     </div>
-  </div>
-  <div class="chat-body" id="chat-body"></div>
-  <div class="quick-row" id="quick-row"></div>
-  <div class="input-bar">
-    <div class="input-wrap">
-      <textarea id="msg-input" rows="1" placeholder="Type your NCERT question..." aria-label="Message"></textarea>
-    </div>
-    <button class="send-btn" id="send-btn" disabled onclick="sendMessage()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
-</div>
-
-<!-- ════ SCREEN 4: TEST GENERATOR ═════════════════════ -->
-<div class="screen" id="screen-test">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div>
-  </div>
-  <div class="test-form-body">
-    <div class="form-group">
-      <label class="form-label">Subject</label>
-      <select class="form-select" id="test-subject"><option value="">Select subject</option></select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Chapter / Topic</label>
-      <input type="text" class="form-input" id="test-chapter" placeholder="e.g. Chapter 1 — Crop Production">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Difficulty</label>
-      <div class="seg-control">
-        <button class="seg-btn active" data-diff="Easy" onclick="selectSeg(this,'diff')">Easy</button>
-        <button class="seg-btn" data-diff="Medium" onclick="selectSeg(this,'diff')">Medium</button>
-        <button class="seg-btn" data-diff="Hard" onclick="selectSeg(this,'diff')">Hard</button>
+    <div class="test-form-body">
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-select" id="test-subject"><option value="">Select subject</option></select>
       </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Duration</label>
-      <div class="seg-control">
-        <button class="seg-btn" data-dur="20" onclick="selectSeg(this,'dur')">20 min</button>
-        <button class="seg-btn active" data-dur="30" onclick="selectSeg(this,'dur')">30 min</button>
-        <button class="seg-btn" data-dur="60" onclick="selectSeg(this,'dur')">1 hour</button>
+      <div class="form-group">
+        <label class="form-label">Chapter / Topic</label>
+        <input type="text" class="form-input" id="test-chapter" placeholder="e.g. Chapter 1: Crop Production">
       </div>
+      <div class="form-group">
+        <label class="form-label">Difficulty</label>
+        <div class="seg-control">
+          <button class="seg-btn active" data-diff="Easy" onclick="selectSeg(this,'diff')">Easy</button>
+          <button class="seg-btn" data-diff="Medium" onclick="selectSeg(this,'diff')">Medium</button>
+          <button class="seg-btn" data-diff="Hard" onclick="selectSeg(this,'diff')">Hard</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration</label>
+        <div class="seg-control">
+          <button class="seg-btn" data-dur="20" onclick="selectSeg(this,'dur')">20 min</button>
+          <button class="seg-btn active" data-dur="30" onclick="selectSeg(this,'dur')">30 min</button>
+          <button class="seg-btn" data-dur="60" onclick="selectSeg(this,'dur')">1 hour</button>
+        </div>
+      </div>
+      <button class="generate-btn" id="gen-test-btn" onclick="generateTest()">✨ Generate Question Paper</button>
+      <div id="test-result" style="display:none;"></div>
     </div>
-    <button class="generate-btn" id="gen-test-btn" onclick="generateTest()">📝 Generate Question Paper</button>
-    <div id="test-result" style="display:none;"></div>
   </div>
-</div>
 
-<!-- ════ SCREEN 5: NOTES GENERATOR ═══════════════════ -->
-<div class="screen" id="screen-notes">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div>
+  <!-- SCREEN 5: NOTES GENERATOR -->
+  <div class="screen" id="screen-notes">
+    <div class="topbar">
+      <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div>
+    </div>
+    <div class="notes-form-body">
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-select" id="notes-subject"><option value="">Select subject</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chapter</label>
+        <input type="text" class="form-input" id="notes-chapter" placeholder="e.g. Chapter 4: Carbon and its Compounds">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Specific topic (optional)</label>
+        <input type="text" class="form-input" id="notes-topic" placeholder="e.g. Photosynthesis only">
+      </div>
+      <button class="generate-btn" id="gen-notes-btn" onclick="generateNotes()">✨ Generate Chapter Notes</button>
+      <div id="notes-result" style="display:none;"></div>
+    </div>
   </div>
-  <div class="notes-form-body">
-    <div class="form-group">
-      <label class="form-label">Subject</label>
-      <select class="form-select" id="notes-subject"><option value="">Select subject</option></select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Chapter</label>
-      <input type="text" class="form-input" id="notes-chapter" placeholder="e.g. Chapter 4 — Carbon and its Compounds">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Specific topic (optional)</label>
-      <input type="text" class="form-input" id="notes-topic" placeholder="e.g. Photosynthesis only">
-    </div>
-    <button class="generate-btn" id="gen-notes-btn" onclick="generateNotes()">🖼️ Generate Chapter Notes</button>
-    <div id="notes-result" style="display:none;"></div>
-  </div>
-</div>
 
-<script>
-// ══ CONFIG — replace with your deployed Cloudflare Worker URL ══════════════
-const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev'; // ← update this
-
-// ══ STATE ═════════════════════════════════════════════════════════════════
-let state = {
-  grade: '',
-  fee: '',
-  subject: '',
-  chatHistory: [],
-  chatMode: 'tutor',
-  testDiff: 'Easy',
-  testDur: '30',
-  lastPaper: '',
-  recentActivity: [],
-};
-
-const SUBJECTS = {
-  'Grade 1–3':  ['Maths','English','EVS','Hindi'],
-  'Grade 4–8':  ['Maths','Science','Social Science','English','Hindi','Sanskrit'],
-  'Grade 9–10': ['Maths','Science','Social Science','English','Hindi','IT'],
-  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics'],
-};
-
-const QUICK_CHIPS = {
-  tutor:    ['Explain a concept','Solve a problem','Board exam tip','Give an example'],
-  evaluate: ['Check my answers','Score my test','Mark my paper'],
-};
-
-// ══ THEME ════════════════════════════════════════════════════════════════
-(function(){
-  const btn = document.querySelector('[data-theme-toggle]');
-  const root = document.documentElement;
-  let dm = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
-  root.setAttribute('data-theme', dm);
-  updateThemeIcon(btn, dm);
-  btn && btn.addEventListener('click', ()=>{
-    dm = dm==='dark'?'light':'dark';
-    root.setAttribute('data-theme', dm);
-    updateThemeIcon(btn, dm);
-  });
-})();
-function updateThemeIcon(btn, dm){
-  if(!btn) return;
-  btn.innerHTML = dm==='dark'
-    ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-    : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-}
-
-// ══ NAVIGATION ═══════════════════════════════════════════════════════════
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function goToScreen(id){ showScreen(id); }
-function goHome(){ showScreen('screen-home'); }
-function navTo(screenId, btn){
-  showScreen(screenId);
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-// ══ GRADE SELECTION ════════════════════════════════════════════════════
-function selectGrade(grade, fee){
-  state.grade = grade;
-  state.fee = fee;
-  document.getElementById('dash-grade-label').textContent = grade;
-  document.getElementById('chat-sub').textContent = grade;
-  document.getElementById('test-grade-sub').textContent = grade;
-  document.getElementById('notes-grade-sub').textContent = grade;
-  // populate subject selectors
-  const subs = SUBJECTS[grade] || [];
-  ['test-subject','notes-subject'].forEach(id => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = '<option value="">Select subject</option>';
-    subs.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
-  });
-  // subject chips on dashboard
-  const chips = document.getElementById('subject-chips');
-  chips.innerHTML = '';
-  subs.forEach(s => {
-    const btn = document.createElement('button');
-    btn.className = 'subject-chip';
-    btn.textContent = s;
-    btn.onclick = ()=>{ state.subject=s; goToChat('tutor'); };
-    chips.appendChild(btn);
-  });
-  state.chatHistory = [];
-  showScreen('screen-dashboard');
-}
-
-// ══ CHAT ════════════════════════════════════════════════════════════════
-function goToChat(mode){
-  state.chatMode = mode;
-  state.chatHistory = [];
-  document.getElementById('chat-body').innerHTML = '';
-  renderQuickChips();
-  showScreen('screen-chat');
-  const greetings = {
-    tutor:    `Namaste! 🙏 I'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,
-    evaluate: `Hi! Let's evaluate your answers. 📋\n\nPaste your test question paper first, then share your answers below it. I'll mark them and give you a score!`,
-  };
-  appendBot(greetings[mode] || greetings.tutor);
-}
-
-function renderQuickChips(){
-  const row = document.getElementById('quick-row');
-  row.innerHTML = '';
-  const chips = QUICK_CHIPS[state.chatMode] || QUICK_CHIPS.tutor;
-  chips.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'qchip';
-    btn.textContent = c;
-    btn.onclick = ()=>sendWith(c);
-    row.appendChild(btn);
-  });
-}
-
-const msgInput = document.getElementById('msg-input');
-msgInput.addEventListener('input', function(){
-  this.style.height='auto';
-  this.style.height = Math.min(this.scrollHeight,110)+'px';
-  document.getElementById('send-btn').disabled = !this.value.trim();
-});
-msgInput.addEventListener('keydown', e=>{
-  if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); }
-});
-
-function sendWith(text){ msgInput.value=text; sendMessage(); }
-
-async function sendMessage(){
-  const text = msgInput.value.trim();
-  if(!text) return;
-  msgInput.value=''; msgInput.style.height='auto';
-  document.getElementById('send-btn').disabled = true;
-  appendUser(text);
-  state.chatHistory.push({role:'user', text});
-  showLoader('Vidya is thinking...');
-  try {
-    const res = await fetch(`${API_BASE}/chat`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
 <script>
 // ══ CONFIG — replace with your deployed Cloudflare Worker URL ══════════════
 const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev'; 
 
-// ══ STATE ═════════════════════════════════════════════════════════════════
 let state = {
   name: '',
   grade: '',
@@ -753,7 +402,6 @@ let state = {
   testDiff: 'Easy',
   testDur: '30',
   lastPaper: '',
-  recentActivity: [],
 };
 
 const SUBJECTS = {
@@ -788,20 +436,13 @@ function updateThemeIcon(btn, dm){
     : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 }
 
-// ══ NAVIGATION ═══════════════════════════════════════════════════════════
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 function goToScreen(id){ showScreen(id); }
 function goHome(){ showScreen('screen-home'); }
-function navTo(screenId, btn){
-  showScreen(screenId);
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
 
-// ══ GRADE SELECTION ════════════════════════════════════════════════════
 function selectGrade(grade, fee){
   const nameInput = document.getElementById('student-name');
   if (nameInput) {
@@ -844,19 +485,6 @@ function selectGrade(grade, fee){
   showScreen('screen-dashboard');
 }
 
-// ══ RECENT ACTIVITY ════════════════════════════════════════════════════
-function addRecentActivity(icon, text) {
-  const empty = document.getElementById('recent-empty');
-  if(empty) empty.style.display = 'none';
-  const list = document.getElementById('recent-list');
-  if(!list) return;
-  const item = document.createElement('div');
-  item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:8px;font-size:0.8rem;';
-  item.innerHTML = `<span style="font-size:1.2rem">${icon}</span> <span>${text}</span>`;
-  list.prepend(item);
-}
-
-// ══ CHAT ════════════════════════════════════════════════════════════════
 function goToChat(mode){
   state.chatMode = mode;
   state.chatHistory = [];
@@ -864,12 +492,8 @@ function goToChat(mode){
   renderQuickChips();
   showScreen('screen-chat');
   const greetings = {
-    tutor:    `Namaste ${state.name}! 🙏 I'm Vidya, your personal NCERT Tutor.
-
-You're in **${state.grade}**. Which subject shall we work on today?`,
-    evaluate: `Hi ${state.name}! Let's evaluate your answers. 📋
-
-Paste your test question paper first, then share your answers below it.`,
+    tutor:    `Namaste ${state.name}! 🙏 I'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,
+    evaluate: `Hi ${state.name}! Let's evaluate your answers. 📋\n\nPaste your test question paper first, then share your answers below it.`,
   };
   appendBot(greetings[mode] || greetings.tutor);
 }
@@ -920,18 +544,15 @@ async function sendMessage(){
         grade: state.grade,
         subject: state.subject || 'General',
         message: text,
-        // Limiting history to 3 interactions to save processing time
         history: state.chatHistory.slice(-6),
       }),
     });
     const data = await res.json();
     hideLoader();
     
-    const reply = data.reply || data.error || (data.status ? `Error ${data.status}: ${JSON.stringify(data)}` : 'Sorry, I could not get a response. Please try again!');
-    
+    const reply = data.reply || data.error || 'Sorry, I could not get a response. Please try again!';
     state.chatHistory.push({role:'model', text: reply});
     appendBot(reply);
-    addRecentActivity('💬', `Asked about: ${text.slice(0,40)}…`);
   } catch(e){
     hideLoader();
     appendBot(`Network error: ${e.message}. Please check your connection and try again! 🙏`);
@@ -940,7 +561,6 @@ async function sendMessage(){
 
 function clearChat(){ state.chatHistory=[]; document.getElementById('chat-body').innerHTML=''; goToChat(state.chatMode); }
 
-// ══ TEST GENERATOR ═══════════════════════════════════════════════════════
 function selectSeg(btn, type){
   const group = btn.closest('.seg-control');
   group.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
@@ -963,10 +583,7 @@ async function generateTest(){
     const data = await res.json();
     hideLoader();
     state.lastPaper = data.paper || '';
-    
-    const output = data.paper || data.error || 'Could not generate paper. Please try again.';
-    showResult('test', output, `${subject} — ${state.testDiff} — ${state.testDur} min`);
-    addRecentActivity('📝',`Cycle test: ${subject} ${state.grade}`);
+    showResult('test', data.paper || data.error, `${subject} — ${state.testDiff} — ${state.testDur} min`);
   } catch(e){
     hideLoader();
     alert(`Network error: ${e.message}`);
@@ -974,7 +591,6 @@ async function generateTest(){
   document.getElementById('gen-test-btn').disabled = false;
 }
 
-// ══ NOTES GENERATOR ══════════════════════════════════════════════════════
 async function generateNotes(){
   const subject = document.getElementById('notes-subject').value;
   const chapter = document.getElementById('notes-chapter').value;
@@ -989,314 +605,12 @@ async function generateNotes(){
     });
     const data = await res.json();
     hideLoader();
-    
-    const output = data.notes || data.error || 'Could not generate notes. Please try again.';
-    showResult('notes', output, `${subject} — ${chapter}`);
-    addRecentActivity('🖼️',`Notes: ${subject} ${chapter}`);
+    showResult('notes', data.notes || data.error, `${subject} — ${chapter}`);
   } catch(e){
     hideLoader();
     alert(`Network error: ${e.message}`);
   }
   document.getElementById('gen-notes-btn').disabled = false;
-}
-
-// ══ RESULT PANEL ═════════════════════════════════════════════════════════
-function showResult(type, content, label){
-  const container = document.getElementById(`${type}-result`);
-  const copyId = `rc_${Date.now()}`;
-  container.style.display='block';
-  container.innerHTML = `
-    <div class="result-panel">
-      <div class="result-hdr">
-        <span class="result-title">📄 ${label}</span>
-        <div class="result-actions">
-          <button class="small-btn" onclick="copyResult('${copyId}')">Copy</button>
-          <button class="small-btn" style="background: var(--primary); color: white;" onclick="showScreen('screen-dashboard')">🔙 Menu</button>
-        </div>
-      </div>
-      <div class="result-body" id="${copyId}">${escHtml(content)}</div>
-    </div>`;
-  container.scrollIntoView({behavior:'smooth'});
-}
-
-function copyResult(id){
-  const el = document.getElementById(id);
-  navigator.clipboard.writeText(el.innerText).then(()=>{
-    const btn = el.parentElement.querySelector('.small-btn');
-    if(btn){ btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',2000); }
-  });
-}
-
-// ══ DOM HELPERS ══════════════════════════════════════════════════════════
-function appendUser(text){
-  const cb = document.getElementById('chat-body');
-  const d = document.createElement('div');
-  d.className='msg user';
-  d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;
-  cb.appendChild(d); scrollChat();
-}
-
-function appendBot(text){
-  const cb = document.getElementById('chat-body');
-  const d = document.createElement('div');
-  d.className='msg bot';
-  const isBlock = text.includes('═══')||text.includes('╔')||text.includes('SECTION A')||text.includes('SLIDE 1')||text.includes('━━━');
-  const cid = 'c'+Date.now();
-  if(isBlock){
-    d.innerHTML=`<div class="msg-bub">
-      <div class="content-block">
-        <div class="content-block-hdr">
-          <span class="cb-label">📄 Generated Content</span>
-          <button class="cb-copy" onclick="copyResult('${cid}')">Copy</button>
-        </div>
-        <div class="content-block-body" id="${cid}">${escHtml(text)}</div>
-      </div>
-    </div><div class="msg-time">${getTime()}</div>`;
-  } else {
-    d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;
-  }
-  cb.appendChild(d); scrollChat();
-}
-
-function fmtMsg(t){
-  return t
-    .replace(/**(.+?)**/g,'<strong>$1</strong>')
-    .replace(/*(.+?)*/g,'<em>$1</em>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>')
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^- (.+)$/gm,'<li>$1</li>')
-    .replace(/(<li>[sS]*?</li>(
-|$))+/g,'<ul>$&</ul>')
-    .replace(/
-
-/g,'</p><p>')
-    .replace(/
-/g,'<br>')
-    .replace(/^/,'<p>').replace(/$/,'</p>');
-}
-function escHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function scrollChat(){ const cb=document.getElementById('chat-body'); requestAnimationFrame(()=>cb.scrollTop=cb.scrollHeight); }
-function showLoader(txt){ document.getElementById('loader-text').textContent=txt; document.getElementById('loader').classList.add('show'); }
-function hideLoader(){ document.getElementById('loader').classList.remove('show'); }
-function getTime(){ const d=new Date(); return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase(); }
-
-// ══ FLOATING TIERED NAVIGATION BUTTON ═══════════════════════════════════
-const floatingHome = document.createElement('button');
-floatingHome.innerHTML = '🔙 Menu';
-// Pushed up slightly so it doesn't overlap mobile keyboards or the bottom nav bar
-floatingHome.style.cssText = 'position: fixed; bottom: 80px; right: 20px; padding: 12px 20px; background: var(--primary, #008069); color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
-
-setInterval(() => {
-  const home = document.getElementById('screen-home');
-  const dash = document.getElementById('screen-dashboard');
-  if ((home && home.classList.contains('active')) || (dash && dash.classList.contains('active'))) {
-    floatingHome.style.display = 'none'; // Hide on Login and Dashboard layers
-  } else {
-    floatingHome.style.display = 'block'; // Show everywhere else (Chat, Notes, Test)
-  }
-}, 500);
-
-floatingHome.onclick = () => {
-  showScreen('screen-dashboard'); 
-};
-document.body.appendChild(floatingHome);
-</script>
-// ══ CONFIG ═════════════════════════════════════════════════════════════════
-const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev'; 
-
-// ══ STATE ═════════════════════════════════════════════════════════════════
-let state = {
-  name: '', // Added name state
-  grade: '',
-  fee: '',
-  subject: '',
-  chatHistory: [],
-  chatMode: 'tutor',
-  testDiff: 'Medium',
-  testDur: '30',
-};
-
-const SUBJECTS = {
-  'Grade 1–3':  ['Maths','English','EVS','Hindi'],
-  'Grade 4–8':  ['Maths','Science','Social Science','English','Hindi','Sanskrit'],
-  'Grade 9–10': ['Maths','Science','Social Science','English','Hindi','IT'],
-  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics'],
-};
-
-const QUICK_CHIPS = {
-  tutor:    ['Explain a concept','Solve a problem','Board exam tip','Give an example'],
-  evaluate: ['Check my answers','Score my test','Mark my paper'],
-};
-
-// ══ NAVIGATION & SELECTION ════════════════════════════════════════════════
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function selectGrade(grade, fee){
-  // Check for name before proceeding
-  const nameInput = document.getElementById('student-name');
-  if (nameInput) {
-    if (!nameInput.value.trim()) {
-      alert("Please enter your Name first! 🙏");
-      nameInput.focus();
-      return;
-    }
-    state.name = nameInput.value.trim();
-  }
-
-  state.grade = grade;
-  state.fee = fee;
-  
-  // Show name and grade on dashboard
-  document.getElementById('dash-grade-label').textContent = `${state.name} — ${grade}`;
-  document.getElementById('chat-sub').textContent = grade;
-  document.getElementById('test-grade-sub').textContent = grade;
-  document.getElementById('notes-grade-sub').textContent = grade;
-  
-  const subs = SUBJECTS[grade] || [];
-  ['test-subject','notes-subject'].forEach(id => {
-    const sel = document.getElementById(id);
-    if(sel) {
-      sel.innerHTML = '<option value="">Select subject</option>';
-      subs.forEach(s => sel.innerHTML += `<option value="${s}">${s}</option>`);
-    }
-  });
-  
-  const chips = document.getElementById('subject-chips');
-  if(chips) {
-    chips.innerHTML = '';
-    subs.forEach(s => {
-      const btn = document.createElement('button');
-      btn.className = 'subject-chip';
-      btn.textContent = s;
-      btn.onclick = ()=>{ state.subject=s; goToChat('tutor'); };
-      chips.appendChild(btn);
-    });
-  }
-  
-  state.chatHistory = [];
-  showScreen('screen-dashboard');
-}
-
-// ══ CHAT LOGIC ════════════════════════════════════════════════════════════
-function goToChat(mode){
-  state.chatMode = mode;
-  state.chatHistory = [];
-  document.getElementById('chat-body').innerHTML = '';
-  renderQuickChips();
-  showScreen('screen-chat');
-  
-  // Personalized Greetings!
-  const greetings = {
-    tutor:    `Namaste ${state.name}! 🙏 I'm Vidya, your personal NCERT Tutor.
-
-You're in **${state.grade}**. Which subject shall we work on today?`,
-    evaluate: `Hi ${state.name}! Let's evaluate your answers. 📋
-
-Paste your test question paper first, then share your answers below it.`,
-  };
-  appendBot(greetings[mode] || greetings.tutor);
-}
-
-function renderQuickChips(){
-  const row = document.getElementById('quick-row');
-  if(!row) return;
-  row.innerHTML = '';
-  const chips = QUICK_CHIPS[state.chatMode] || QUICK_CHIPS.tutor;
-  chips.forEach(c => {
-    const btn = document.createElement('button');
-    btn.className = 'qchip';
-    btn.textContent = c;
-    btn.onclick = ()=>sendWith(c);
-    row.appendChild(btn);
-  });
-}
-
-function sendWith(text){ 
-  const msgInput = document.getElementById('msg-input');
-  msgInput.value=text; 
-  sendMessage(); 
-}
-
-async function sendMessage(){
-  const msgInput = document.getElementById('msg-input');
-  const text = msgInput.value.trim();
-  if(!text) return;
-  
-  msgInput.value=''; 
-  msgInput.style.height='auto';
-  document.getElementById('send-btn').disabled = true;
-  
-  appendUser(text);
-  state.chatHistory.push({role:'user', text});
-  showLoader('Vidya is thinking...');
-  
-  try {
-    const res = await fetch(`${API_BASE}/chat`, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        grade: state.grade,
-        subject: state.subject || 'General',
-        message: text,
-        // Limit history to past 3 questions (3 user + 3 bot = 6)
-        history: state.chatHistory.slice(-6),
-      }),
-    });
-    const data = await res.json();
-    hideLoader();
-    
-    const reply = data.reply || data.error || 'Sorry, no response.';
-    state.chatHistory.push({role:'model', text: reply});
-    appendBot(reply);
-  } catch(e){
-    hideLoader();
-    appendBot(`Network error: ${e.message}. Please check connection.`);
-  }
-}
-
-// ══ RESULT PANEL (TESTS/NOTES) ══════════════════════════════════════════
-function selectSeg(btn, type){
-  const group = btn.closest('.seg-control');
-  group.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if(type==='diff') state.testDiff = btn.dataset.diff;
-  if(type==='dur')  state.testDur  = btn.dataset.dur;
-}
-
-async function generateTest(){
-  const subject = document.getElementById('test-subject').value;
-  const chapter = document.getElementById('test-chapter').value;
-  if(!subject){ alert('Please select a subject first.'); return; }
-  showLoader('Generating your question paper…');
-  try {
-    const res = await fetch(`${API_BASE}/test`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ grade:state.grade, subject, chapter, difficulty:state.testDiff, duration:parseInt(state.testDur) }),
-    });
-    const data = await res.json();
-    hideLoader();
-    showResult('test', data.paper || data.error || 'Failed to generate.', `${subject} — ${state.testDiff}`);
-  } catch(e){ hideLoader(); alert(`Error: ${e.message}`); }
-}
-
-async function generateNotes(){
-  const subject = document.getElementById('notes-subject').value;
-  const chapter = document.getElementById('notes-chapter').value;
-  const topic   = document.getElementById('notes-topic').value;
-  if(!subject || !chapter){ alert('Please select subject and chapter.'); return; }
-  showLoader('Preparing chapter notes…');
-  try {
-    const res = await fetch(`${API_BASE}/notes`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ grade:state.grade, subject, chapter, topic }),
-    });
-    const data = await res.json();
-    hideLoader();
-    showResult('notes', data.notes || data.error || 'Failed to generate.', `${subject} — ${chapter}`);
-  } catch(e){ hideLoader(); alert(`Error: ${e.message}`); }
 }
 
 function showResult(type, content, label){
@@ -1325,58 +639,46 @@ function copyResult(id){
   });
 }
 
-// ══ DOM HELPERS ══════════════════════════════════════════════════════════
 function appendUser(text){
   const cb = document.getElementById('chat-body');
-  cb.innerHTML += `<div class="msg user"><div class="msg-bub">${escHtml(text)}</div></div>`; 
-  scrollChat();
+  const d = document.createElement('div');
+  d.className='msg user';
+  d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;
+  cb.appendChild(d); scrollChat();
 }
+
 function appendBot(text){
   const cb = document.getElementById('chat-body');
-  cb.innerHTML += `<div class="msg bot"><div class="msg-bub">${fmtMsg(text)}</div></div>`; 
-  scrollChat();
+  const d = document.createElement('div');
+  d.className='msg bot';
+  d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;
+  cb.appendChild(d); scrollChat();
 }
+
 function fmtMsg(t){
-  return String(t).replace(/**(.+?)**/g,'<strong>$1</strong>').replace(/*(.+?)*/g,'<em>$1</em>').replace(/
-/g,'<br>');
+  return String(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
 }
 function escHtml(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function scrollChat(){ const cb=document.getElementById('chat-body'); requestAnimationFrame(()=>cb.scrollTop=cb.scrollHeight); }
 function showLoader(txt){ document.getElementById('loader-text').textContent=txt; document.getElementById('loader').classList.add('show'); }
 function hideLoader(){ document.getElementById('loader').classList.remove('show'); }
+function getTime(){ const d=new Date(); return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase(); }
 
-// ══ EVENT LISTENERS ═════════════════════════════════════════════════════
-const msgInput = document.getElementById('msg-input');
-if (msgInput) {
-    msgInput.addEventListener('input', function(){
-      this.style.height='auto';
-      this.style.height = Math.min(this.scrollHeight,110)+'px';
-      document.getElementById('send-btn').disabled = !this.value.trim();
-    });
-    msgInput.addEventListener('keydown', e=>{
-      if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); }
-    });
-}
-
-// ══ FLOATING TIERED NAVIGATION BUTTON ═══════════════════════════════════
 const floatingHome = document.createElement('button');
 floatingHome.innerHTML = '🔙 Menu';
-floatingHome.style.cssText = 'position: fixed; bottom: 25px; right: 20px; padding: 12px 20px; background: var(--primary, #008069); color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
+floatingHome.style.cssText = 'position: fixed; bottom: 80px; right: 20px; padding: 12px 20px; background: var(--primary, #008069); color: white; border: none; border-radius: 50px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 9999; display: none;';
 
 setInterval(() => {
   const home = document.getElementById('screen-home');
   const dash = document.getElementById('screen-dashboard');
   if ((home && home.classList.contains('active')) || (dash && dash.classList.contains('active'))) {
-    floatingHome.style.display = 'none'; // Hide on Login and Dashboard layers
+    floatingHome.style.display = 'none';
   } else {
-    floatingHome.style.display = 'block'; // Show everywhere else (Chat, Notes, Test)
+    floatingHome.style.display = 'block';
   }
 }, 500);
 
-floatingHome.onclick = () => {
-  // Acts as a BACK button to the Dashboard tier
-  showScreen('screen-dashboard'); 
-};
+floatingHome.onclick = () => { showScreen('screen-dashboard'); };
 document.body.appendChild(floatingHome);
 </script>
 </body>
