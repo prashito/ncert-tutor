@@ -36,23 +36,18 @@
       --shadow-md:0 6px 18px rgba(0,0,0,0.34);
       --shadow-lg:0 14px 40px rgba(0,0,0,0.45);
     }
-
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
     body{font-family:var(--font);font-size:16px;color:var(--text);background:var(--bg);min-height:100dvh;overflow:hidden}
     button,a,input,textarea,select{font:inherit}
     button,a{cursor:pointer;background:none;border:none;color:inherit;text-decoration:none}
-
-    /* visible native scrollbars */
     *{scrollbar-width:thin;scrollbar-color:var(--primary) transparent}
     *::-webkit-scrollbar{width:8px;height:8px}
     *::-webkit-scrollbar-track{background:transparent}
     *::-webkit-scrollbar-thumb{background:var(--primary);border-radius:999px;border:2px solid transparent;background-clip:padding-box}
     *::-webkit-scrollbar-thumb:hover{background:var(--primary-h);background-clip:padding-box}
-
     .screen{display:none;flex-direction:column;height:100dvh;overflow:hidden}
     .screen.active{display:flex}
-
     .topbar{display:flex;align-items:center;gap:.75rem;padding:0 1rem;height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--divider);box-shadow:var(--shadow-sm);position:relative;z-index:10}
     .topbar-back,.icon-btn{width:36px;height:36px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all var(--ease)}
     .topbar-back:hover,.icon-btn:hover{background:var(--surface-off);color:var(--text)}
@@ -60,9 +55,7 @@
     .topbar-title{font-size:.95rem;font-weight:800;letter-spacing:-.02em}
     .topbar-sub{font-size:.72rem;color:var(--muted)}
     .topbar-actions{display:flex;align-items:center;gap:.375rem;margin-left:auto}
-
     .logo-mark{width:32px;height:32px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;box-shadow:var(--shadow-sm)}
-
     #screen-home{overflow-y:auto}
     .home-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-h) 100%);padding:2.5rem 1.25rem 2rem;text-align:center;position:relative;overflow:hidden}
     .home-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fff' fill-opacity='.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
@@ -85,7 +78,6 @@
     .grade-tier{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
     .grade-name{font-size:.97rem;font-weight:800;letter-spacing:-.02em}
     .grade-fee{font-size:.73rem;font-weight:700;color:var(--primary);background:var(--primary-hl);padding:.18rem .55rem;border-radius:var(--r-full);display:inline-flex;width:fit-content;margin-top:.2rem}
-
     #screen-dashboard{overflow:hidden}
     .dash-grade-bar{background:var(--primary);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;flex-shrink:0}
     .dash-grade-pill{background:rgba(255,255,255,.2);padding:.18rem .6rem;border-radius:var(--r-full);font-weight:700;font-size:.75rem}
@@ -101,12 +93,10 @@
     .subject-chip{font-size:.78rem;font-weight:600;padding:.42rem .9rem;border-radius:var(--r-full);background:var(--surface);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease)}
     .subject-chip:hover,.subject-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
     .recent-empty{background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r-xl);padding:1.5rem;text-align:center;color:var(--muted);font-size:.83rem}
-
     .bottom-nav{display:flex;gap:.35rem;background:color-mix(in srgb,var(--surface) 92%,transparent);border-top:1px solid var(--divider);padding:.45rem .6rem calc(.45rem + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(0,0,0,.08);position:fixed;bottom:0;left:0;right:0;z-index:60;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.5rem .25rem;border-radius:14px;gap:.18rem;font-size:.66rem;font-weight:700;letter-spacing:.02em;color:var(--muted);transition:all var(--ease)}
     .nav-item.active{color:var(--primary);background:var(--primary-hl)}
     .nav-item svg{transition:transform var(--ease)} .nav-item.active svg{transform:scale(1.05)}
-
     #screen-chat{background:var(--bg);position:relative;height:100dvh;overflow:hidden}
     .chat-body{position:absolute;top:56px;left:0;right:0;bottom:148px;overflow-y:auto;overflow-x:hidden;padding:.9rem 1rem 1.2rem;display:flex;flex-direction:column;gap:.75rem;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
     .msg{display:flex;flex-direction:column;max-width:88%;animation:fadeUp .2s ease-out}
@@ -118,7 +108,6 @@
     .msg.bot .msg-bub{background:var(--bot-bg);border:1px solid var(--border);border-bottom-left-radius:var(--r-sm);box-shadow:var(--shadow-sm)}
     .msg-time{font-size:.62rem;color:var(--faint);margin-top:.2rem;padding:0 .2rem}
     .msg-bub strong{font-weight:700}.msg-bub em{font-style:italic}.msg-bub code{background:var(--surface-off);border-radius:4px;padding:.1rem .3rem;font-family:monospace;font-size:.82rem}
-
     .chat-dock{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:.5rem;padding:.45rem .75rem calc(.75rem + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 72%,rgba(0,0,0,0));z-index:20;pointer-events:none}
     .quick-row{pointer-events:auto;display:flex;gap:.45rem;overflow-x:auto;padding:.55rem .65rem;background:color-mix(in srgb,var(--surface) 90%,transparent);border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     .quick-row::-webkit-scrollbar{height:6px}
@@ -131,7 +120,6 @@
     #msg-input::placeholder{color:var(--faint)}
     .send-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--ease),transform var(--ease),box-shadow var(--ease);box-shadow:var(--shadow-sm)}
     .send-btn:hover{background:var(--primary-h)} .send-btn:active{transform:scale(.93)} .send-btn:disabled{opacity:.35;pointer-events:none}
-
     #screen-test,#screen-notes{overflow:hidden}
     .test-form-body,.notes-form-body{flex:1;overflow-y:auto;padding:1.25rem 1rem 6rem}
     .form-group{margin-bottom:1.1rem}
@@ -151,18 +139,17 @@
     .result-body{padding:1rem;font-size:.82rem;font-family:monospace;white-space:pre-wrap;line-height:1.8;word-break:break-word;max-height:50vh;overflow:auto}
     .small-btn{font-size:.72rem;padding:.28rem .68rem;border:1px solid var(--border);border-radius:var(--r-full);color:var(--muted);transition:all var(--ease)}
     .small-btn:hover{background:var(--primary-hl);color:var(--primary)}
-
+    .attach-btn{width:42px;height:42px;border-radius:var(--r-full);flex-shrink:0;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm)}
+    .input-preview{display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+    .preview-chip{display:flex;align-items:center;gap:.45rem;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:.35rem .55rem;font-size:.72rem;color:var(--muted)}
+    .preview-thumb{width:28px;height:28px;border-radius:8px;object-fit:cover}
     .loader-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
     .loader-overlay.show{display:flex}
     .loader-box{background:var(--surface);border-radius:var(--r-xl);padding:1.5rem 2rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;box-shadow:var(--shadow-lg);min-width:200px}
     .loader-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
     .loader-text{font-size:.82rem;color:var(--muted);font-weight:600}
-
-    @media (max-width:480px){
-      .chat-body{bottom:154px}
-      .grade-grid,.action-grid{grid-template-columns:1fr 1fr}
-    }
+    @media (max-width:480px){.chat-body{bottom:154px}.grade-grid,.action-grid{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -172,23 +159,15 @@
       <div class="loader-text" id="loader-text">Thinking...</div>
     </div>
   </div>
-
   <div class="screen active" id="screen-home">
     <div class="home-hero">
-      <div class="hero-logo-wrap">
-        <div class="hero-logo">
-          <svg width="38" height="38" viewBox="0 0 40 40" fill="none"><text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text></svg>
-        </div>
-      </div>
+      <div class="hero-logo-wrap"><div class="hero-logo"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text></svg></div></div>
       <div class="hero-title">Vidya Tutor</div>
       <div class="hero-sub">Your personal NCERT tutor for Grades 1–12</div>
       <div class="hero-badge">📚 CBSE · NCERT Curriculum</div>
     </div>
-
     <div class="home-section">
-      <div class="name-card">
-        <input type="text" id="student-name" class="name-input" placeholder="Enter your name...">
-      </div>
+      <div class="name-card"><input type="text" id="student-name" class="name-input" placeholder="Enter your name..."></div>
       <div class="section-label">Select your class to begin</div>
       <div class="grade-grid">
         <div class="grade-card g1" onclick="selectGrade('Grade 1–3','₹150')"><div class="grade-emoji">🌱</div><div class="grade-tier">Primary</div><div class="grade-name">Grade 1–3</div><div class="grade-fee">₹150/month</div></div>
@@ -198,15 +177,8 @@
       </div>
     </div>
   </div>
-
   <div class="screen" id="screen-dashboard">
-    <div class="topbar">
-      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div>
-      <div><div class="topbar-title">Vidya Tutor</div></div>
-      <div class="topbar-actions">
-        <button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-      </div>
-    </div>
+    <div class="topbar"><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div><div><div class="topbar-title">Vidya Tutor</div></div><div class="topbar-actions"><button class="icon-btn" data-theme-toggle aria-label="Toggle theme"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div></div>
     <div class="dash-grade-bar"><span>Logged in as</span><span class="dash-grade-pill" id="dash-grade-label">Grade 9–10</span><button onclick="goHome()" style="margin-left:auto;font-size:.72rem;opacity:.82;font-weight:600;color:#fff;">Change</button></div>
     <div class="dash-scroll">
       <div class="section-label" style="padding-top:.25rem">What would you like to do?</div>
@@ -226,30 +198,22 @@
       <button class="nav-item" onclick="goToScreen('screen-notes');navTo('screen-notes',this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Notes</button>
     </nav>
   </div>
-
   <div class="screen" id="screen-chat">
-    <div class="topbar">
-      <button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div>
-      <div><div class="topbar-title" id="chat-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div>
-      <div class="topbar-actions"><button class="icon-btn" onclick="clearChat()" title="Clear chat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div>
-    </div>
+    <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div class="logo-mark"><svg width="18" height="18" viewBox="0 0 28 28" fill="none"><text x="14" y="21" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="18" font-weight="800">V</text></svg></div><div><div class="topbar-title" id="chat-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div><div class="topbar-actions"><button class="icon-btn" onclick="clearChat()" title="Clear chat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></div></div>
     <div class="chat-body" id="chat-body"></div>
     <div class="chat-dock">
       <div class="quick-row" id="quick-row"></div>
       <div class="input-bar">
-      <div class="input-wrap">
-  <div class="input-preview" id="input-preview" style="display:none"></div>
-  <textarea id="msg-input" rows="1" placeholder="Type question or 📸 screenshot homework" aria-label="Message"></textarea>
-  <input type="file" id="image-upload" accept="image/*" style="display:none">
-</div>
-<button class="attach-btn" onclick="document.getElementById('image-upload').click()">
-  📸
-</button>  
+        <input type="file" id="image-upload" accept="image/*" hidden>
+        <button class="attach-btn" id="attach-btn" onclick="document.getElementById('image-upload').click()">📸</button>
+        <div class="input-wrap">
+          <div class="input-preview" id="input-preview" style="display:none"></div>
+          <textarea id="msg-input" rows="1" placeholder="Type question or 📸 screenshot homework" aria-label="Message"></textarea>
+        </div>
+        <button class="send-btn" id="send-btn" disabled onclick="sendMessage()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
   </div>
-
   <div class="screen" id="screen-test">
     <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div></div>
     <div class="test-form-body">
@@ -261,7 +225,6 @@
       <div id="test-result" style="display:none"></div>
     </div>
   </div>
-
   <div class="screen" id="screen-notes">
     <div class="topbar"><button class="topbar-back" onclick="goToScreen('screen-dashboard')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button><div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div></div>
     <div class="notes-form-body">
@@ -272,186 +235,43 @@
       <div id="notes-result" style="display:none"></div>
     </div>
   </div>
-
-<script>
+  <script>
 const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
-
-let state = {
-  name:'', grade:'', fee:'', subject:'', chatHistory:[], chatMode:'tutor', testDiff:'Easy', testDur:'30', lastPaper:'', recentActivity:[]
-};
-
-const SUBJECTS = {
-  'Grade 1–3':['Maths','English','EVS','Hindi'],
-  'Grade 4–8':['Maths','Science','Social Science','English','Hindi','Sanskrit'],
-  'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],
-  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics']
-};
-
-const QUICK_CHIPS = {
-  tutor:['Explain a concept','Solve a problem','Board exam tip','Give an example'],
-  evaluate:['Check my answers','Score my test','Mark my paper']
-};
-
-(function(){
-  const btn=document.querySelector('[data-theme-toggle]');
-  const root=document.documentElement;
-  let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-  root.setAttribute('data-theme',dm);
-  updateThemeIcon(btn,dm);
-  if(btn) btn.addEventListener('click',()=>{dm=dm==='dark'?'light':'dark';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);});
-})();
-
-function updateThemeIcon(btn,dm){
-  if(!btn) return;
-  btn.innerHTML = dm==='dark'
-  ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-  : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-}
-
+let state = {name:'', grade:'', fee:'', subject:'', chatHistory:[], chatMode:'tutor', testDiff:'Easy', testDur:'30', lastPaper:'', recentActivity:[], imageData:null, imageName:''};
+const SUBJECTS = {'Grade 1–3':['Maths','English','EVS','Hindi'],'Grade 4–8':['Maths','Science','Social Science','English','Hindi','Sanskrit'],'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics']};
+const QUICK_CHIPS = {tutor:['Explain a concept','Solve a problem','Board exam tip','Give an example'],evaluate:['Check my answers','Score my test','Mark my paper']};
+(function(){const btn=document.querySelector('[data-theme-toggle]');const root=document.documentElement;let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);if(btn) btn.addEventListener('click',()=>{dm=dm==='dark'?'light':'dark';root.setAttribute('data-theme',dm);updateThemeIcon(btn,dm);});})();
+function updateThemeIcon(btn,dm){if(!btn) return;btn.innerHTML = dm==='dark' ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>' : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goToScreen(id){showScreen(id);}
-function goHome(){showScreen('screen-home');}
+function goToScreen(id){showScreen(id);} function goHome(){showScreen('screen-home');}
 function navTo(screenId,btn){showScreen(screenId);document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));if(btn) btn.classList.add('active');}
-
-function selectGrade(grade,fee){
-  const nameInput=document.getElementById('student-name');
-  if(nameInput && !nameInput.value.trim()){alert('Please enter your name first 🙏');nameInput.focus();return;}
-  state.name=nameInput?nameInput.value.trim():'';
-  state.grade=grade; state.fee=fee;
-  document.getElementById('dash-grade-label').textContent = `${state.name} — ${grade}`;
-  document.getElementById('chat-sub').textContent = grade;
-  document.getElementById('test-grade-sub').textContent = grade;
-  document.getElementById('notes-grade-sub').textContent = grade;
-  const subs=SUBJECTS[grade]||[];
-  ['test-subject','notes-subject'].forEach(id=>{
-    const sel=document.getElementById(id);
-    sel.innerHTML='<option value="">Select subject</option>';
-    subs.forEach(s=>sel.innerHTML += `<option value="${s}">${s}</option>`);
-  });
-  const chips=document.getElementById('subject-chips');
-  chips.innerHTML='';
-  subs.forEach(s=>{
-    const btn=document.createElement('button');
-    btn.className='subject-chip'; btn.textContent=s;
-    btn.onclick=()=>{state.subject=s;goToChat('tutor');};
-    chips.appendChild(btn);
-  });
-  state.chatHistory=[];
-  showScreen('screen-dashboard');
-}
-
-function goToChat(mode){
-  state.chatMode=mode;
-  state.chatHistory=[];
-  document.getElementById('chat-body').innerHTML='';
-  document.getElementById('chat-title').textContent = mode==='evaluate' ? 'Check Answers' : 'Ask a Doubt';
-  renderQuickChips();
-  showScreen('screen-chat');
-  const greetings={
-    tutor:`Namaste ${state.name}! 🙏<br><br>I'm Vidya, your personal NCERT Tutor.<br><br>You're in <strong>${state.grade}</strong>. Which subject shall we work on today?`,
-    evaluate:`Hi ${state.name}! 📋<br><br>Paste your test question paper first, then share your answers below it. I'll help evaluate them.`
-  };
-  appendBot(greetings[mode]||greetings.tutor);
-}
-
-function renderQuickChips(){
-  const row=document.getElementById('quick-row'); row.innerHTML='';
-  (QUICK_CHIPS[state.chatMode]||QUICK_CHIPS.tutor).forEach(c=>{
-    const btn=document.createElement('button'); btn.className='qchip'; btn.textContent=c; btn.onclick=()=>sendWith(c); row.appendChild(btn);
-  });
-}
-
-const msgInput=document.getElementById('msg-input');
-msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';document.getElementById('send-btn').disabled=!this.value.trim();});
+function selectGrade(grade,fee){const nameInput=document.getElementById('student-name');if(nameInput && !nameInput.value.trim()){alert('Please enter your name first 🙏');nameInput.focus();return;}state.name=nameInput?nameInput.value.trim():'';state.grade=grade;state.fee=fee;document.getElementById('dash-grade-label').textContent=`${state.name} — ${grade}`;document.getElementById('chat-sub').textContent=grade;document.getElementById('test-grade-sub').textContent=grade;document.getElementById('notes-grade-sub').textContent=grade;const subs=SUBJECTS[grade]||[];['test-subject','notes-subject'].forEach(id=>{const sel=document.getElementById(id);sel.innerHTML='<option value="">Select subject</option>';subs.forEach(s=>sel.innerHTML += `<option value="${s}">${s}</option>`);});const chips=document.getElementById('subject-chips');chips.innerHTML='';subs.forEach(s=>{const btn=document.createElement('button');btn.className='subject-chip';btn.textContent=s;btn.onclick=()=>{state.subject=s;goToChat('tutor');};chips.appendChild(btn);});state.chatHistory=[];showScreen('screen-dashboard');}
+function goToChat(mode){state.chatMode=mode;state.chatHistory=[];state.imageData=null;state.imageName='';document.getElementById('chat-body').innerHTML='';document.getElementById('chat-title').textContent = mode==='evaluate' ? 'Check Answers' : 'Ask a Doubt';renderQuickChips();clearPreview();showScreen('screen-chat');const greetings={tutor:`Namaste ${state.name}! 🙏\n\nI'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,evaluate:`Hi ${state.name}! 📋\n\nPaste your test question paper first, then share your answers below it. I'll help evaluate them.`};appendBot(greetings[mode]||greetings.tutor);}
+function renderQuickChips(){const row=document.getElementById('quick-row');row.innerHTML='';(QUICK_CHIPS[state.chatMode]||QUICK_CHIPS.tutor).forEach(c=>{const btn=document.createElement('button');btn.className='qchip';btn.textContent=c;btn.onclick=()=>sendWith(c);row.appendChild(btn);});}
+const msgInput=document.getElementById('msg-input');const imageUpload=document.getElementById('image-upload');
+msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';document.getElementById('send-btn').disabled=!(this.value.trim()||state.imageData);});
 msgInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
-
+imageUpload.addEventListener('change',e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{state.imageData=ev.target.result;state.imageName=file.name;showPreview(file.name,ev.target.result);document.getElementById('send-btn').disabled=false;};reader.readAsDataURL(file);});
+function showPreview(name,src){const p=document.getElementById('input-preview');p.style.display='flex';p.innerHTML=`<div class="preview-chip"><img class="preview-thumb" src="${src}" alt="preview"><span>${escHtml(name)}</span><button class="small-btn" type="button" onclick="clearPreview()">✕</button></div>`;}
+function clearPreview(){state.imageData=null;state.imageName='';const p=document.getElementById('input-preview');p.innerHTML='';p.style.display='none';imageUpload.value='';document.getElementById('send-btn').disabled=!msgInput.value.trim();}
 function sendWith(text){msgInput.value=text;msgInput.dispatchEvent(new Event('input'));sendMessage();}
-
-async function sendMessage(){
-  const text=msgInput.value.trim();
-  if(!text) return;
-  msgInput.value=''; msgInput.style.height='auto'; document.getElementById('send-btn').disabled=true;
-  appendUser(text);
-  state.chatHistory.push({role:'user',text});
-  showLoader('Vidya is thinking...');
-  try{
-    const res=await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject:state.subject||'General',message:text,history:state.chatHistory.slice(-6)})});
-    const data=await res.json();
-    hideLoader();
-    const reply=data.reply || data.error || 'Sorry, I could not get a response. Please try again!';
-    state.chatHistory.push({role:'model',text:reply});
-    appendBot(reply);
-    addRecentActivity('💬',`Asked about: ${text.slice(0,40)}${text.length>40?'…':''}`);
-  }catch(e){
-    hideLoader();
-    appendBot(`Network error: ${e.message}. Please check your connection and try again! 🙏`);
-  }
-}
-
-function clearChat(){state.chatHistory=[];document.getElementById('chat-body').innerHTML='';goToChat(state.chatMode);}
+async function sendMessage(){const text=msgInput.value.trim();if(!text && !state.imageData) return;msgInput.value='';msgInput.style.height='auto';document.getElementById('send-btn').disabled=true;const payloadText = state.imageData ? `${text ? text + '\n\n' : ''}[Student uploaded screenshot: ${state.imageName}]` : text;appendUser(payloadText || '[Image]');state.chatHistory.push({role:'user',text:payloadText,image:!!state.imageData});showLoader('Vidya is thinking...');try{const res=await fetch(`${API_BASE}/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject:state.subject||'General',message:payloadText,history:state.chatHistory.slice(-6),image:state.imageData})});const data=await res.json();hideLoader();const reply=data.reply || data.error || 'Sorry, I could not get a response. Please try again!';state.chatHistory.push({role:'model',text:reply});appendBot(reply);addRecentActivity('💬',`Asked about: ${text.slice(0,40)}${text.length>40?'…':''}`);clearPreview();}catch(e){hideLoader();appendBot(`Network error: ${e.message}. Please check your connection and try again! 🙏`);}}
+function clearChat(){state.chatHistory=[];document.getElementById('chat-body').innerHTML='';clearPreview();goToChat(state.chatMode);}
 function selectSeg(btn,type){const group=btn.closest('.seg-control');group.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(type==='diff') state.testDiff=btn.dataset.diff;if(type==='dur') state.testDur=btn.dataset.dur;}
-
-async function generateTest(){
-  const subject=document.getElementById('test-subject').value;
-  const chapter=document.getElementById('test-chapter').value;
-  if(!subject){alert('Please select a subject first.');return;}
-  showLoader('Generating your question paper...');
-  document.getElementById('gen-test-btn').disabled=true;
-  try{
-    const res=await fetch(`${API_BASE}/test`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)})});
-    const data=await res.json();
-    hideLoader();
-    state.lastPaper=data.paper||'';
-    showResult('test',data.paper||data.error||'Could not generate paper. Please try again.',`${subject} — ${state.testDiff} — ${state.testDur} min`);
-    addRecentActivity('📝',`Cycle test: ${subject} ${state.grade}`);
-  }catch(e){hideLoader();alert(`Network error: ${e.message}`);}
-  document.getElementById('gen-test-btn').disabled=false;
-}
-
-async function generateNotes(){
-  const subject=document.getElementById('notes-subject').value;
-  const chapter=document.getElementById('notes-chapter').value;
-  const topic=document.getElementById('notes-topic').value;
-  if(!subject||!chapter){alert('Please select subject and chapter.');return;}
-  showLoader('Preparing chapter notes...');
-  document.getElementById('gen-notes-btn').disabled=true;
-  try{
-    const res=await fetch(`${API_BASE}/notes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,topic})});
-    const data=await res.json();
-    hideLoader();
-    showResult('notes',data.notes||data.error||'Could not generate notes. Please try again.',`${subject} — ${chapter}`);
-    addRecentActivity('🖼️',`Notes: ${subject} ${chapter}`);
-  }catch(e){hideLoader();alert(`Network error: ${e.message}`);}
-  document.getElementById('gen-notes-btn').disabled=false;
-}
-
-function showResult(type,content,label){
-  const container=document.getElementById(`${type}-result`); const copyId=`rc_${Date.now()}`;
-  container.style.display='block';
-  container.innerHTML=`<div class="result-panel"><div class="result-hdr"><span class="result-title">📄 ${label}</span><div class="result-actions"><button class="small-btn" onclick="copyResult('${copyId}')">Copy</button><button class="small-btn" onclick="showScreen('screen-dashboard')">Menu</button></div></div><div class="result-body" id="${copyId}">${escHtml(content)}</div></div>`;
-  container.scrollIntoView({behavior:'smooth'});
-}
-
+async function generateTest(){const subject=document.getElementById('test-subject').value;const chapter=document.getElementById('test-chapter').value;if(!subject){alert('Please select a subject first.');return;}showLoader('Generating your question paper...');document.getElementById('gen-test-btn').disabled=true;try{const res=await fetch(`${API_BASE}/test`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)})});const data=await res.json();hideLoader();state.lastPaper=data.paper||'';showResult('test',data.paper||data.error||'Could not generate paper. Please try again.',`${subject} — ${state.testDiff} — ${state.testDur} min`);addRecentActivity('📝',`Cycle test: ${subject} ${state.grade}`);}catch(e){hideLoader();alert(`Network error: ${e.message}`);}document.getElementById('gen-test-btn').disabled=false;}
+async function generateNotes(){const subject=document.getElementById('notes-subject').value;const chapter=document.getElementById('notes-chapter').value;const topic=document.getElementById('notes-topic').value;if(!subject||!chapter){alert('Please select subject and chapter.');return;}showLoader('Preparing chapter notes...');document.getElementById('gen-notes-btn').disabled=true;try{const res=await fetch(`${API_BASE}/notes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({grade:state.grade,subject,chapter,topic})});const data=await res.json();hideLoader();showResult('notes',data.notes||data.error||'Could not generate notes. Please try again.',`${subject} — ${chapter}`);addRecentActivity('🖼️',`Notes: ${subject} ${chapter}`);}catch(e){hideLoader();alert(`Network error: ${e.message}`);}document.getElementById('gen-notes-btn').disabled=false;}
+function showResult(type,content,label){const container=document.getElementById(`${type}-result`);const copyId=`rc_${Date.now()}`;container.style.display='block';container.innerHTML=`<div class="result-panel"><div class="result-hdr"><span class="result-title">📄 ${label}</span><div class="result-actions"><button class="small-btn" onclick="copyResult('${copyId}')">Copy</button><button class="small-btn" onclick="showScreen('screen-dashboard')">Menu</button></div></div><div class="result-body" id="${copyId}">${escHtml(content)}</div></div>`;container.scrollIntoView({behavior:'smooth'});}
 function copyResult(id){const el=document.getElementById(id);navigator.clipboard.writeText(el.innerText).then(()=>{});}
 function addRecentActivity(icon,text){const empty=document.getElementById('recent-empty'); if(empty) empty.style.display='none'; const list=document.getElementById('recent-list'); if(!list) return; const item=document.createElement('div'); item.style.cssText='display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;font-size:.8rem;box-shadow:var(--shadow-sm)'; item.innerHTML=`<span style="font-size:1.2rem">${icon}</span><span>${escHtml(text)}</span>`; list.prepend(item);}
-function appendUser(text){const cb=document.getElementById('chat-body'); const d=document.createElement('div'); d.className='msg user'; d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`; cb.appendChild(d); scrollChat();}
-function appendBot(text){const cb=document.getElementById('chat-body'); const d=document.createElement('div'); d.className='msg bot'; d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`; cb.appendChild(d); scrollChat();}
+function appendUser(text){const cb=document.getElementById('chat-body');const d=document.createElement('div');d.className='msg user';d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;cb.appendChild(d);scrollChat();}
+function appendBot(text){const cb=document.getElementById('chat-body');const d=document.createElement('div');d.className='msg bot';d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;cb.appendChild(d);scrollChat();}
 function fmtMsg(t){return String(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\n/g,'<br>');}
 function escHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function scrollChat(){const cb=document.getElementById('chat-body'); if(!cb) return; requestAnimationFrame(()=>{cb.scrollTop=cb.scrollHeight;});}
 function showLoader(txt){document.getElementById('loader-text').textContent=txt;document.getElementById('loader').classList.add('show');}
 function hideLoader(){document.getElementById('loader').classList.remove('show');}
 function getTime(){const d=new Date(); return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}).toLowerCase();}
-  document.getElementById('image-upload').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    document.getElementById('input-preview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:8px">`;
-    document.getElementById('input-preview').style.display = 'block';
-    msgInput.value = `[Screenshot: ${file.name}]`; // placeholder
-  };
-  reader
+function escAttr(s){return String(s).replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
