@@ -77,20 +77,148 @@
   </div>
 </div>
 <script>
-const API='ncerttutor.prashanthmuthurbcb.workers.dev';
-const PRICE_LINKS={basic:'https://rzp.io/l/yourbasiclink',standard:'https://rzp.io/l/yourstandardlink',premium:'https://rzp.io/l/yourpremiumlink'};
-let state={name:'',email:'',grade:'',tier:'free',paymentStatus:'pending',token:''};
-function switchTab(t){document.getElementById('form-login').style.display=t==='login'?'block':'none';document.getElementById('form-register').style.display=t==='register'?'block':'none';document.getElementById('tab-login').classList.toggle('active',t==='login');document.getElementById('tab-register').classList.toggle('active',t==='register');}
+const API = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
+const PRICE_LINKS = {
+  basic:'https://rzp.io/l/yourbasiclink', 
+  standard:'https://rzp.io/l/yourstandardlink', 
+  premium:'https://rzp.io/l/yourpremiumlink'
+};
+let state = {name:'',email:'',grade:'',tier:'free',paymentStatus:'pending',token:''};
+
+function switchTab(t){
+  document.getElementById('form-login').style.display = t==='login'?'block':'none';
+  document.getElementById('form-register').style.display = t==='register'?'block':'none';
+  document.getElementById('tab-login').classList.toggle('active',t==='login');
+  document.getElementById('tab-register').classList.toggle('active',t==='register');
+}
+
 function save(){localStorage.setItem('vidya_session',JSON.stringify(state));}
 function load(){try{return JSON.parse(localStorage.getItem('vidya_session')||'null')}catch{return null}}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function setStatus(){document.getElementById('tier-badge').textContent=state.tier.toUpperCase();document.getElementById('tier-badge').className='badge '+state.tier;document.getElementById('user-label').textContent=state.name+' · '+state.grade;document.getElementById('access-line').textContent='Access: '+state.tier;document.getElementById('payment-line').textContent='Payment: '+state.paymentStatus;}
-async function doLogin(){const email=login-email.value.trim(),password=login-password.value;login-error.classList.remove('show');const r=await fetch(API+'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const d=await r.json();if(d.error){login-error.textContent=d.error;login-error.classList.add('show');return}state={...state,name:d.name,email,email,grade:d.grade,tier:d.tier,token:d.token,paymentStatus:d.paymentStatus||'paid'};save();boot();}
-async function doRegister(){const name=reg-name.value.trim(),email=reg-email.value.trim(),password=reg-password.value,grade=reg-grade.value;reg-error.classList.remove('show');const r=await fetch(API+'/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password,grade})});const d=await r.json();if(d.error){reg-error.textContent=d.error;reg-error.classList.add('show');return}state={...state,name,email,grade,tier:d.tier,token:d.token,paymentStatus:d.paymentStatus||'pending'};save();boot();}
+function setStatus(){
+  document.getElementById('tier-badge').textContent = state.tier.toUpperCase();
+  document.getElementById('tier-badge').className = 'badge ' + state.tier;
+  document.getElementById('user-label').textContent = state.name + ' · ' + state.grade;
+  document.getElementById('access-line').textContent = 'Access: ' + state.tier;
+  document.getElementById('payment-line').textContent = 'Payment: ' + state.paymentStatus;
+}
+
+async function doLogin() {
+  const emailEl = document.getElementById('login-email');
+  const passwordEl = document.getElementById('login-password');
+  const errEl = document.getElementById('login-error');
+
+  const email = emailEl.value.trim();
+  const password = passwordEl.value;
+
+  errEl.classList.remove('show');
+
+  if (!email || !password) {
+    errEl.textContent = 'Please fill email and password';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
+
+  try {
+    console.log('Calling:', API + '/login');
+    const response = await fetch(API + '/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password})
+    });
+
+    console.log('Response status:', response.status);
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    if (data.error) {
+      errEl.textContent = data.error;
+      errEl.classList.add('show');
+      return;
+    }
+
+    state = {...state, name: data.name, email, grade: data.grade, tier: data.tier, token: data.token, paymentStatus: data.paymentStatus || 'paid'};
+    save();
+    setStatus();
+    show('screen-dashboard');
+
+  } catch (error) {
+    console.error('Login error:', error);
+    errEl.textContent = 'Network error: ' + error.message;
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Login';
+  }
+}
+
+async function doRegister() {
+  const nameEl = document.getElementById('reg-name');
+  const emailEl = document.getElementById('reg-email');
+  const passwordEl = document.getElementById('reg-password');
+  const gradeEl = document.getElementById('reg-grade');
+  const errEl = document.getElementById('reg-error');
+
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const password = passwordEl.value;
+  const grade = gradeEl.value;
+
+  errEl.classList.remove('show');
+
+  if (!name || !email || !password || !grade) {
+    errEl.textContent = 'Please fill all fields';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+
+  try {
+    console.log('Calling:', API + '/register');
+    const response = await fetch(API + '/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name, email, password, grade})
+    });
+
+    console.log('Response status:', response.status);
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    if (data.error) {
+      errEl.textContent = data.error;
+      errEl.classList.add('show');
+      return;
+    }
+
+    state = {...state, name, email, grade, tier: data.tier, token: data.token, paymentStatus: data.paymentStatus || 'pending'};
+    save();
+    setStatus();
+    show('screen-dashboard');
+
+  } catch (error) {
+    console.error('Register error:', error);
+    errEl.textContent = 'Network error: ' + error.message;
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create Account →';
+  }
+}
+
 function boot(){setStatus();show('screen-dashboard')}
 function logout(){localStorage.removeItem('vidya_session');location.reload()}
 function goUpgrade(){document.getElementById('upgrade-tier').scrollIntoView({behavior:'smooth'})}
 function startUpgrade(){const tier=document.getElementById('upgrade-tier').value;window.open(PRICE_LINKS[tier],'_blank')}
+
 (function(){const s=load();if(s&&s.token){state=s;boot()}})();
 </script>
-</body></html>
+</body>
+</html>
