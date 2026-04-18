@@ -573,34 +573,25 @@ const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
 // Adds Referer + required headers so worker always responds
 // ══════════════════════════════════════════════
 async function apiFetch(path, body) {
-  const pageHref = (typeof window !== 'undefined' && window.location && window.location.href)
-    ? window.location.href
-    : 'https://prashito.github.io/ncert-tutor/';
-  const headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest',
-    'Referer': pageHref,
-  };
-  try {
-    const res = await fetch(API_BASE + path, { method: 'POST', headers, body: JSON.stringify(body) });
-    const ct = res.headers.get('content-type') || '';
-    if (!ct.includes('application/json')) {
-      // Cloudflare blocked — retry with hardcoded GitHub Pages referer
-      const res2 = await fetch(API_BASE + path, {
-        method: 'POST',
-        headers: { ...headers, 'Referer': 'https://prashito.github.io/ncert-tutor/' },
-        body: JSON.stringify(body),
-      });
-      const ct2 = res2.headers.get('content-type') || '';
-      if (!ct2.includes('application/json')) throw new Error('Blocked by security filter (CF-1010)');
-      return res2.json();
-    }
-    return res.json();
-  } catch(e) {
-    throw e;
+  // mode:'cors' + credentials:'omit' bypasses Cloudflare Bot Fight Mode
+  // Browser sets Origin header automatically when mode is 'cors'
+  const res = await fetch(API_BASE + path, {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'omit',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const ct = res.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) {
+    throw new Error('Server error ' + res.status + '. Please try again.');
   }
+  return res.json();
 }
+
 
 
 
