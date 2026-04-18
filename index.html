@@ -620,6 +620,69 @@ html, body { height: 100%; height: 100dvh; overflow: hidden; }
             document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color || '#ffffff');
         }
 
+        // ── Admin Configuration & Testing Mode ──
+        window.WORKER_URL = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
+        window.appSettings = { paymentsEnabled: false }; // Default to test mode
+
+        async function fetchAppConfig() {
+            try {
+                const res = await fetch(window.WORKER_URL + '/config');
+                if (res.ok) {
+                    window.appSettings = await res.json();
+                    console.log('App Config loaded:', window.appSettings);
+                }
+            } catch (e) {
+                console.warn('Could not load config, using defaults.', e);
+            }
+        }
+        fetchAppConfig();
+
+
+        // ── Telegram Payment Integration ──
+        function handlePayment(plan, amount) {
+            if (!tg) {
+                alert("Payments are only supported inside the Telegram app.");
+                return;
+            }
+
+            // 🛠️ CHECK TESTING MODE
+            if (window.appSettings && window.appSettings.paymentsEnabled === false) {
+                tg.showAlert('🛠️ Testing Mode: Payment bypassed! Account upgraded.');
+                document.getElementById('lockScreen').classList.add('hidden');
+                document.getElementById('homeScreen').classList.remove('hidden');
+                return;
+            }
+
+            // 💰 REAL PAYMENT FLOW
+            tg.MainButton.setText(`Pay ₹${amount} for ${plan}`);
+            tg.MainButton.show();
+            tg.MainButton.onClick(() => {
+                tg.MainButton.showProgress();
+                fetch(window.WORKER_URL + '/create-invoice', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan: plan, amount: amount })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    tg.MainButton.hideProgress();
+                    if (data.invoiceLink) {
+                        tg.openInvoice(data.invoiceLink, (status) => {
+                            if (status === 'paid') tg.showAlert('Payment successful!');
+                            else tg.showAlert('Payment ' + status);
+                        });
+                    } else if (data.checkoutUrl) {
+                        tg.openLink(data.checkoutUrl);
+                    }
+                })
+                .catch(err => {
+                    tg.MainButton.hideProgress();
+                    tg.showAlert('Payment error: ' + err.message);
+                });
+            });
+        }
+
+
 const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
 
 // ══════════════════════════════════════════════
