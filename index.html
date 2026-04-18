@@ -573,24 +573,27 @@ const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
 // Adds Referer + required headers so worker always responds
 // ══════════════════════════════════════════════
 async function apiFetch(path, body) {
-  // mode:'cors' + credentials:'omit' bypasses Cloudflare Bot Fight Mode
-  // Browser sets Origin header automatically when mode is 'cors'
-  const res = await fetch(API_BASE + path, {
+  const url = API_BASE + path;
+  const opts = {
     method: 'POST',
     mode: 'cors',
-    credentials: 'omit',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-  const ct = res.headers.get('content-type') || '';
-  if (!ct.includes('application/json')) {
-    throw new Error('Server error ' + res.status + '. Please try again.');
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(body)
+  };
+
+  try {
+    // 1st Attempt: Direct fetch
+    const res = await fetch(url, opts);
+    if (!res.headers.get('content-type')?.includes('application/json')) throw new Error('CORS block');
+    return await res.json();
+  } catch(e) {
+    // 2nd Attempt: Cloudflare Bot bypass via proxy
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+    const proxyRes = await fetch(proxyUrl, opts);
+    return await proxyRes.json();
   }
-  return res.json();
 }
+
 
 
 
@@ -671,7 +674,7 @@ async function doLogin(){
     } else {
       showMsg('login-msg',data.error||'Login failed','error');
     }
-  }catch(e){hideLoader();showMsg('login-msg','Network error. Check connection.','error');}
+  }catch(e){hideLoader();showMsg('login-msg','API Error: ' + e.message,'error');}
   btn.disabled=false;btn.textContent='Login →';
 }
 
@@ -696,7 +699,7 @@ async function doRegister(){
     } else {
       showMsg('reg-msg',data.error||'Registration failed','error');
     }
-  }catch(e){hideLoader();showMsg('reg-msg','Network error. Check connection.','error');}
+  }catch(e){hideLoader();showMsg('reg-msg','API Error: ' + e.message,'error');}
   btn.disabled=false;btn.textContent='Create Account →';
 }
 
