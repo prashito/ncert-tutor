@@ -1132,15 +1132,6 @@ function goToRegisterForTier() {
   setTimeout(() => { document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'}); }, 300);
 }
 
-// ── Patch subject chips to check tier ──
-const _origLoadDashboard = loadDashboard;
-function loadDashboard(data) {
-  _origLoadDashboard(data);
-  // Re-render recent chats section label
-  const recentLabel = document.querySelector('#recent-list')?.previousElementSibling;
-  if (recentLabel) recentLabel.textContent = 'Recent chats (last 2)';
-}
-
 </script>
 
 <!-- ════ TIER RESTRICTION MODAL ════ -->
