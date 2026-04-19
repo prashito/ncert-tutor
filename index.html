@@ -9,34 +9,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 
-    /* --- Telegram Mini App Responsive Styles --- */
-    :root {
-        --tg-viewport-height: var(--tg-viewport-stable-height, 100vh);
-    }
-
-    body {
-        /* Limit width for desktop/laptop screens so it doesn't stretch */
-        max-width: 600px;
-        margin: 0 auto !important;
-        position: relative;
-        height: var(--tg-viewport-height);
-        overflow-y: auto;
-        overflow-x: hidden;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Subtle shadow for desktop */
-
-        /* Fallback colors, overridden by Telegram Theme if available */
-        background-color: var(--tg-theme-bg-color, #f9fafb);
-        color: var(--tg-theme-text-color, #111827);
-    }
-
-    /* Remove shadow and use full width on mobile devices */
-    @media (max-width: 600px) {
-        body {
-            max-width: 100%;
-            box-shadow: none;
-        }
-    }
-    /* ------------------------------------------- */
+/* === Telegram Mini App safe responsive patch === */
+:root {
+  --tg-viewport-height: var(--tg-viewport-stable-height, 100vh);
+}
+html, body {
+  min-height: var(--tg-viewport-height);
+}
+body {
+  max-width: 640px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+@media (max-width: 640px) {
+  body {
+    max-width: 100%;
+  }
+}
+/* Prevent top section overlap from clipping content */
+.hero, .header, .top-section, .top-hero {
+  overflow: visible !important;
+}
+/* Improve floating logo/header spacing on small screens */
+@media (max-width: 480px) {
+  .hero, .header, .top-section, .top-hero {
+    padding-bottom: 42px !important;
+  }
+}
+/* Keep auth card and grade grid inside viewport */
+.auth-card, .grade-grid, .grades-grid, .grid {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* === End safe patch === */
 
 :root,[data-theme="light"]{
   --bg:#f5f4f0;--surface:#fff;--surface-2:#f8f7f4;--surface-off:#eeece8;
@@ -302,149 +307,8 @@ html, body { height: 100%; height: 100dvh; overflow: hidden; }
 .hero-logo-img { width: 72px; height: 72px; border-radius: 50%; object-fit: contain; background: #fff; padding: 4px; box-shadow: var(--shadow-md); }
 .topbar-logo-img { width: 28px; height: 28px; border-radius: 50%; object-fit: contain; background: var(--primary); padding: 2px; }
 
-
-        /* --- Grid & Card Layout Fixes --- */
-        .grid-2-cols {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            padding: 16px;
-        }
-
-        .tier-card {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #e5e7eb;
-            min-height: 140px; /* Prevent squishing */
-        }
-
-        .tier-card img, .tier-card .icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 8px;
-        }
-
-        /* Fix the header/logo area so it doesn't get cut off */
-        .app-header {
-            background-color: #0f766e; /* Match your teal brand color */
-            color: white;
-            text-align: center;
-            padding: 40px 20px 60px 20px;
-            position: relative;
-        }
-
-        .logo-container {
-            width: 80px;
-            height: 80px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto;
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        /* Main content wrapper to offset the overlapping logo */
-        .main-content {
-            padding-top: 60px; /* Make room for the logo overlapping */
-            padding-bottom: 20px;
-        }
-
-        /* Stop body from cutting things off */
-        body {
-            /* removed height: var(--tg-viewport-height) to allow natural scrolling on long pages */
-            min-height: 100vh;
-            min-height: var(--tg-viewport-height, 100vh);
-            overflow-y: auto;
-            overflow-x: hidden;
-            background: #f3f4f6;
-        }
-
-
-    /* === FIX FOR SCREENSHOT OVERLAP === */
-    .top-header-bg {
-        background-color: #0f4c5c; /* Dark teal color from screenshot */
-        width: 100%;
-        height: 120px; /* Fixed height for the header */
-        position: relative;
-        z-index: 1;
-    }
-
-    .main-body-container {
-        background-color: #f4f1ea; /* Cream/off-white color from screenshot */
-        width: 100%;
-        min-height: calc(100vh - 120px);
-        border-top-left-radius: 20px; /* Rounded top corners */
-        border-top-right-radius: 20px;
-        position: relative;
-        margin-top: -30px; /* Pulls the white body UP over the green header */
-        padding-top: 50px; /* Pushes the text DOWN so the logo fits */
-        padding-left: 20px;
-        padding-right: 20px;
-        z-index: 2;
-    }
-
-    .floating-logo-circle {
-        width: 70px;
-        height: 70px;
-        background-color: white;
-        border-radius: 50%;
-        position: absolute;
-        top: -35px; /* Halfway out of the white container */
-        left: 50%;
-        transform: translateX(-50%); /* Centers the logo perfectly */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        z-index: 3;
-    }
-
-    .floating-logo-circle img {
-        width: 40px;
-        height: 40px;
-        object-fit: contain;
-    }
-
-    .title-text {
-        text-align: left;
-        font-size: 12px;
-        font-weight: bold;
-        color: #6b7280;
-        letter-spacing: 1px;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-    }
-
-    /* Ensure the body doesn't strictly lock the height, allowing scrolling */
-    body {
-        height: auto !important; 
-        min-height: var(--tg-viewport-stable-height, 100vh);
-        background-color: #0f4c5c; /* So overscrolling looks nice */
-    }
-    /* ================================== */
-
 </style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
@@ -737,93 +601,32 @@ html, body { height: 100%; height: 100dvh; overflow: hidden; }
   </div>
 </div>
 
+<script>
 
-    <script>
-        // ── Telegram Mini App Initialization ──
-        const tg = window.Telegram?.WebApp;
-        if (tg) {
-            tg.ready();
-            tg.expand(); // Expand to full height
-
-            // Request true full-screen for Desktop / Tablets (Mini Apps 2.0 feature)
-            if (tg.requestFullscreen) {
-                try {
-                    tg.requestFullscreen();
-                } catch (e) {
-                    console.log("Fullscreen request failed or unsupported");
-                }
-            }
-
-            // Apply Telegram theme colors dynamically
-            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#f9fafb');
-            document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#111827');
-            document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color || '#3b82f6');
-            document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color || '#ffffff');
-        }
-
-        // ── Admin Configuration & Testing Mode ──
-        window.WORKER_URL = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
-        window.appSettings = { paymentsEnabled: false }; // Default to test mode
-
-        async function fetchAppConfig() {
-            try {
-                const res = await fetch(window.WORKER_URL + '/config');
-                if (res.ok) {
-                    window.appSettings = await res.json();
-                    console.log('App Config loaded:', window.appSettings);
-                }
-            } catch (e) {
-                console.warn('Could not load config, using defaults.', e);
-            }
-        }
-        fetchAppConfig();
-
-
-        // ── Telegram Payment Integration ──
-        function handlePayment(plan, amount) {
-            if (!tg) {
-                alert("Payments are only supported inside the Telegram app.");
-                return;
-            }
-
-            // 🛠️ CHECK TESTING MODE
-            if (window.appSettings && window.appSettings.paymentsEnabled === false) {
-                tg.showAlert('🛠️ Testing Mode: Payment bypassed! Account upgraded.');
-                document.getElementById('lockScreen').classList.add('hidden');
-                document.getElementById('homeScreen').classList.remove('hidden');
-                return;
-            }
-
-            // 💰 REAL PAYMENT FLOW
-            tg.MainButton.setText(`Pay ₹${amount} for ${plan}`);
-            tg.MainButton.show();
-            tg.MainButton.onClick(() => {
-                tg.MainButton.showProgress();
-                fetch(window.WORKER_URL + '/create-invoice', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ plan: plan, amount: amount })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    tg.MainButton.hideProgress();
-                    if (data.invoiceLink) {
-                        tg.openInvoice(data.invoiceLink, (status) => {
-                            if (status === 'paid') tg.showAlert('Payment successful!');
-                            else tg.showAlert('Payment ' + status);
-                        });
-                    } else if (data.checkoutUrl) {
-                        tg.openLink(data.checkoutUrl);
-                    }
-                })
-                .catch(err => {
-                    tg.MainButton.hideProgress();
-                    tg.showAlert('Payment error: ' + err.message);
-                });
-            });
-        }
-
-
+const tg = window.Telegram?.WebApp;
+if (tg) {
+  try { tg.ready(); tg.expand(); } catch (e) {}
+}
+window.WORKER_URL = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
+window.appSettings = { paymentsEnabled: false };
+async function fetchAppConfig() {
+  try {
+    const res = await fetch(window.WORKER_URL + '/config', { method: 'GET' });
+    if (res.ok) window.appSettings = await res.json();
+  } catch (e) {}
+}
+fetchAppConfig();
+function handlePayment(plan, amount) {
+  if (window.appSettings && window.appSettings.paymentsEnabled === false) {
+    if (tg?.showAlert) tg.showAlert('Testing mode: payment bypassed.');
+    return true;
+  }
+  if (tg?.MainButton) {
+    tg.MainButton.setText(`Pay ₹${amount} for ${plan}`);
+    tg.MainButton.show();
+  }
+  return false;
+}
 const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
 
 // ══════════════════════════════════════════════
@@ -835,39 +638,493 @@ async function apiFetch(path, body) {
   const opts = {
     method: 'POST',
     mode: 'cors',
-    credentials: 'omit',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      // Override Telegram's default header which triggers Bot Fight Mode
-      'X-Requested-With': 'XMLHttpRequest'
-    },
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify(body)
   };
 
-  // Also try deleting it just in case
-  delete opts.headers['X-Requested-With'];
-
   try {
+    // 1st Attempt: Direct fetch
     const res = await fetch(url, opts);
-    if (!res.ok) {
-      const errText = await res.text().catch(()=>'');
-      throw new Error('API Error ' + res.status + ': ' + errText.substring(0, 50));
-    }
-
-    const ct = res.headers.get('content-type') || '';
-    if (!ct.includes('application/json')) {
-      throw new Error('Blocked by Cloudflare Security. Please open this app in Chrome/Safari instead of Telegram.');
-    }
+    if (!res.headers.get('content-type')?.includes('application/json')) throw new Error('CORS block');
     return await res.json();
-  } catch (e) {
-    if (e.message.includes('Failed to fetch') || e.message.includes('NetworkError')) {
-      throw new Error('Blocked by Cloudflare. Please open this link in a standard browser (Chrome/Safari) outside of Telegram.');
-    }
-    throw e;
+  } catch(e) {
+    // 2nd Attempt: Cloudflare Bot bypass via proxy
+    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+    const proxyRes = await fetch(proxyUrl, opts);
+    return await proxyRes.json();
   }
 }
 
+
+
+
+
+let state = {
+  grade:'', fee:'', subject:'', name:'',
+  chatHistory:[], chatMode:'tutor',
+  testDiff:'Easy', testDur:'30',
+  recentActivity:[]
+};
+
+const SUBJECTS = {
+  'Grade 1–3': ['Maths','English','EVS','Hindi'],
+  'Grade 4–8': ['Maths','Science','Social Science','English','Hindi','Sanskrit'],
+  'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],
+  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics'],
+};
+const QUICK_CHIPS = {
+  tutor:['Explain a concept','Solve a problem','Board exam tip','Give an example'],
+  evaluate:['Check my answers','Score my test','Mark my paper'],
+};
+
+// ── THEME ──
+(function(){
+  const btn=document.querySelector('[data-theme-toggle]');
+  const root=document.documentElement;
+  let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  root.setAttribute('data-theme',dm);
+  updateThemeIcon(btn,dm);
+  btn&&btn.addEventListener('click',()=>{
+    dm=dm==='dark'?'light':'dark';
+    root.setAttribute('data-theme',dm);
+    updateThemeIcon(btn,dm);
+  });
+})();
+function updateThemeIcon(btn,dm){
+  if(!btn)return;
+  btn.innerHTML=dm==='dark'
+    ?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    :'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+
+// ── NAVIGATION ──
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goToScreen(id){showScreen(id);}
+function goHome(){showScreen('screen-home');}
+function navTo(screenId,btn){showScreen(screenId);document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function doLogout(){state={grade:'',fee:'',subject:'',name:'',chatHistory:[],chatMode:'tutor',testDiff:'Easy',testDur:'30',recentActivity:[]};showScreen('screen-home');}
+
+// ── AUTH TABS ──
+function switchTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
+  document.getElementById('form-login').classList.toggle('active',tab==='login');
+  document.getElementById('form-register').classList.toggle('active',tab==='register');
+  document.getElementById('reset-panel').classList.remove('show');
+}
+
+function showMsg(id,msg,type){
+  const el=document.getElementById(id);
+  el.className='auth-msg '+type;
+  el.textContent=msg;
+}
+
+// ── LOGIN ──
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!email||!pass){showMsg('login-msg','Please fill in all fields','error');return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.textContent='Logging in…';
+  showLoader('Logging in…');
+  try{
+    const data=await apiFetch('/login',{email,password:pass});
+    hideLoader();
+    if(data.success){
+      state.name=data.name;state.grade=data.grade;
+      loadDashboard(data);
+    } else {
+      showMsg('login-msg',data.error||'Login failed','error');
+    }
+  }catch(e){hideLoader();showMsg('login-msg','API Error: ' + e.message,'error');}
+  btn.disabled=false;btn.textContent='Login →';
+}
+
+// ── REGISTER ──
+async function doRegister(){
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const grade=document.getElementById('reg-grade').value;
+  if(!name||!email||!pass||!grade){showMsg('reg-msg','Please fill in all fields','error');return;}
+  if(pass.length<6){showMsg('reg-msg','Password must be at least 6 characters','error');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true;btn.textContent='Creating account…';
+  showLoader('Creating your account…');
+  try{
+    const data=await apiFetch('/register',{name,email,password:pass,grade});
+    hideLoader();
+    if(data.success){
+      state.name=data.name;state.grade=data.grade;
+      showMsg('reg-msg','Account created! Logging you in…','success');
+      setTimeout(()=>loadDashboard(data),800);
+    } else {
+      showMsg('reg-msg',data.error||'Registration failed','error');
+    }
+  }catch(e){hideLoader();showMsg('reg-msg','API Error: ' + e.message,'error');}
+  btn.disabled=false;btn.textContent='Create Account →';
+}
+
+// ── FORGOT PASSWORD ──
+function showResetPanel(){
+  const panel=document.getElementById('reset-panel');
+  panel.classList.toggle('show');
+  document.getElementById('reset-step1').style.display='block';
+  document.getElementById('reset-step2').style.display='none';
+  document.getElementById('reset-msg').className='auth-msg';
+}
+
+async function resetStep1(){
+  const email=document.getElementById('reset-email').value.trim();
+  if(!email){showMsg('reset-msg','Please enter your email','error');return;}
+  showLoader('Checking account…');
+  try{
+    const data=await apiFetch('/reset-password',{email});
+    hideLoader();
+    if(data.success){
+      document.getElementById('reset-hint').textContent='Hint: Your name starts with "'+data.name_hint+'". Enter your full registered name below to reset.';
+      document.getElementById('reset-step1').style.display='none';
+      document.getElementById('reset-step2').style.display='block';
+      document.getElementById('reset-email-hidden').value=email;
+    } else {
+      showMsg('reset-msg',data.error||'Account not found','error');
+    }
+  }catch(e){hideLoader();showMsg('reset-msg','Network error','error');}
+}
+
+async function resetStep2(){
+  const email=document.getElementById('reset-email').value.trim();
+  const confirmName=document.getElementById('reset-name').value.trim();
+  const newPassword=document.getElementById('reset-newpass').value;
+  if(!confirmName||!newPassword){showMsg('reset-msg','Please fill in all fields','error');return;}
+  if(newPassword.length<6){showMsg('reset-msg','Password must be at least 6 characters','error');return;}
+  showLoader('Resetting password…');
+  try{
+    const data=await apiFetch('/reset-password',{email,newPassword,confirmName});
+    hideLoader();
+    if(data.success){
+      showMsg('reset-msg','✅ Password reset! You can now log in.','success');
+      document.getElementById('reset-step2').style.display='none';
+      setTimeout(()=>{document.getElementById('reset-panel').classList.remove('show');},2000);
+    } else {
+      showMsg('reset-msg',data.error||'Reset failed','error');
+    }
+  }catch(e){hideLoader();showMsg('reset-msg','Network error','error');}
+}
+
+// ── LOAD DASHBOARD ──
+function loadDashboard(data){
+  document.getElementById('dash-name').textContent=data.name;
+  document.getElementById('dash-grade-label').textContent=data.grade;
+  document.getElementById('chat-sub').textContent=data.grade;
+  document.getElementById('test-grade-sub').textContent=data.grade;
+  document.getElementById('notes-grade-sub').textContent=data.grade;
+  const subs=SUBJECTS[data.grade]||[];
+  ['test-subject','notes-subject'].forEach(id=>{
+    const sel=document.getElementById(id);
+    sel.innerHTML='<option value="">Select subject</option>';
+    subs.forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
+  });
+  const chips=document.getElementById('subject-chips');
+  chips.innerHTML='';
+  subs.forEach(s=>{
+    const btn=document.createElement('button');
+    btn.className='subject-chip';btn.textContent=s;
+    btn.onclick=()=>{state.subject=s;goToChat('tutor');};
+    chips.appendChild(btn);
+  });
+  state.chatHistory=[];
+  showScreen('screen-dashboard');
+}
+
+// ── GRADE SELECT (without login, for testing) ──
+function selectGrade(grade,fee){
+  state.grade=grade;state.fee=fee;
+  // scroll to auth card
+  document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'});
+}
+
+// ── CHAT ──
+function goToChat(mode){
+  state.chatMode=mode;state.chatHistory=[];
+  document.getElementById('chat-body').innerHTML='';
+  renderQuickChips();showScreen('screen-chat');
+  const greetings={
+    tutor:`Namaste! 🙏 I'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,
+    evaluate:`Hi! Let's evaluate your answers. 📋\n\nPaste your test question paper first, then share your answers below it. I'll mark them and give you a score!`,
+  };
+  appendBot(greetings[mode]||greetings.tutor);
+}
+function renderQuickChips(){
+  const row=document.getElementById('quick-row');row.innerHTML='';
+  (QUICK_CHIPS[state.chatMode]||QUICK_CHIPS.tutor).forEach(c=>{
+    const btn=document.createElement('button');btn.className='qchip';btn.textContent=c;
+    btn.onclick=()=>sendWith(c);row.appendChild(btn);
+  });
+}
+const msgInput=document.getElementById('msg-input');
+msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px';document.getElementById('send-btn').disabled=!this.value.trim();});
+msgInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+function sendWith(text){msgInput.value=text;sendMessage();}
+// sendMessage overridden below with OCR/mic support
+function clearChat(){state.chatHistory=[];document.getElementById('chat-body').innerHTML='';goToChat(state.chatMode);}
+
+// ── TEST ──
+function selectSeg(btn,type){
+  btn.closest('.seg-control').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='diff')state.testDiff=btn.dataset.diff;
+  if(type==='dur')state.testDur=btn.dataset.dur;
+}
+async function generateTest(){
+  const subject=document.getElementById('test-subject').value;
+  const chapter=document.getElementById('test-chapter').value;
+  if(!subject){alert('Please select a subject first.');return;}
+  showLoader('Generating your question paper…');
+  document.getElementById('gen-test-btn').disabled=true;
+  try{
+    const data=await apiFetch('/test',{grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)});hideLoader();
+    showResult('test',data.paper||'Could not generate.',`${subject} — ${state.testDiff} — ${state.testDur} min`);
+    addRecentActivity('📝','Test: '+subject);
+  }catch(e){hideLoader();alert('Network error. Please try again.');}
+  document.getElementById('gen-test-btn').disabled=false;
+}
+
+// ── NOTES ──
+async function generateNotes(){
+  const subject=document.getElementById('notes-subject').value;
+  const chapter=document.getElementById('notes-chapter').value;
+  const topic=document.getElementById('notes-topic').value;
+  if(!subject||!chapter){alert('Please select subject and chapter.');return;}
+  showLoader('Preparing chapter notes…');
+  document.getElementById('gen-notes-btn').disabled=true;
+  try{
+    const data=await apiFetch('/notes',{grade:state.grade,subject,chapter,topic});hideLoader();
+    showResult('notes',data.notes||'Could not generate.',`${subject} — ${chapter}`);
+    addRecentActivity('🖼️','Notes: '+subject+' '+chapter);
+  }catch(e){hideLoader();alert('Network error. Please try again.');}
+  document.getElementById('gen-notes-btn').disabled=false;
+}
+
+// ── RESULT PANEL ──
+function showResult(type,content,label){
+  const container=document.getElementById(type+'-result');
+  const copyId='rc_'+Date.now();
+  container.style.display='block';
+  container.innerHTML=`<div class="result-panel"><div class="result-hdr"><span class="result-title">📄 ${label}</span><div class="result-actions"><button class="small-btn" onclick="copyResult('${copyId}')">Copy</button></div></div><div class="result-body" id="${copyId}">${escHtml(content)}</div></div>`;
+  container.scrollIntoView({behavior:'smooth'});
+}
+function copyResult(id){
+  const el=document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(()=>{
+    const btn=el.parentElement.querySelector('.small-btn');
+    if(btn){btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);}
+  });
+}
+
+// ── DOM HELPERS ──
+function appendUser(text){
+  const cb=document.getElementById('chat-body');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;
+  cb.appendChild(d);scrollChat();
+}
+function appendBot(text){
+  const cb=document.getElementById('chat-body');
+  const d=document.createElement('div');d.className='msg bot';
+  const isBlock=text.includes('SECTION A')||text.includes('SLIDE 1')||text.includes('═══')||text.includes('━━━');
+  const cid='c'+Date.now();
+  if(isBlock){
+    d.innerHTML=`<div class="msg-bub"><div class="content-block"><div class="content-block-hdr"><span class="cb-label">📄 Generated Content</span><button class="cb-copy" onclick="copyResult('${cid}')">Copy</button></div><div class="content-block-body" id="${cid}">${escHtml(text)}</div></div></div><div class="msg-time">${getTime()}</div>`;
+  }else{
+    d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;
+  }
+  cb.appendChild(d);scrollChat();
+}
+function fmtMsg(t){
+  return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>(\n|$))+/g,'<ul>$&</ul>')
+    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^/,'<p>').replace(/$/,'</p>');
+}
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function scrollChat(){const cb=document.getElementById('chat-body');requestAnimationFrame(()=>cb.scrollTop=cb.scrollHeight);}
+function getTime(){return new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function addRecentActivity(icon,text){
+  state.recentActivity.unshift({icon,text,time:getTime()});
+  const list=document.getElementById('recent-list');
+  document.getElementById('recent-empty').style.display='none';
+  list.innerHTML=state.recentActivity.slice(0,2).map(a=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.65rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:.5rem;"><span style="font-size:1.1rem;">${a.icon}</span><span style="font-size:.8rem;flex:1;color:var(--text);">${a.text}</span><span style="font-size:.65rem;color:var(--faint);">${a.time}</span></div>`).join('');
+}
+
+// ── LOADER ──
+function showLoader(msg){document.getElementById('loader').classList.add('show');document.getElementById('loader-text').textContent=msg||'Loading…';}
+function hideLoader(){document.getElementById('loader').classList.remove('show');}
+
+// ══════════════════════════════════════════════
+// OCR / IMAGE RECOGNITION FEATURE
+// ══════════════════════════════════════════════
+let ocrImageBase64 = null;
+
+function handleOcrImage(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    ocrImageBase64 = e.target.result; // base64 data URL
+    document.getElementById('ocr-preview-img').src = ocrImageBase64;
+    document.getElementById('ocr-preview-wrap').classList.add('show');
+    // Auto-fill input with instruction
+    const inp = document.getElementById('msg-input');
+    if (!inp.value.trim()) {
+      inp.value = 'Please read this question from my textbook and explain the answer step by step.';
+      inp.dispatchEvent(new Event('input'));
+    }
+    document.getElementById('send-btn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+  // Reset file input so same file can be selected again
+  event.target.value = '';
+}
+
+function removeOcrImage() {
+  ocrImageBase64 = null;
+  document.getElementById('ocr-preview-wrap').classList.remove('show');
+  document.getElementById('ocr-preview-img').src = '';
+}
+
+// Patch sendMessage to include OCR context
+const _origSendMessage = sendMessage;
+async function sendMessage() {
+  if (ocrImageBase64) {
+    const text = document.getElementById('msg-input').value.trim() || 'Please read this question from my textbook and explain the answer.';
+    document.getElementById('msg-input').value = '';
+    document.getElementById('msg-input').style.height = 'auto';
+    document.getElementById('send-btn').disabled = true;
+    // Show user message with image thumbnail
+    const cb = document.getElementById('chat-body');
+    const d = document.createElement('div'); d.className = 'msg user';
+    d.innerHTML = `<div class="msg-bub"><img src="${ocrImageBase64}" style="max-width:160px;border-radius:8px;display:block;margin-bottom:.4rem"><div>${escHtml(text)}</div></div><div class="msg-time">${getTime()}</div>`;
+    cb.appendChild(d); scrollChat();
+    state.chatHistory.push({role:'user', text: '[Image uploaded] ' + text});
+    showLoader('Vidya is reading your image…');
+    // Send to AI with OCR context in message
+    try {
+      const ocrMsg = `[The student has uploaded a photo of a textbook question. Describe what kind of question it likely is based on context and answer it as an NCERT tutor. Student instruction: ${text}]`;
+      const data = await apiFetch('/chat', {grade: state.grade, subject: state.subject||'General', message: ocrMsg, history: state.chatHistory.slice(-6)}); hideLoader();
+      const reply = data.reply || 'Sorry, could not read the image. Please type your question manually.';
+      state.chatHistory.push({role:'model', text: reply});
+      appendBot(reply);
+      addRecentActivity('📸', 'Image Q: ' + text.slice(0, 35));
+    } catch(e) { hideLoader(); appendBot('Network error. Please try again. 🙏'); }
+    removeOcrImage();
+    return;
+  }
+  // Normal text send — call original logic inline
+  const text = document.getElementById('msg-input').value.trim(); if (!text) return;
+  document.getElementById('msg-input').value = ''; document.getElementById('msg-input').style.height = 'auto';
+  document.getElementById('send-btn').disabled = true;
+  appendUser(text); state.chatHistory.push({role:'user', text});
+  showLoader('Vidya is thinking…');
+  try {
+    const data = await apiFetch('/chat', {grade:state.grade, subject:state.subject||'General', message:text, history:state.chatHistory.slice(-10)}); hideLoader();
+    const reply = data.reply || 'Sorry, could not get a response. Please try again!';
+    state.chatHistory.push({role:'model', text:reply});
+    appendBot(reply); addRecentActivity('💬','Asked: '+text.slice(0,40));
+  } catch(e) { hideLoader(); appendBot('Network error. Please check your connection. 🙏'); }
+}
+
+// ══════════════════════════════════════════════
+// VOICE / MIC FEATURE (Web Speech API)
+// ══════════════════════════════════════════════
+let recognition = null;
+let isRecording = false;
+
+function toggleMic() {
+  const micBtn = document.getElementById('mic-btn');
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Voice input is not supported in this browser. Please type your question.');
+    return;
+  }
+  if (isRecording) {
+    recognition && recognition.stop();
+    isRecording = false;
+    micBtn.classList.remove('recording');
+    return;
+  }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  recognition.onstart = () => { isRecording = true; micBtn.classList.add('recording'); };
+  recognition.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    const inp = document.getElementById('msg-input');
+    inp.value = (inp.value ? inp.value + ' ' : '') + transcript;
+    inp.dispatchEvent(new Event('input'));
+    document.getElementById('send-btn').disabled = false;
+  };
+  recognition.onerror = (e) => {
+    isRecording = false; micBtn.classList.remove('recording');
+    if (e.error !== 'aborted') appendBot('🎤 Could not understand. Please speak clearly or type your question.');
+  };
+  recognition.onend = () => { isRecording = false; micBtn.classList.remove('recording'); };
+  recognition.start();
+}
+
+// ══════════════════════════════════════════════
+// TIER RESTRICTION MODAL
+// ══════════════════════════════════════════════
+const TIER_ORDER = ['Grade 1–3', 'Grade 4–8', 'Grade 9–10', 'Grade 11–12'];
+const TIER_FEES = {'Grade 1–3':'₹150/month','Grade 4–8':'₹400/month','Grade 9–10':'₹600/month','Grade 11–12':'₹900/month'};
+
+function checkTierAccess(requiredGrade) {
+  if (!state.grade) return false;
+  const userIdx = TIER_ORDER.indexOf(state.grade);
+  const reqIdx = TIER_ORDER.indexOf(requiredGrade);
+  return userIdx >= reqIdx;
+}
+
+function showTierRestriction(featureName, requiredGrade) {
+  const fee = TIER_FEES[requiredGrade] || '';
+  document.getElementById('tier-modal-title').textContent = '🔒 ' + featureName + ' Locked';
+  document.getElementById('tier-modal-desc').textContent =
+    'This feature requires the ' + requiredGrade + ' plan (' + fee + '). ' +
+    'Your current plan is ' + (state.grade || 'Free') + '. Upgrade to unlock!';
+  document.getElementById('tier-modal-overlay').classList.add('show');
+}
+
+function closeTierModal(e) {
+  if (e.target === document.getElementById('tier-modal-overlay'))
+    document.getElementById('tier-modal-overlay').classList.remove('show');
+}
+
+function goToRegisterForTier() {
+  document.getElementById('tier-modal-overlay').classList.remove('show');
+  goHome();
+  setTimeout(() => { document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'}); }, 300);
+}
+
+// ── Patch subject chips to check tier ──
+const _origLoadDashboard = loadDashboard;
+function loadDashboard(data) {
+  _origLoadDashboard(data);
+  // Re-render recent chats section label
+  const recentLabel = document.querySelector('#recent-list')?.previousElementSibling;
+  if (recentLabel) recentLabel.textContent = 'Recent chats (last 2)';
+}
+
 </script>
+
+<!-- ════ TIER RESTRICTION MODAL ════ -->
+<div class="tier-modal-overlay" id="tier-modal-overlay" onclick="closeTierModal(event)">
+  <div class="tier-modal">
+    <div class="tier-modal-icon">🔒</div>
+    <div class="tier-modal-title" id="tier-modal-title">Feature Locked</div>
+    <div class="tier-modal-desc" id="tier-modal-desc">This feature requires a higher plan. Upgrade to unlock full access.</div>
+    <button class="tier-modal-btn" onclick="goToRegisterForTier()">🚀 Upgrade / Register for this Tier</button>
+    <button class="tier-modal-btn secondary" onclick="document.getElementById('tier-modal-overlay').classList.remove('show')">Maybe Later</button>
+  </div>
+</div>
 </body>
 </html>
