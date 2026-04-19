@@ -634,25 +634,32 @@ const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
 // Adds Referer + required headers so worker always responds
 // ══════════════════════════════════════════════
 async function apiFetch(path, body) {
-  const url = API_BASE + path;
+  const url = (window.WORKER_URL || API_BASE) + path;
   const opts = {
     method: 'POST',
     mode: 'cors',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(body)
+    credentials: 'omit',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(body || {})
   };
 
+  const res = await fetch(url, opts);
+  const raw = await res.text();
+  let data = null;
   try {
-    // 1st Attempt: Direct fetch
-    const res = await fetch(url, opts);
-    if (!res.headers.get('content-type')?.includes('application/json')) throw new Error('CORS block');
-    return await res.json();
-  } catch(e) {
-    // 2nd Attempt: Cloudflare Bot bypass via proxy
-    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-    const proxyRes = await fetch(proxyUrl, opts);
-    return await proxyRes.json();
+    data = raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    throw new Error('Non-JSON response from API: ' + raw.slice(0, 120));
   }
+
+  if (!res.ok) {
+    throw new Error(data.error || ('HTTP ' + res.status));
+  }
+
+  return data;
 }
 
 
