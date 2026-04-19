@@ -302,6 +302,147 @@ html, body { height: 100%; height: 100dvh; overflow: hidden; }
 .hero-logo-img { width: 72px; height: 72px; border-radius: 50%; object-fit: contain; background: #fff; padding: 4px; box-shadow: var(--shadow-md); }
 .topbar-logo-img { width: 28px; height: 28px; border-radius: 50%; object-fit: contain; background: var(--primary); padding: 2px; }
 
+
+        /* --- Grid & Card Layout Fixes --- */
+        .grid-2-cols {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .tier-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e5e7eb;
+            min-height: 140px; /* Prevent squishing */
+        }
+
+        .tier-card img, .tier-card .icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 8px;
+        }
+
+        /* Fix the header/logo area so it doesn't get cut off */
+        .app-header {
+            background-color: #0f766e; /* Match your teal brand color */
+            color: white;
+            text-align: center;
+            padding: 40px 20px 60px 20px;
+            position: relative;
+        }
+
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Main content wrapper to offset the overlapping logo */
+        .main-content {
+            padding-top: 60px; /* Make room for the logo overlapping */
+            padding-bottom: 20px;
+        }
+
+        /* Stop body from cutting things off */
+        body {
+            /* removed height: var(--tg-viewport-height) to allow natural scrolling on long pages */
+            min-height: 100vh;
+            min-height: var(--tg-viewport-height, 100vh);
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #f3f4f6;
+        }
+
+
+    /* === FIX FOR SCREENSHOT OVERLAP === */
+    .top-header-bg {
+        background-color: #0f4c5c; /* Dark teal color from screenshot */
+        width: 100%;
+        height: 120px; /* Fixed height for the header */
+        position: relative;
+        z-index: 1;
+    }
+
+    .main-body-container {
+        background-color: #f4f1ea; /* Cream/off-white color from screenshot */
+        width: 100%;
+        min-height: calc(100vh - 120px);
+        border-top-left-radius: 20px; /* Rounded top corners */
+        border-top-right-radius: 20px;
+        position: relative;
+        margin-top: -30px; /* Pulls the white body UP over the green header */
+        padding-top: 50px; /* Pushes the text DOWN so the logo fits */
+        padding-left: 20px;
+        padding-right: 20px;
+        z-index: 2;
+    }
+
+    .floating-logo-circle {
+        width: 70px;
+        height: 70px;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: -35px; /* Halfway out of the white container */
+        left: 50%;
+        transform: translateX(-50%); /* Centers the logo perfectly */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        z-index: 3;
+    }
+
+    .floating-logo-circle img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    .title-text {
+        text-align: left;
+        font-size: 12px;
+        font-weight: bold;
+        color: #6b7280;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+
+    /* Ensure the body doesn't strictly lock the height, allowing scrolling */
+    body {
+        height: auto !important; 
+        min-height: var(--tg-viewport-stable-height, 100vh);
+        background-color: #0f4c5c; /* So overscrolling looks nice */
+    }
+    /* ================================== */
+
 </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -726,1073 +867,7 @@ async function apiFetch(path, body) {
     throw e;
   }
 }
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Vidya — NCERT Tutor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root,[data-theme="light"]{
-  --bg:#f5f4f0;--surface:#fff;--surface-2:#f8f7f4;--surface-off:#eeece8;
-  --border:rgba(0,0,0,0.08);--divider:rgba(0,0,0,0.06);
-  --text:#1e1c17;--muted:#6c6a65;--faint:#b3b1ac;
-  --primary:#01696f;--primary-h:#0c4e54;--primary-hl:rgba(1,105,111,0.1);
-  --accent:#d19900;--accent-hl:rgba(209,153,0,0.1);
-  --green:#437a22;--green-hl:rgba(67,122,34,0.1);
-  --red:#c0392b;--red-hl:rgba(192,57,43,0.1);
-  --user-bg:#01696f;--bot-bg:#fff;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.07);--shadow-md:0 4px 16px rgba(0,0,0,0.09);--shadow-lg:0 12px 40px rgba(0,0,0,0.12);
-  --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.25rem;--r-full:9999px;
-  --font:'Plus Jakarta Sans',sans-serif;--ease:180ms cubic-bezier(.16,1,.3,1);
-}
-[data-theme="dark"]{
-  --bg:#121110;--surface:#1c1b18;--surface-2:#201f1c;--surface-off:#191817;
-  --border:rgba(255,255,255,0.07);--divider:rgba(255,255,255,0.05);
-  --text:#cecdca;--muted:#747270;--faint:#484644;
-  --primary:#4f98a3;--primary-h:#227f8b;--primary-hl:rgba(79,152,163,0.12);
-  --accent:#e8af34;--accent-hl:rgba(232,175,52,0.12);
-  --green:#6daa45;--green-hl:rgba(109,170,69,0.12);
-  --red:#e05c4a;--red-hl:rgba(224,92,74,0.12);
-  --user-bg:#1e6b73;--bot-bg:#232220;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.3);--shadow-md:0 4px 16px rgba(0,0,0,0.4);--shadow-lg:0 12px 40px rgba(0,0,0,0.5);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
-body{font-family:var(--font);font-size:1rem;color:var(--text);background:var(--bg);min-height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
-button,a{cursor:pointer;background:none;border:none;font:inherit;color:inherit;text-decoration:none;}
-.screen{display:none;flex-direction:column;flex:1;overflow:hidden;height:100dvh;}
-.screen.active{display:flex;}
-.topbar{display:flex;align-items:center;gap:.75rem;padding:0 1rem;height:56px;flex-shrink:0;background:var(--surface);border-bottom:1px solid var(--divider);box-shadow:var(--shadow-sm);position:relative;z-index:10;}
-.topbar-back{width:34px;height:34px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all var(--ease);}
-.topbar-back:hover{background:var(--surface-off);color:var(--text);}
-.topbar-title{font-size:.95rem;font-weight:800;letter-spacing:-.02em;flex:1;}
-.topbar-sub{font-size:.72rem;color:var(--muted);}
-.topbar-actions{display:flex;align-items:center;gap:.375rem;margin-left:auto;}
-.icon-btn{width:34px;height:34px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:var(--muted);border:1px solid var(--border);transition:all var(--ease);}
-.icon-btn:hover{background:var(--surface-off);color:var(--text);}
-.logo-mark{width:32px;height:32px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-mark svg{display:block;}
-
-/* ── HOME ── */
-#screen-home{background:var(--bg);overflow-y:auto;}
-.home-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-h) 100%);padding:2.5rem 1.25rem 2rem;text-align:center;position:relative;overflow:hidden;}
-.hero-logo-wrap{display:flex;justify-content:center;margin-bottom:1rem;}
-.hero-logo{width:68px;height:68px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border-radius:20px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.25);}
-.hero-title{font-size:1.7rem;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:.35rem;}
-.hero-sub{font-size:.85rem;color:rgba(255,255,255,0.8);line-height:1.5;max-width:260px;margin:0 auto;}
-.hero-badge{display:inline-flex;align-items:center;gap:.35rem;margin-top:.875rem;background:rgba(255,255,255,0.15);color:#fff;font-size:.72rem;font-weight:700;padding:.3rem .75rem;border-radius:var(--r-full);letter-spacing:.04em;border:1px solid rgba(255,255,255,0.2);}
-.home-section{padding:1.25rem 1rem 0;}
-.section-label{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;}
-.grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.5rem;}
-.grade-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1rem;display:flex;flex-direction:column;gap:.25rem;box-shadow:var(--shadow-sm);transition:all var(--ease);position:relative;overflow:hidden;}
-.grade-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r-xl) var(--r-xl) 0 0;}
-.grade-card.g1::after{background:var(--green);}.grade-card.g2::after{background:var(--primary);}.grade-card.g3::after{background:var(--accent);}.grade-card.g4::after{background:var(--red);}
-.grade-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.grade-card:active{transform:translateY(0);}
-.grade-emoji{font-size:1.5rem;margin-bottom:.15rem;}
-.grade-tier{font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
-.grade-name{font-size:.95rem;font-weight:800;letter-spacing:-.02em;}
-.grade-fee{font-size:.72rem;font-weight:700;color:var(--primary);background:var(--primary-hl);padding:.15rem .5rem;border-radius:var(--r-full);display:inline-flex;width:fit-content;margin-top:.2rem;}
-
-/* ── AUTH CARD ── */
-.auth-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1.5rem;margin:1.25rem 1rem;box-shadow:var(--shadow-md);}
-.auth-tabs{display:flex;gap:.375rem;margin-bottom:1.25rem;}
-.auth-tab{flex:1;padding:.55rem;text-align:center;font-size:.82rem;font-weight:700;border-radius:var(--r-lg);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);background:var(--surface-2);}
-.auth-tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-.auth-form{display:none;}.auth-form.active{display:block;}
-.auth-field{margin-bottom:.875rem;}
-.auth-label{font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:.35rem;display:block;letter-spacing:.02em;}
-.auth-input{width:100%;padding:.65rem .875rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.88rem;outline:none;transition:border-color var(--ease);color:var(--text);}
-.auth-input:focus{border-color:var(--primary);}
-.auth-select{width:100%;padding:.65rem .875rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.88rem;outline:none;transition:border-color var(--ease);color:var(--text);appearance:none;}
-.auth-select:focus{border-color:var(--primary);}
-.auth-btn{width:100%;padding:.8rem;background:var(--primary);color:#fff;font-weight:700;font-size:.92rem;border-radius:var(--r-lg);transition:background var(--ease);margin-top:.25rem;}
-.auth-btn:hover{background:var(--primary-h);}
-.auth-btn:disabled{opacity:.5;pointer-events:none;}
-.auth-msg{font-size:.78rem;padding:.6rem .875rem;border-radius:var(--r-lg);margin-bottom:.875rem;display:none;}
-.auth-msg.error{background:var(--red-hl);color:var(--red);border:1px solid var(--red);display:block;}
-.auth-msg.success{background:var(--green-hl);color:var(--green);border:1px solid var(--green);display:block;}
-.auth-link{font-size:.75rem;color:var(--primary);text-align:center;display:block;margin-top:.75rem;font-weight:600;}
-.auth-link:hover{text-decoration:underline;}
-
-/* ── RESET PASSWORD PANEL ── */
-.reset-panel{background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1.25rem;margin-top:1rem;display:none;}
-.reset-panel.show{display:block;}
-.reset-title{font-size:.85rem;font-weight:800;margin-bottom:.875rem;color:var(--primary);}
-
-/* ── DASHBOARD ── */
-#screen-dashboard{overflow-y:auto;}
-.dash-grade-bar{background:var(--primary);color:#fff;padding:.625rem 1rem;display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;flex-shrink:0;}
-.dash-grade-pill{background:rgba(255,255,255,0.2);padding:.15rem .6rem;border-radius:var(--r-full);font-weight:700;font-size:.75rem;}
-.dash-scroll{flex:1;overflow-y:auto;padding:1.25rem 1rem 5rem;}
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.5rem;}
-.action-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:1.1rem;display:flex;flex-direction:column;gap:.35rem;box-shadow:var(--shadow-sm);transition:all var(--ease);}
-.action-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.action-card:active{transform:translateY(0);}
-.action-icon{width:40px;height:40px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.1rem;}
-.action-icon.teal{background:var(--primary-hl);}.action-icon.gold{background:var(--accent-hl);}.action-icon.green{background:var(--green-hl);}.action-icon.red{background:var(--red-hl);}
-.action-name{font-size:.88rem;font-weight:700;}.action-desc{font-size:.72rem;color:var(--muted);line-height:1.4;}
-.subject-section{margin-bottom:1.5rem;}
-.subject-chips{display:flex;flex-wrap:wrap;gap:.5rem;}
-.subject-chip{font-size:.78rem;font-weight:600;padding:.375rem .875rem;border-radius:var(--r-full);background:var(--surface);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);}
-.subject-chip:hover,.subject-chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-.recent-section{margin-bottom:1.5rem;}
-.recent-empty{background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r-xl);padding:1.5rem;text-align:center;color:var(--muted);font-size:.82rem;}
-
-/* ── CHAT ── */
-#screen-chat{background:var(--bg);}
-.chat-body{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.75rem;}
-.chat-body::-webkit-scrollbar{width:3px;}.chat-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-.msg{display:flex;flex-direction:column;max-width:88%;animation:fadeUp .2s ease-out;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
-.msg.user{align-self:flex-end;align-items:flex-end;}.msg.bot{align-self:flex-start;align-items:flex-start;}
-.msg-bub{padding:.65rem .9rem;border-radius:var(--r-2xl);font-size:.875rem;line-height:1.65;word-break:break-word;}
-.msg.user .msg-bub{background:var(--user-bg);color:#fff;border-bottom-right-radius:var(--r-sm);}
-.msg.bot .msg-bub{background:var(--bot-bg);border:1px solid var(--border);border-bottom-left-radius:var(--r-sm);box-shadow:var(--shadow-sm);}
-.msg-bub strong{font-weight:700;}.msg-bub em{font-style:italic;}.msg-bub ul{padding-left:1.2rem;margin:.3rem 0;}.msg-bub li{margin-bottom:.15rem;}
-.msg-bub h3{font-size:.875rem;font-weight:700;margin:.5rem 0 .2rem;}.msg-bub h3:first-child{margin-top:0;}
-.msg-bub p{margin-bottom:.4rem;}.msg-bub p:last-child{margin-bottom:0;}
-.msg-bub code{background:var(--surface-off);border-radius:3px;padding:.1rem .3rem;font-family:monospace;font-size:.82rem;}
-.msg-time{font-size:.62rem;color:var(--faint);margin-top:.2rem;padding:0 .2rem;}
-.content-block{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-lg);font-size:.78rem;line-height:1.75;overflow-x:auto;font-family:monospace;white-space:pre-wrap;word-break:break-word;}
-.content-block-hdr{display:flex;align-items:center;justify-content:space-between;padding:.6rem .875rem;border-bottom:1px solid var(--divider);font-family:var(--font);}
-.cb-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--primary);}
-.cb-copy{font-size:.68rem;padding:.2rem .55rem;border:1px solid var(--border);border-radius:var(--r-full);color:var(--muted);transition:all var(--ease);font-family:var(--font);}
-.cb-copy:hover{background:var(--primary-hl);color:var(--primary);}
-.content-block-body{padding:.75rem .875rem;}
-.typing-ind{display:flex;align-items:center;gap:4px;padding:.65rem .875rem;background:var(--bot-bg);border:1px solid var(--border);border-radius:var(--r-2xl);border-bottom-left-radius:var(--r-sm);width:fit-content;box-shadow:var(--shadow-sm);}
-.td{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:bounce 1.2s infinite ease-in-out;}
-.td:nth-child(2){animation-delay:.2s;}.td:nth-child(3){animation-delay:.4s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-.quick-row{display:flex;gap:.45rem;padding:.6rem 1rem;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--divider);flex-shrink:0;background:var(--surface);}
-.quick-row::-webkit-scrollbar{display:none;}
-.qchip{white-space:nowrap;font-size:.73rem;font-weight:600;padding:.3rem .8rem;border-radius:var(--r-full);background:var(--surface-2);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);flex-shrink:0;}
-.qchip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-hl);}
-.input-bar{display:flex;align-items:flex-end;gap:.625rem;padding:.75rem 1rem;background:var(--surface);border-top:1px solid var(--divider);flex-shrink:0;}
-.input-wrap{flex:1;display:flex;align-items:flex-end;gap:.5rem;background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r-2xl);padding:.55rem .875rem;transition:border-color var(--ease);}
-.input-wrap:focus-within{border-color:var(--primary);}
-#msg-input{flex:1;background:none;border:none;outline:none;resize:none;font-size:.875rem;line-height:1.5;max-height:110px;min-height:22px;color:var(--text);}
-#msg-input::placeholder{color:var(--faint);}
-.send-btn{width:38px;height:38px;border-radius:var(--r-full);flex-shrink:0;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;transition:background var(--ease),transform var(--ease);}
-.send-btn:hover{background:var(--primary-h);}.send-btn:active{transform:scale(.93);}.send-btn:disabled{opacity:.35;pointer-events:none;}
-
-/* ── TEST / NOTES ── */
-#screen-test,#screen-notes{overflow-y:auto;}
-.test-form-body,.notes-form-body{flex:1;overflow-y:auto;padding:1.25rem 1rem 5rem;}
-.form-group{margin-bottom:1.1rem;}
-.form-label{font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;display:block;letter-spacing:.02em;}
-.form-input,.form-select{width:100%;padding:.65rem .875rem;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:.88rem;outline:none;transition:border-color var(--ease);color:var(--text);}
-.form-input:focus,.form-select:focus{border-color:var(--primary);}
-.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c6a65' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .75rem center;padding-right:2.25rem;}
-.seg-control{display:flex;gap:.375rem;}
-.seg-btn{flex:1;padding:.5rem;text-align:center;font-size:.78rem;font-weight:700;border-radius:var(--r-lg);border:1.5px solid var(--border);color:var(--muted);transition:all var(--ease);background:var(--surface);}
-.seg-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
-.generate-btn{width:100%;padding:.8rem;background:var(--primary);color:#fff;font-weight:700;font-size:.92rem;border-radius:var(--r-lg);transition:background var(--ease);margin-top:.5rem;}
-.generate-btn:hover{background:var(--primary-h);}.generate-btn:disabled{opacity:.5;pointer-events:none;}
-.result-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-md);margin-top:1.25rem;}
-.result-hdr{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;border-bottom:1px solid var(--divider);background:var(--primary-hl);}
-.result-title{font-size:.85rem;font-weight:700;color:var(--primary);}.result-actions{display:flex;gap:.5rem;}
-.result-body{padding:1rem;font-size:.8rem;font-family:monospace;white-space:pre-wrap;line-height:1.8;word-break:break-word;}
-.small-btn{font-size:.72rem;padding:.25rem .65rem;border:1px solid var(--border);border-radius:var(--r-full);color:var(--muted);transition:all var(--ease);}
-.small-btn:hover{background:var(--primary-hl);color:var(--primary);}
-
-/* ── BOTTOM NAV ── */
-.bottom-nav{display:flex;background:var(--surface);border-top:1px solid var(--divider);padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;box-shadow:0 -4px 16px rgba(0,0,0,.06);position:fixed;bottom:0;left:0;right:0;z-index:50;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.5rem .25rem .45rem;gap:.2rem;font-size:.62rem;font-weight:700;letter-spacing:.02em;color:var(--muted);transition:color var(--ease);}
-.nav-item.active{color:var(--primary);}.nav-item svg{transition:transform var(--ease);}.nav-item.active svg{transform:scale(1.1);}
-
-/* ── LOADER ── */
-.loader-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
-.loader-overlay.show{display:flex;}
-.loader-box{background:var(--surface);border-radius:var(--r-xl);padding:1.5rem 2rem;display:flex;flex-direction:column;align-items:center;gap:.75rem;box-shadow:var(--shadow-lg);min-width:200px;}
-.loader-spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.loader-text{font-size:.82rem;color:var(--muted);font-weight:600;}
-
-/* ── MOBILE FIT FIXES ── */
-html, body { height: 100%; height: 100dvh; overflow: hidden; }
-.screen { height: 100dvh; height: 100%; max-height: 100dvh; }
-.home-hero { padding-top: max(1.5rem, env(safe-area-inset-top)); }
-.input-bar { padding-bottom: max(.75rem, env(safe-area-inset-bottom)); }
-.nav-bar { padding-bottom: max(.5rem, env(safe-area-inset-bottom)); }
-/* Ensure content never hides behind nav */
-.scroll-body { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
-.chat-body { padding-bottom: 0; }
-
-/* ── TIER RESTRICTION MODAL ── */
-.tier-modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 9000;
-  display: none; align-items: flex-end; justify-content: center;
-}
-.tier-modal-overlay.show { display: flex; }
-.tier-modal {
-  background: var(--surface); border-radius: var(--r-2xl) var(--r-2xl) 0 0;
-  padding: 1.5rem 1.25rem max(1.5rem, env(safe-area-inset-bottom));
-  width: 100%; max-width: 500px; box-shadow: var(--shadow-lg);
-  animation: slideUp .25s var(--ease);
-}
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.tier-modal-icon { font-size: 2.5rem; text-align: center; margin-bottom: .5rem; }
-.tier-modal-title { font-size: 1.1rem; font-weight: 800; text-align: center; margin-bottom: .35rem; }
-.tier-modal-desc { font-size: .85rem; color: var(--muted); text-align: center; margin-bottom: 1.25rem; line-height: 1.5; }
-.tier-modal-btn {
-  display: block; width: 100%; padding: .85rem; border-radius: var(--r-lg);
-  background: var(--primary); color: #fff; font-weight: 700; font-size: .95rem;
-  text-align: center; margin-bottom: .625rem; cursor: pointer; border: none;
-}
-.tier-modal-btn.secondary { background: var(--surface-off); color: var(--text); }
-
-/* ── OCR IMAGE PREVIEW ── */
-.ocr-preview-wrap {
-  padding: .5rem .75rem 0; display: none;
-}
-.ocr-preview-wrap.show { display: block; }
-.ocr-preview-img {
-  max-height: 120px; border-radius: var(--r-md); border: 1px solid var(--border);
-  object-fit: contain; max-width: 100%;
-}
-.ocr-remove-btn {
-  display: inline-flex; align-items: center; gap: .25rem;
-  font-size: .75rem; color: var(--red); margin-top: .25rem;
-  background: none; border: none; cursor: pointer; padding: 0;
-}
-
-/* ── MIC BUTTON ACTIVE STATE ── */
-.mic-btn.recording { color: var(--red) !important; animation: pulse 1s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-/* ── INPUT BAR ICONS ── */
-.input-actions { display: flex; align-items: flex-end; gap: .375rem; }
-.input-icon-btn {
-  width: 36px; height: 36px; border-radius: var(--r-full);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted); background: var(--surface-off);
-  border: 1px solid var(--border); cursor: pointer; flex-shrink: 0;
-  transition: all var(--ease);
-}
-.input-icon-btn:hover { color: var(--primary); border-color: var(--primary); background: var(--primary-hl); }
-
-/* ── HOME BUTTON IN TOPBAR ── */
-.topbar-home-btn {
-  width: 34px; height: 34px; border-radius: var(--r-full);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted); transition: all var(--ease);
-}
-.topbar-home-btn:hover { background: var(--surface-off); color: var(--text); }
-
-/* ── RECENT CHAT ITEMS (limit 2) ── */
-.recent-chat-item {
-  display: flex; align-items: center; gap: .6rem;
-  padding: .65rem .875rem; background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--r-lg); margin-bottom: .5rem;
-  cursor: pointer; transition: background var(--ease);
-}
-.recent-chat-item:hover { background: var(--primary-hl); }
-.recent-chat-icon { font-size: 1.1rem; }
-.recent-chat-text { font-size: .8rem; flex: 1; color: var(--text); }
-.recent-chat-time { font-size: .65rem; color: var(--faint); }
-
-/* ── LOGO IMAGE ── */
-.hero-logo-img { width: 72px; height: 72px; border-radius: 50%; object-fit: contain; background: #fff; padding: 4px; box-shadow: var(--shadow-md); }
-.topbar-logo-img { width: 28px; height: 28px; border-radius: 50%; object-fit: contain; background: var(--primary); padding: 2px; }
-
-</style>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body>
-
-<!-- LOADER -->
-<div class="loader-overlay" id="loader">
-  <div class="loader-box">
-    <div class="loader-spinner"></div>
-    <div class="loader-text" id="loader-text">Thinking...</div>
-  </div>
-</div>
-
-<!-- ════ SCREEN 1: HOME / GRADE SELECT ════ -->
-<div class="screen active" id="screen-home" style="overflow-y:auto;">
-  <div class="home-hero">
-    <div class="hero-logo-wrap">
-      <img src="https://prashito.github.io/ncert-tutor/logo.png" alt="Vidya Logo" class="hero-logo-img" onerror="this.src='https://raw.githubusercontent.com/prashito/ncert-tutor/main/logo.png';this.onerror=function(){this.style.display='none';document.getElementById('hero-logo-fallback').style.display='flex';}">
-      <div class="hero-logo" id="hero-logo-fallback" style="display:none">
-        <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
-          <text x="20" y="29" text-anchor="middle" fill="white" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800">V</text>
-        </svg>
-      </div>
-    </div>
-    <div class="hero-title">Vidya Tutor</div>
-    <div class="hero-sub">Your personal NCERT tutor for Grades 1–12</div>
-    <div class="hero-badge">📚 CBSE · NCERT Curriculum</div>
-  </div>
-  <div class="home-section">
-    <div class="section-label">Select your class to begin</div>
-    <div class="grade-grid">
-      <div class="grade-card g1" onclick="selectGrade('Grade 1–3','₹150')">
-        <div class="grade-emoji">🌱</div><div class="grade-tier">Primary</div>
-        <div class="grade-name">Grade 1–3</div><div class="grade-fee">₹150/month</div>
-      </div>
-      <div class="grade-card g2" onclick="selectGrade('Grade 4–8','₹400')">
-        <div class="grade-emoji">📖</div><div class="grade-tier">Middle</div>
-        <div class="grade-name">Grade 4–8</div><div class="grade-fee">₹400/month</div>
-      </div>
-      <div class="grade-card g3" onclick="selectGrade('Grade 9–10','₹600')">
-        <div class="grade-emoji">🔬</div><div class="grade-tier">Secondary</div>
-        <div class="grade-name">Grade 9–10</div><div class="grade-fee">₹600/month</div>
-      </div>
-      <div class="grade-card g4" onclick="selectGrade('Grade 11–12','₹900')">
-        <div class="grade-emoji">🎓</div><div class="grade-tier">Senior</div>
-        <div class="grade-name">Grade 11–12</div><div class="grade-fee">₹900/month</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── AUTH CARD ── -->
-  <div class="auth-card">
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-      <button class="auth-tab" onclick="switchTab('register')">Register</button>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <div class="auth-form active" id="form-login">
-      <div id="login-msg" class="auth-msg"></div>
-      <div class="auth-field">
-        <label class="auth-label">Email</label>
-        <input type="email" class="auth-input" id="login-email" placeholder="you@example.com">
-      </div>
-      <div class="auth-field">
-        <label class="auth-label">Password</label>
-        <input type="password" class="auth-input" id="login-pass" placeholder="••••••••">
-      </div>
-      <button class="auth-btn" id="login-btn" onclick="doLogin()">Login →</button>
-      <a class="auth-link" onclick="showResetPanel()">Forgot password?</a>
-
-      <!-- FORGOT PASSWORD PANEL -->
-      <div class="reset-panel" id="reset-panel">
-        <div class="reset-title">🔑 Reset Password</div>
-        <div id="reset-msg" class="auth-msg"></div>
-        <!-- Step 1 -->
-        <div id="reset-step1">
-          <div class="auth-field">
-            <label class="auth-label">Your registered email</label>
-            <input type="email" class="auth-input" id="reset-email" placeholder="you@example.com">
-          </div>
-          <button class="auth-btn" onclick="resetStep1()">Check Account →</button>
-        </div>
-        <!-- Step 2 (hidden until step 1 passes) -->
-        <div id="reset-step2" style="display:none;">
-          <div id="reset-hint" style="font-size:.78rem;color:var(--muted);margin-bottom:.875rem;background:var(--primary-hl);padding:.6rem .875rem;border-radius:var(--r-lg);"></div>
-          <div class="auth-field">
-            <label class="auth-label">Your full registered name</label>
-            <input type="text" class="auth-input" id="reset-name" placeholder="e.g. Prashanth Muthur">
-          </div>
-          <div class="auth-field">
-            <label class="auth-label">New password</label>
-            <input type="password" class="auth-input" id="reset-newpass" placeholder="Min. 6 characters">
-          </div>
-          <button class="auth-btn" onclick="resetStep2()">Reset Password ✓</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- REGISTER FORM -->
-    <div class="auth-form" id="form-register">
-      <div id="reg-msg" class="auth-msg"></div>
-      <div class="auth-field">
-        <label class="auth-label">Full Name</label>
-        <input type="text" class="auth-input" id="reg-name" placeholder="e.g. Prashanth M">
-      </div>
-      <div class="auth-field">
-        <label class="auth-label">Email</label>
-        <input type="email" class="auth-input" id="reg-email" placeholder="you@example.com">
-      </div>
-      <div class="auth-field">
-        <label class="auth-label">Password</label>
-        <input type="password" class="auth-input" id="reg-pass" placeholder="Min. 6 characters">
-      </div>
-      <div class="auth-field">
-        <label class="auth-label">Grade</label>
-        <select class="auth-select" id="reg-grade">
-          <option value="">Select grade</option>
-          <option value="Grade 1–3">Grade 1–3 (Primary)</option>
-          <option value="Grade 4–8">Grade 4–8 (Middle)</option>
-          <option value="Grade 9–10">Grade 9–10 (Secondary)</option>
-          <option value="Grade 11–12">Grade 11–12 (Senior)</option>
-        </select>
-      </div>
-      <button class="auth-btn" id="reg-btn" onclick="doRegister()">Create Account →</button>
-    </div>
-  </div>
-</div>
-
-<!-- ════ SCREEN 2: DASHBOARD ════ -->
-<div class="screen" id="screen-dashboard">
-  <div class="topbar">
-    <img src="https://prashito.github.io/ncert-tutor/logo.png" alt="V" class="topbar-logo-img" onerror="this.src='https://raw.githubusercontent.com/prashito/ncert-tutor/main/logo.png';">
-    <div><div class="topbar-title">Vidya Tutor</div></div>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="theme-btn" data-theme-toggle aria-label="Toggle theme">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-      <button class="icon-btn" onclick="doLogout()" title="Logout" style="font-size:.65rem;font-weight:700;">OUT</button>
-    </div>
-  </div>
-  <div class="dash-grade-bar">
-    <span>👋 Hi, <strong id="dash-name">Student</strong></span>
-    <span class="dash-grade-pill" id="dash-grade-label">Grade 9–10</span>
-    <button onclick="goHome()" style="margin-left:auto;font-size:.72rem;opacity:.75;font-weight:600;color:#fff;">Change →</button>
-  </div>
-  <div class="dash-scroll scroll-body">
-    <div class="section-label" style="padding-top:.25rem;">What would you like to do?</div>
-    <div class="action-grid">
-      <div class="action-card" onclick="goToChat('tutor')">
-        <div class="action-icon teal">💬</div>
-        <div class="action-name">Ask a Doubt</div>
-        <div class="action-desc">Get instant NCERT answers</div>
-      </div>
-      <div class="action-card" onclick="goToScreen('screen-test')">
-        <div class="action-icon gold">📝</div>
-        <div class="action-name">Cycle Test</div>
-        <div class="action-desc">Generate a question paper</div>
-      </div>
-      <div class="action-card" onclick="goToScreen('screen-notes')">
-        <div class="action-icon green">🖼️</div>
-        <div class="action-name">Chapter Notes</div>
-        <div class="action-desc">Visual slides & summaries</div>
-      </div>
-      <div class="action-card" onclick="goToChat('evaluate')">
-        <div class="action-icon red">✅</div>
-        <div class="action-name">Check Answers</div>
-        <div class="action-desc">Evaluate your test answers</div>
-      </div>
-    </div>
-    <div class="subject-section">
-      <div class="section-label">Quick subject access</div>
-      <div class="subject-chips" id="subject-chips"></div>
-    </div>
-    <div class="recent-section">
-      <div class="section-label">Recent activity</div>
-      <div class="recent-empty" id="recent-empty">No activity yet. Start by asking a doubt! 📚</div>
-      <div id="recent-list"></div>
-    </div>
-  </div>
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="navTo('screen-dashboard',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Home
-    </button>
-    <button class="nav-item" onclick="goToChat('tutor');navTo('screen-chat',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Tutor
-    </button>
-    <button class="nav-item" onclick="goToScreen('screen-test');navTo('screen-test',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Test
-    </button>
-    <button class="nav-item" onclick="goToScreen('screen-notes');navTo('screen-notes',this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Notes
-    </button>
-  </nav>
-</div>
-
-<!-- ════ SCREEN 3: CHAT ════ -->
-<div class="screen" id="screen-chat">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <img src="https://prashito.github.io/ncert-tutor/logo.png" alt="V" class="topbar-logo-img" onerror="this.src='https://raw.githubusercontent.com/prashito/ncert-tutor/main/logo.png';">
-    <div><div class="topbar-title">Ask a Doubt</div><div class="topbar-sub" id="chat-sub">NCERT Tutor</div></div>
-    <div class="topbar-actions">
-      <button class="icon-btn" onclick="clearChat()" title="Clear chat">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-      </button>
-      <button class="icon-btn topbar-home-btn" onclick="goHome()" title="Home">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </button>
-    </div>
-  </div>
-  <div class="chat-body" id="chat-body"></div>
-  <div class="quick-row" id="quick-row"></div>
-  <!-- OCR Image Preview -->
-  <div class="ocr-preview-wrap" id="ocr-preview-wrap">
-    <img id="ocr-preview-img" class="ocr-preview-img" src="" alt="Selected image">
-    <button class="ocr-remove-btn" onclick="removeOcrImage()">✕ Remove image</button>
-  </div>
-  <input type="file" id="ocr-file-input" accept="image/*" capture="environment" style="display:none" onchange="handleOcrImage(event)">
-  <div class="input-bar">
-    <div class="input-actions">
-      <!-- Camera / OCR button -->
-      <button class="input-icon-btn" onclick="document.getElementById('ocr-file-input').click()" title="Scan textbook question">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
-      </button>
-      <!-- Mic button -->
-      <button class="input-icon-btn mic-btn" id="mic-btn" onclick="toggleMic()" title="Voice input">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-      </button>
-    </div>
-    <div class="input-wrap">
-      <textarea id="msg-input" rows="1" placeholder="Type your NCERT question..." aria-label="Message"></textarea>
-    </div>
-    <button class="send-btn" id="send-btn" disabled onclick="sendMessage()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
-</div>
-
-<!-- ════ SCREEN 4: TEST GENERATOR ════ -->
-<div class="screen" id="screen-test">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div><div class="topbar-title">Cycle Test Generator</div><div class="topbar-sub" id="test-grade-sub"></div></div>
-    <button class="icon-btn topbar-home-btn" onclick="goHome()" title="Home" style="margin-left:auto">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </button>
-  </div>
-  <div class="test-form-body scroll-body">
-    <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="test-subject"><option value="">Select subject</option></select></div>
-    <div class="form-group"><label class="form-label">Chapter / Topic</label><input type="text" class="form-input" id="test-chapter" placeholder="e.g. Chapter 1 — Crop Production"></div>
-    <div class="form-group"><label class="form-label">Difficulty</label>
-      <div class="seg-control">
-        <button class="seg-btn active" data-diff="Easy" onclick="selectSeg(this,'diff')">Easy</button>
-        <button class="seg-btn" data-diff="Medium" onclick="selectSeg(this,'diff')">Medium</button>
-        <button class="seg-btn" data-diff="Hard" onclick="selectSeg(this,'diff')">Hard</button>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Duration</label>
-      <div class="seg-control">
-        <button class="seg-btn" data-dur="20" onclick="selectSeg(this,'dur')">20 min</button>
-        <button class="seg-btn active" data-dur="30" onclick="selectSeg(this,'dur')">30 min</button>
-        <button class="seg-btn" data-dur="60" onclick="selectSeg(this,'dur')">1 hour</button>
-      </div>
-    </div>
-    <button class="generate-btn" id="gen-test-btn" onclick="generateTest()">📝 Generate Question Paper</button>
-    <div id="test-result" style="display:none;"></div>
-  </div>
-</div>
-
-<!-- ════ SCREEN 5: NOTES GENERATOR ════ -->
-<div class="screen" id="screen-notes">
-  <div class="topbar">
-    <button class="topbar-back" onclick="goToScreen('screen-dashboard')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <div><div class="topbar-title">Chapter Notes</div><div class="topbar-sub" id="notes-grade-sub"></div></div>
-    <button class="icon-btn topbar-home-btn" onclick="goHome()" title="Home" style="margin-left:auto">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </button>
-  </div>
-  <div class="notes-form-body scroll-body">
-    <div class="form-group"><label class="form-label">Subject</label><select class="form-select" id="notes-subject"><option value="">Select subject</option></select></div>
-    <div class="form-group"><label class="form-label">Chapter</label><input type="text" class="form-input" id="notes-chapter" placeholder="e.g. Chapter 4 — Carbon and its Compounds"></div>
-    <div class="form-group"><label class="form-label">Specific topic (optional)</label><input type="text" class="form-input" id="notes-topic" placeholder="e.g. Photosynthesis only"></div>
-    <button class="generate-btn" id="gen-notes-btn" onclick="generateNotes()">🖼️ Generate Chapter Notes</button>
-    <div id="notes-result" style="display:none;"></div>
-  </div>
-</div>
-
-<script>
-const API_BASE = 'https://ncerttutor.prashanthmuthurbcb.workers.dev';
-
-// ══════════════════════════════════════════════
-// CENTRAL API FETCH — Bypasses Cloudflare Bot Fight Mode
-// Adds Referer + required headers so worker always responds
-// ══════════════════════════════════════════════
-async function apiFetch(path, body) {
-  const url = API_BASE + path;
-  const opts = {
-    method: 'POST',
-    mode: 'cors',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(body)
-  };
-
-  try {
-    // 1st Attempt: Direct fetch
-    const res = await fetch(url, opts);
-    if (!res.headers.get('content-type')?.includes('application/json')) throw new Error('CORS block');
-    return await res.json();
-  } catch(e) {
-    // 2nd Attempt: Cloudflare Bot bypass via proxy
-    const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-    const proxyRes = await fetch(proxyUrl, opts);
-    return await proxyRes.json();
-  }
-}
-
-
-
-
-
-let state = {
-  grade:'', fee:'', subject:'', name:'',
-  chatHistory:[], chatMode:'tutor',
-  testDiff:'Easy', testDur:'30',
-  recentActivity:[]
-};
-
-const SUBJECTS = {
-  'Grade 1–3': ['Maths','English','EVS','Hindi'],
-  'Grade 4–8': ['Maths','Science','Social Science','English','Hindi','Sanskrit'],
-  'Grade 9–10':['Maths','Science','Social Science','English','Hindi','IT'],
-  'Grade 11–12':['Physics','Chemistry','Maths','Biology','English','Accountancy','Business Studies','Economics'],
-};
-const QUICK_CHIPS = {
-  tutor:['Explain a concept','Solve a problem','Board exam tip','Give an example'],
-  evaluate:['Check my answers','Score my test','Mark my paper'],
-};
-
-// ── THEME ──
-(function(){
-  const btn=document.querySelector('[data-theme-toggle]');
-  const root=document.documentElement;
-  let dm=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
-  root.setAttribute('data-theme',dm);
-  updateThemeIcon(btn,dm);
-  btn&&btn.addEventListener('click',()=>{
-    dm=dm==='dark'?'light':'dark';
-    root.setAttribute('data-theme',dm);
-    updateThemeIcon(btn,dm);
-  });
-})();
-function updateThemeIcon(btn,dm){
-  if(!btn)return;
-  btn.innerHTML=dm==='dark'
-    ?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-    :'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-}
-
-// ── NAVIGATION ──
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function goToScreen(id){showScreen(id);}
-function goHome(){showScreen('screen-home');}
-function navTo(screenId,btn){showScreen(screenId);document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-function doLogout(){state={grade:'',fee:'',subject:'',name:'',chatHistory:[],chatMode:'tutor',testDiff:'Easy',testDur:'30',recentActivity:[]};showScreen('screen-home');}
-
-// ── AUTH TABS ──
-function switchTab(tab){
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
-  document.getElementById('form-login').classList.toggle('active',tab==='login');
-  document.getElementById('form-register').classList.toggle('active',tab==='register');
-  document.getElementById('reset-panel').classList.remove('show');
-}
-
-function showMsg(id,msg,type){
-  const el=document.getElementById(id);
-  el.className='auth-msg '+type;
-  el.textContent=msg;
-}
-
-// ── LOGIN ──
-async function doLogin(){
-  const email=document.getElementById('login-email').value.trim();
-  const pass=document.getElementById('login-pass').value;
-  if(!email||!pass){showMsg('login-msg','Please fill in all fields','error');return;}
-  const btn=document.getElementById('login-btn');
-  btn.disabled=true;btn.textContent='Logging in…';
-  showLoader('Logging in…');
-  try{
-    const data=await apiFetch('/login',{email,password:pass});
-    hideLoader();
-    if(data.success){
-      state.name=data.name;state.grade=data.grade;
-      loadDashboard(data);
-    } else {
-      showMsg('login-msg',data.error||'Login failed','error');
-    }
-  }catch(e){hideLoader();showMsg('login-msg','API Error: ' + e.message,'error');}
-  btn.disabled=false;btn.textContent='Login →';
-}
-
-// ── REGISTER ──
-async function doRegister(){
-  const name=document.getElementById('reg-name').value.trim();
-  const email=document.getElementById('reg-email').value.trim();
-  const pass=document.getElementById('reg-pass').value;
-  const grade=document.getElementById('reg-grade').value;
-  if(!name||!email||!pass||!grade){showMsg('reg-msg','Please fill in all fields','error');return;}
-  if(pass.length<6){showMsg('reg-msg','Password must be at least 6 characters','error');return;}
-  const btn=document.getElementById('reg-btn');
-  btn.disabled=true;btn.textContent='Creating account…';
-  showLoader('Creating your account…');
-  try{
-    const data=await apiFetch('/register',{name,email,password:pass,grade});
-    hideLoader();
-    if(data.success){
-      state.name=data.name;state.grade=data.grade;
-      showMsg('reg-msg','Account created! Logging you in…','success');
-      setTimeout(()=>loadDashboard(data),800);
-    } else {
-      showMsg('reg-msg',data.error||'Registration failed','error');
-    }
-  }catch(e){hideLoader();showMsg('reg-msg','API Error: ' + e.message,'error');}
-  btn.disabled=false;btn.textContent='Create Account →';
-}
-
-// ── FORGOT PASSWORD ──
-function showResetPanel(){
-  const panel=document.getElementById('reset-panel');
-  panel.classList.toggle('show');
-  document.getElementById('reset-step1').style.display='block';
-  document.getElementById('reset-step2').style.display='none';
-  document.getElementById('reset-msg').className='auth-msg';
-}
-
-async function resetStep1(){
-  const email=document.getElementById('reset-email').value.trim();
-  if(!email){showMsg('reset-msg','Please enter your email','error');return;}
-  showLoader('Checking account…');
-  try{
-    const data=await apiFetch('/reset-password',{email});
-    hideLoader();
-    if(data.success){
-      document.getElementById('reset-hint').textContent='Hint: Your name starts with "'+data.name_hint+'". Enter your full registered name below to reset.';
-      document.getElementById('reset-step1').style.display='none';
-      document.getElementById('reset-step2').style.display='block';
-      document.getElementById('reset-email-hidden').value=email;
-    } else {
-      showMsg('reset-msg',data.error||'Account not found','error');
-    }
-  }catch(e){hideLoader();showMsg('reset-msg','Network error','error');}
-}
-
-async function resetStep2(){
-  const email=document.getElementById('reset-email').value.trim();
-  const confirmName=document.getElementById('reset-name').value.trim();
-  const newPassword=document.getElementById('reset-newpass').value;
-  if(!confirmName||!newPassword){showMsg('reset-msg','Please fill in all fields','error');return;}
-  if(newPassword.length<6){showMsg('reset-msg','Password must be at least 6 characters','error');return;}
-  showLoader('Resetting password…');
-  try{
-    const data=await apiFetch('/reset-password',{email,newPassword,confirmName});
-    hideLoader();
-    if(data.success){
-      showMsg('reset-msg','✅ Password reset! You can now log in.','success');
-      document.getElementById('reset-step2').style.display='none';
-      setTimeout(()=>{document.getElementById('reset-panel').classList.remove('show');},2000);
-    } else {
-      showMsg('reset-msg',data.error||'Reset failed','error');
-    }
-  }catch(e){hideLoader();showMsg('reset-msg','Network error','error');}
-}
-
-// ── LOAD DASHBOARD ──
-function loadDashboard(data){
-  document.getElementById('dash-name').textContent=data.name;
-  document.getElementById('dash-grade-label').textContent=data.grade;
-  document.getElementById('chat-sub').textContent=data.grade;
-  document.getElementById('test-grade-sub').textContent=data.grade;
-  document.getElementById('notes-grade-sub').textContent=data.grade;
-  const subs=SUBJECTS[data.grade]||[];
-  ['test-subject','notes-subject'].forEach(id=>{
-    const sel=document.getElementById(id);
-    sel.innerHTML='<option value="">Select subject</option>';
-    subs.forEach(s=>sel.innerHTML+=`<option value="${s}">${s}</option>`);
-  });
-  const chips=document.getElementById('subject-chips');
-  chips.innerHTML='';
-  subs.forEach(s=>{
-    const btn=document.createElement('button');
-    btn.className='subject-chip';btn.textContent=s;
-    btn.onclick=()=>{state.subject=s;goToChat('tutor');};
-    chips.appendChild(btn);
-  });
-  state.chatHistory=[];
-  showScreen('screen-dashboard');
-}
-
-// ── GRADE SELECT (without login, for testing) ──
-function selectGrade(grade,fee){
-  state.grade=grade;state.fee=fee;
-  // scroll to auth card
-  document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'});
-}
-
-// ── CHAT ──
-function goToChat(mode){
-  state.chatMode=mode;state.chatHistory=[];
-  document.getElementById('chat-body').innerHTML='';
-  renderQuickChips();showScreen('screen-chat');
-  const greetings={
-    tutor:`Namaste! 🙏 I'm Vidya, your personal NCERT Tutor.\n\nYou're in **${state.grade}**. Which subject shall we work on today?`,
-    evaluate:`Hi! Let's evaluate your answers. 📋\n\nPaste your test question paper first, then share your answers below it. I'll mark them and give you a score!`,
-  };
-  appendBot(greetings[mode]||greetings.tutor);
-}
-function renderQuickChips(){
-  const row=document.getElementById('quick-row');row.innerHTML='';
-  (QUICK_CHIPS[state.chatMode]||QUICK_CHIPS.tutor).forEach(c=>{
-    const btn=document.createElement('button');btn.className='qchip';btn.textContent=c;
-    btn.onclick=()=>sendWith(c);row.appendChild(btn);
-  });
-}
-const msgInput=document.getElementById('msg-input');
-msgInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px';document.getElementById('send-btn').disabled=!this.value.trim();});
-msgInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
-function sendWith(text){msgInput.value=text;sendMessage();}
-// sendMessage overridden below with OCR/mic support
-function clearChat(){state.chatHistory=[];document.getElementById('chat-body').innerHTML='';goToChat(state.chatMode);}
-
-// ── TEST ──
-function selectSeg(btn,type){
-  btn.closest('.seg-control').querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if(type==='diff')state.testDiff=btn.dataset.diff;
-  if(type==='dur')state.testDur=btn.dataset.dur;
-}
-async function generateTest(){
-  const subject=document.getElementById('test-subject').value;
-  const chapter=document.getElementById('test-chapter').value;
-  if(!subject){alert('Please select a subject first.');return;}
-  showLoader('Generating your question paper…');
-  document.getElementById('gen-test-btn').disabled=true;
-  try{
-    const data=await apiFetch('/test',{grade:state.grade,subject,chapter,difficulty:state.testDiff,duration:parseInt(state.testDur)});hideLoader();
-    showResult('test',data.paper||'Could not generate.',`${subject} — ${state.testDiff} — ${state.testDur} min`);
-    addRecentActivity('📝','Test: '+subject);
-  }catch(e){hideLoader();alert('Network error. Please try again.');}
-  document.getElementById('gen-test-btn').disabled=false;
-}
-
-// ── NOTES ──
-async function generateNotes(){
-  const subject=document.getElementById('notes-subject').value;
-  const chapter=document.getElementById('notes-chapter').value;
-  const topic=document.getElementById('notes-topic').value;
-  if(!subject||!chapter){alert('Please select subject and chapter.');return;}
-  showLoader('Preparing chapter notes…');
-  document.getElementById('gen-notes-btn').disabled=true;
-  try{
-    const data=await apiFetch('/notes',{grade:state.grade,subject,chapter,topic});hideLoader();
-    showResult('notes',data.notes||'Could not generate.',`${subject} — ${chapter}`);
-    addRecentActivity('🖼️','Notes: '+subject+' '+chapter);
-  }catch(e){hideLoader();alert('Network error. Please try again.');}
-  document.getElementById('gen-notes-btn').disabled=false;
-}
-
-// ── RESULT PANEL ──
-function showResult(type,content,label){
-  const container=document.getElementById(type+'-result');
-  const copyId='rc_'+Date.now();
-  container.style.display='block';
-  container.innerHTML=`<div class="result-panel"><div class="result-hdr"><span class="result-title">📄 ${label}</span><div class="result-actions"><button class="small-btn" onclick="copyResult('${copyId}')">Copy</button></div></div><div class="result-body" id="${copyId}">${escHtml(content)}</div></div>`;
-  container.scrollIntoView({behavior:'smooth'});
-}
-function copyResult(id){
-  const el=document.getElementById(id);
-  navigator.clipboard.writeText(el.innerText).then(()=>{
-    const btn=el.parentElement.querySelector('.small-btn');
-    if(btn){btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000);}
-  });
-}
-
-// ── DOM HELPERS ──
-function appendUser(text){
-  const cb=document.getElementById('chat-body');
-  const d=document.createElement('div');d.className='msg user';
-  d.innerHTML=`<div class="msg-bub">${escHtml(text)}</div><div class="msg-time">${getTime()}</div>`;
-  cb.appendChild(d);scrollChat();
-}
-function appendBot(text){
-  const cb=document.getElementById('chat-body');
-  const d=document.createElement('div');d.className='msg bot';
-  const isBlock=text.includes('SECTION A')||text.includes('SLIDE 1')||text.includes('═══')||text.includes('━━━');
-  const cid='c'+Date.now();
-  if(isBlock){
-    d.innerHTML=`<div class="msg-bub"><div class="content-block"><div class="content-block-hdr"><span class="cb-label">📄 Generated Content</span><button class="cb-copy" onclick="copyResult('${cid}')">Copy</button></div><div class="content-block-body" id="${cid}">${escHtml(text)}</div></div></div><div class="msg-time">${getTime()}</div>`;
-  }else{
-    d.innerHTML=`<div class="msg-bub">${fmtMsg(text)}</div><div class="msg-time">${getTime()}</div>`;
-  }
-  cb.appendChild(d);scrollChat();
-}
-function fmtMsg(t){
-  return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/`([^`]+)`/g,'<code>$1</code>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>(\n|$))+/g,'<ul>$&</ul>')
-    .replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^/,'<p>').replace(/$/,'</p>');
-}
-function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function scrollChat(){const cb=document.getElementById('chat-body');requestAnimationFrame(()=>cb.scrollTop=cb.scrollHeight);}
-function getTime(){return new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
-function addRecentActivity(icon,text){
-  state.recentActivity.unshift({icon,text,time:getTime()});
-  const list=document.getElementById('recent-list');
-  document.getElementById('recent-empty').style.display='none';
-  list.innerHTML=state.recentActivity.slice(0,2).map(a=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.65rem .875rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:.5rem;"><span style="font-size:1.1rem;">${a.icon}</span><span style="font-size:.8rem;flex:1;color:var(--text);">${a.text}</span><span style="font-size:.65rem;color:var(--faint);">${a.time}</span></div>`).join('');
-}
-
-// ── LOADER ──
-function showLoader(msg){document.getElementById('loader').classList.add('show');document.getElementById('loader-text').textContent=msg||'Loading…';}
-function hideLoader(){document.getElementById('loader').classList.remove('show');}
-
-// ══════════════════════════════════════════════
-// OCR / IMAGE RECOGNITION FEATURE
-// ══════════════════════════════════════════════
-let ocrImageBase64 = null;
-
-function handleOcrImage(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    ocrImageBase64 = e.target.result; // base64 data URL
-    document.getElementById('ocr-preview-img').src = ocrImageBase64;
-    document.getElementById('ocr-preview-wrap').classList.add('show');
-    // Auto-fill input with instruction
-    const inp = document.getElementById('msg-input');
-    if (!inp.value.trim()) {
-      inp.value = 'Please read this question from my textbook and explain the answer step by step.';
-      inp.dispatchEvent(new Event('input'));
-    }
-    document.getElementById('send-btn').disabled = false;
-  };
-  reader.readAsDataURL(file);
-  // Reset file input so same file can be selected again
-  event.target.value = '';
-}
-
-function removeOcrImage() {
-  ocrImageBase64 = null;
-  document.getElementById('ocr-preview-wrap').classList.remove('show');
-  document.getElementById('ocr-preview-img').src = '';
-}
-
-// Patch sendMessage to include OCR context
-const _origSendMessage = sendMessage;
-async function sendMessage() {
-  if (ocrImageBase64) {
-    const text = document.getElementById('msg-input').value.trim() || 'Please read this question from my textbook and explain the answer.';
-    document.getElementById('msg-input').value = '';
-    document.getElementById('msg-input').style.height = 'auto';
-    document.getElementById('send-btn').disabled = true;
-    // Show user message with image thumbnail
-    const cb = document.getElementById('chat-body');
-    const d = document.createElement('div'); d.className = 'msg user';
-    d.innerHTML = `<div class="msg-bub"><img src="${ocrImageBase64}" style="max-width:160px;border-radius:8px;display:block;margin-bottom:.4rem"><div>${escHtml(text)}</div></div><div class="msg-time">${getTime()}</div>`;
-    cb.appendChild(d); scrollChat();
-    state.chatHistory.push({role:'user', text: '[Image uploaded] ' + text});
-    showLoader('Vidya is reading your image…');
-    // Send to AI with OCR context in message
-    try {
-      const ocrMsg = `[The student has uploaded a photo of a textbook question. Describe what kind of question it likely is based on context and answer it as an NCERT tutor. Student instruction: ${text}]`;
-      const data = await apiFetch('/chat', {grade: state.grade, subject: state.subject||'General', message: ocrMsg, history: state.chatHistory.slice(-6)}); hideLoader();
-      const reply = data.reply || 'Sorry, could not read the image. Please type your question manually.';
-      state.chatHistory.push({role:'model', text: reply});
-      appendBot(reply);
-      addRecentActivity('📸', 'Image Q: ' + text.slice(0, 35));
-    } catch(e) { hideLoader(); appendBot('Network error. Please try again. 🙏'); }
-    removeOcrImage();
-    return;
-  }
-  // Normal text send — call original logic inline
-  const text = document.getElementById('msg-input').value.trim(); if (!text) return;
-  document.getElementById('msg-input').value = ''; document.getElementById('msg-input').style.height = 'auto';
-  document.getElementById('send-btn').disabled = true;
-  appendUser(text); state.chatHistory.push({role:'user', text});
-  showLoader('Vidya is thinking…');
-  try {
-    const data = await apiFetch('/chat', {grade:state.grade, subject:state.subject||'General', message:text, history:state.chatHistory.slice(-10)}); hideLoader();
-    const reply = data.reply || 'Sorry, could not get a response. Please try again!';
-    state.chatHistory.push({role:'model', text:reply});
-    appendBot(reply); addRecentActivity('💬','Asked: '+text.slice(0,40));
-  } catch(e) { hideLoader(); appendBot('Network error. Please check your connection. 🙏'); }
-}
-
-// ══════════════════════════════════════════════
-// VOICE / MIC FEATURE (Web Speech API)
-// ══════════════════════════════════════════════
-let recognition = null;
-let isRecording = false;
-
-function toggleMic() {
-  const micBtn = document.getElementById('mic-btn');
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    alert('Voice input is not supported in this browser. Please type your question.');
-    return;
-  }
-  if (isRecording) {
-    recognition && recognition.stop();
-    isRecording = false;
-    micBtn.classList.remove('recording');
-    return;
-  }
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SR();
-  recognition.lang = 'en-IN';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-  recognition.onstart = () => { isRecording = true; micBtn.classList.add('recording'); };
-  recognition.onresult = (e) => {
-    const transcript = e.results[0][0].transcript;
-    const inp = document.getElementById('msg-input');
-    inp.value = (inp.value ? inp.value + ' ' : '') + transcript;
-    inp.dispatchEvent(new Event('input'));
-    document.getElementById('send-btn').disabled = false;
-  };
-  recognition.onerror = (e) => {
-    isRecording = false; micBtn.classList.remove('recording');
-    if (e.error !== 'aborted') appendBot('🎤 Could not understand. Please speak clearly or type your question.');
-  };
-  recognition.onend = () => { isRecording = false; micBtn.classList.remove('recording'); };
-  recognition.start();
-}
-
-// ══════════════════════════════════════════════
-// TIER RESTRICTION MODAL
-// ══════════════════════════════════════════════
-const TIER_ORDER = ['Grade 1–3', 'Grade 4–8', 'Grade 9–10', 'Grade 11–12'];
-const TIER_FEES = {'Grade 1–3':'₹150/month','Grade 4–8':'₹400/month','Grade 9–10':'₹600/month','Grade 11–12':'₹900/month'};
-
-function checkTierAccess(requiredGrade) {
-  if (!state.grade) return false;
-  const userIdx = TIER_ORDER.indexOf(state.grade);
-  const reqIdx = TIER_ORDER.indexOf(requiredGrade);
-  return userIdx >= reqIdx;
-}
-
-function showTierRestriction(featureName, requiredGrade) {
-  const fee = TIER_FEES[requiredGrade] || '';
-  document.getElementById('tier-modal-title').textContent = '🔒 ' + featureName + ' Locked';
-  document.getElementById('tier-modal-desc').textContent =
-    'This feature requires the ' + requiredGrade + ' plan (' + fee + '). ' +
-    'Your current plan is ' + (state.grade || 'Free') + '. Upgrade to unlock!';
-  document.getElementById('tier-modal-overlay').classList.add('show');
-}
-
-function closeTierModal(e) {
-  if (e.target === document.getElementById('tier-modal-overlay'))
-    document.getElementById('tier-modal-overlay').classList.remove('show');
-}
-
-function goToRegisterForTier() {
-  document.getElementById('tier-modal-overlay').classList.remove('show');
-  goHome();
-  setTimeout(() => { document.querySelector('.auth-card').scrollIntoView({behavior:'smooth'}); }, 300);
-}
-
-// ── Patch subject chips to check tier ──
-const _origLoadDashboard = loadDashboard;
-function loadDashboard(data) {
-  _origLoadDashboard(data);
-  // Re-render recent chats section label
-  const recentLabel = document.querySelector('#recent-list')?.previousElementSibling;
-  if (recentLabel) recentLabel.textContent = 'Recent chats (last 2)';
-}
 
 </script>
-
-<!-- ════ TIER RESTRICTION MODAL ════ -->
-<div class="tier-modal-overlay" id="tier-modal-overlay" onclick="closeTierModal(event)">
-  <div class="tier-modal">
-    <div class="tier-modal-icon">🔒</div>
-    <div class="tier-modal-title" id="tier-modal-title">Feature Locked</div>
-    <div class="tier-modal-desc" id="tier-modal-desc">This feature requires a higher plan. Upgrade to unlock full access.</div>
-    <button class="tier-modal-btn" onclick="goToRegisterForTier()">🚀 Upgrade / Register for this Tier</button>
-    <button class="tier-modal-btn secondary" onclick="document.getElementById('tier-modal-overlay').classList.remove('show')">Maybe Later</button>
-  </div>
-</div>
 </body>
 </html>
