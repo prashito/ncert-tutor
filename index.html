@@ -705,6 +705,7 @@ const QUICK_CHIPS = {
   btn&&btn.addEventListener('click',()=>{
     dm=dm==='dark'?'light':'dark';
     root.setAttribute('data-theme',dm);
+    try{localStorage.setItem('vidya_theme',dm);}catch(e){}
     updateThemeIcon(btn,dm);
   });
 })();
@@ -748,12 +749,20 @@ async function doLogin(){
     const data=await authFetch('/login',{email,password:pass});
     hideLoader();
     if(data.success){
-      state.name=data.name;state.grade=data.grade;
-      loadDashboard(data);
+      state.name=data.name||'';
+      state.grade=data.grade||'';
+      try{
+        loadDashboard(data);
+      }catch(err){
+        showMsg('login-msg','Login succeeded but dashboard failed: '+err.message,'error');
+      }
     } else {
       showMsg('login-msg',data.error||'Login failed','error');
     }
-  }catch(e){hideLoader();showMsg('login-msg','API Error: ' + e.message,'error');}
+  }catch(e){
+    hideLoader();
+    showMsg('login-msg','API Error: ' + e.message,'error');
+  }
   btn.disabled=false;btn.textContent='Login →';
 }
 
