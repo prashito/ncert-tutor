@@ -663,8 +663,19 @@ async function apiFetch(path, body) {
 }
 
 
-
-
+async function authFetch(path, body) {
+  const url = (window.WORKER_URL || API_BASE) + path;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(body || {})
+  });
+  const text = await res.text();
+  let data = {};
+  try { data = text ? JSON.parse(text) : {}; } catch(e) { throw new Error('Raw response: ' + text.slice(0, 160)); }
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
 
 let state = {
   grade:'', fee:'', subject:'', name:'',
@@ -734,7 +745,7 @@ async function doLogin(){
   btn.disabled=true;btn.textContent='Logging in…';
   showLoader('Logging in…');
   try{
-    const data=await apiFetch('/login',{email,password:pass});
+    const data=await authFetch('/login',{email,password:pass});
     hideLoader();
     if(data.success){
       state.name=data.name;state.grade=data.grade;
@@ -758,7 +769,7 @@ async function doRegister(){
   btn.disabled=true;btn.textContent='Creating account…';
   showLoader('Creating your account…');
   try{
-    const data=await apiFetch('/register',{name,email,password:pass,grade});
+    const data=await authFetch('/register',{name,email,password:pass,grade});
     hideLoader();
     if(data.success){
       state.name=data.name;state.grade=data.grade;
@@ -785,7 +796,7 @@ async function resetStep1(){
   if(!email){showMsg('reset-msg','Please enter your email','error');return;}
   showLoader('Checking account…');
   try{
-    const data=await apiFetch('/reset-password',{email});
+    const data=await authFetch('/reset-password',{email});
     hideLoader();
     if(data.success){
       document.getElementById('reset-hint').textContent='Hint: Your name starts with "'+data.name_hint+'". Enter your full registered name below to reset.';
@@ -806,7 +817,7 @@ async function resetStep2(){
   if(newPassword.length<6){showMsg('reset-msg','Password must be at least 6 characters','error');return;}
   showLoader('Resetting password…');
   try{
-    const data=await apiFetch('/reset-password',{email,newPassword,confirmName});
+    const data=await authFetch('/reset-password',{email,newPassword,confirmName});
     hideLoader();
     if(data.success){
       showMsg('reset-msg','✅ Password reset! You can now log in.','success');
